@@ -1,0 +1,12 @@
+@import "../resources/_variables.scss";
+
+.my-button-nav{
+    height: $bottom-bar-height;
+    border-radius: 0;
+}
+.brand-name{
+    letter-spacing: 1.3px;
+}
+.brand-name-container{
+    height: $top-bar-height;
+}

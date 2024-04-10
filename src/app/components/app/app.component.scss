@@ -1,0 +1,14 @@
+@import "../../framework/resources/_variables.scss";
+
+.app-container {
+  padding-top: calc($top-bar-height + 16px);
+  height: calc(100vh - $bottom-bar-height);
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  ::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
