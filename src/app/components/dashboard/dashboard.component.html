@@ -1,3 +1,38 @@
-<div>
-    <p class="h1">{{greeting}}, Aalok</p>
+<div class="mt-3">
+  <div class="d-flex justify-content-start align-items-center column-gap-2">
+    <div>
+      <img src="../../../assets/images/woman-athlete.webp" alt="Woman Athlete" class="dashboard-header-image" />
+    </div>
+    <div class="">
+      <span class="greeting-text">{{greeting}}, <span>{{name}}</span></span>
+    </div>
+  </div>
+  <div class="mt-2 text-secondary">
+    <span>{{nls.trackHealth}}</span>
+  </div>
+</div>
+<div class="mt-5 container-fluid">
+  <div class="row justify-content-evenly align-items-center my-dashboard-cards-container row-gap-3">
+    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards '+item.bgColor" mat-ripple>
+      <div class="dashboard-card-item">
+        <span class="h6">{{item.title}}</span>
+        <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon>
+      </div>
+      <div class="dashboard-card-item-2">
+        <img [alt]="item.title" [src]="'../../../assets/images/'+item.subtitle" height="50px" />
+      </div>
+      <div class="dashboard-card-item-2 pt-2">
+        <span>{{item.footer}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="add-fab-button">
+  <div class="container">
+    <div class="d-flex justify-content-end align-items-center px-3">
+      <button mat-fab color="primary" aria-label="Example icon button with a bookmark icon">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
 </div>

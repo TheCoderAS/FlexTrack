@@ -1,0 +1,68 @@
+@import "../../framework/resources/_variables.scss";
+
+.dashboard-header-image {
+  width: 30px;
+  border-radius: 50%;
+}
+.greeting-text {
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  span {
+    font-weight: 600;
+    letter-spacing: 1.5px;
+  }
+}
+.my-dashboard-cards-container {
+  gap: 4%;
+}
+.my-dashboard-cards {
+  // border: 1px solid red;
+  padding: 15px;
+  width: 48%;
+  min-height: 120px;
+  border-radius: $card-border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  cursor: pointer;
+  box-shadow: 0 0 15px #450d5960;
+}
+.dashboard-card-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .dashboard-item-icon {
+    font-size: 16px;
+  }
+}
+.dashboard-card-item-2 {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+.purple-gradient {
+  background: #450d59;//linear-gradient(135deg, rgba(29,17,96,1) 0%, rgba(128,0,128,1) 100%);
+  color: white;
+}
+.red-gradient{
+  background: #ff6250;
+  color: white;
+}
+.pink-gradient{
+  background: #FF69B4;
+  color: white;
+}
+.suns-gradient{
+  background: #662d91;
+  color: white;
+}
+.add-fab-button{
+  position: fixed;
+  bottom: 100px;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
