@@ -25,3 +25,46 @@ export const navItemsList: NavItem[] = [
     to: '/account',
   },
 ];
+
+export interface Path{
+  to:string;
+  subname:string[];
+  name:string;
+}
+export const allPaths:Path[]=[
+  {
+    name: 'Home',
+    to: '/',
+    subname:[]
+  },
+  {
+    name: 'Reports',
+    to: '/reports',
+    subname:[]
+  },
+  {
+    name: 'Account',
+    to: '/account',
+    subname:[]
+  },
+  {
+    name: 'Logging',
+    to: '/logging/meal',
+    subname:['Meal']
+  },
+  {
+    name: 'Logging',
+    to: '/logging/exercise',
+    subname:['Exercise']
+  },
+  {
+    name: 'Logging',
+    to: '/logging/water',
+    subname:['Water']
+  },
+  {
+    name: 'Logging',
+    to: '/logging/sleep',
+    subname:['Sleep']
+  }
+]

@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
-import { NavItem, navItemsList } from '../resources/nav-items';
+import { NavItem, Path, allPaths, navItemsList } from '../resources/nav-items';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -14,9 +14,10 @@ import { NavItem, navItemsList } from '../resources/nav-items';
 })
 export class NavbarComponent implements OnInit {
   private bottomBarShowCase: string[] = ['/', '/account', '/reports'];
-  currentPage: NavItem = navItemsList[0];
+  currentPage: Path = allPaths[0];
   showBottomBar: boolean = true;
   navItems: NavItem[] = navItemsList;
+  paths:Path[]=allPaths;
 
   constructor(private router: Router) {}
 
@@ -27,7 +28,7 @@ export class NavbarComponent implements OnInit {
         const currentRouterState = this.router.routerState;
         // console.log(currentRouterState.snapshot.url);
 
-        const activeNavItem = this.navItems.filter((item) => {
+        const activeNavItem = this.paths.filter((item) => {
           if (currentRouterState.snapshot.url.includes(item.to)) {
             return true;
           }

@@ -21,7 +21,13 @@
         </button>
       </div>
       <div class="col">
-        <span class="h6">{{currentPage.name}}</span>
+        <span class="h6 d-flex justify-content-center pt-2">
+          {{currentPage.name}} 
+          <span *ngFor="let subname of currentPage.subname" class="d-flex justify-content-center">
+            <mat-icon class="navbar-header-icon">navigate_next</mat-icon>
+            {{subname}}
+          </span>
+        </span>
       </div>
       <div class="col-2">
         <button mat-icon-button (click)="goToHome()">

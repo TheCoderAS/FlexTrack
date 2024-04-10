@@ -12,8 +12,8 @@
   </div>
 </div>
 <div class="mt-5 container-fluid">
-  <div class="row justify-content-evenly align-items-center my-dashboard-cards-container row-gap-3">
-    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards '+item.bgColor" mat-ripple>
+  <div class="row justify-content-evenly align-items-center my-dashboard-cards-container">
+    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards '+item.bgColor" mat-ripple [routerLink]="item.to">
       <div class="dashboard-card-item">
         <span class="h6">{{item.title}}</span>
         <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon>
@@ -30,9 +30,15 @@
 <div class="add-fab-button">
   <div class="container">
     <div class="d-flex justify-content-end align-items-center px-3">
-      <button mat-fab color="primary" aria-label="Example icon button with a bookmark icon">
+      <button mat-fab color="primary" aria-label="Add Log" [matMenuTriggerFor]="menu">
         <mat-icon>add</mat-icon>
       </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item *ngFor="let item of dashboardCards" [routerLink]="item.to">
+          <mat-icon class="dashboard-item-icon pt-1">{{item.icon}}</mat-icon>
+          <span>{{item.title}}</span>
+        </button>
+      </mat-menu>
     </div>
   </div>
 </div>
