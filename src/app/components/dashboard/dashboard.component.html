@@ -12,17 +12,22 @@
   </div>
 </div>
 <div class="mt-5 container-fluid">
-  <div class="row justify-content-evenly align-items-center my-dashboard-cards-container">
-    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards '+item.bgColor" mat-ripple [routerLink]="item.to">
-      <div class="dashboard-card-item">
-        <span class="h6">{{item.title}}</span>
-        <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon>
-      </div>
-      <div class="dashboard-card-item-2">
-        <img [alt]="item.title" [src]="'../../../assets/images/'+item.subtitle" height="50px" />
-      </div>
-      <div class="dashboard-card-item-2 pt-2">
-        <span>{{item.footer}}</span>
+  <div class="row justify-content-evenly align-items-center my-dashboard-cards-container" cdkDropList
+    (cdkDropListDropped)="onDrop($event)">
+    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards '+item.bgColor" mat-ripple
+      [routerLink]="item.to" cdkDrag cdkDragBoundary=".my-dashboard-cards-container">
+      <div class="my-dashboard-cards drag-placeholder" *cdkDragPlaceholder></div>
+      <div style="width: 100%;">
+        <div class="dashboard-card-item">
+          <span class="h6">{{item.title}}</span>
+          <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon>
+        </div>
+        <div class="dashboard-card-item-2">
+          <img [alt]="item.title" [src]="'../../../assets/images/'+item.subtitle" height="50px" />
+        </div>
+        <div class="dashboard-card-item-2 pt-2">
+          <span>{{item.footer}}</span>
+        </div>
       </div>
     </div>
   </div>

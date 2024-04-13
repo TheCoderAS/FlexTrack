@@ -13,13 +13,16 @@
   }
 }
 .my-dashboard-cards-container {
-  gap: 20px 15px;
+  gap: 20px;
+}
+.drag-placeholder{
+  background-color: #450d5930;
 }
 .my-dashboard-cards {
   // border: 1px solid red;
   padding: 15px;
   width: calc(50% - 20px);
-  min-height: 120px;
+  height: 140px;
   border-radius: $card-border-radius;
   display: flex;
   align-items: center;

@@ -10,12 +10,27 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragPlaceholder,
+  CdkDropList,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatRippleModule,MatButtonModule,RouterModule,MatMenuModule],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatRippleModule,
+    MatButtonModule,
+    RouterModule,
+    MatMenuModule,
+    CdkDropList, CdkDrag, CdkDragPlaceholder
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -37,4 +52,33 @@ export class DashboardComponent {
   }
 
   dashboardCards: DashboardCards[] = dashboardCards;
+
+  // onDragEnded(event: CdkDragDrop<DashboardCards[]>): void {
+  //   moveItemInArray(
+  //     this.dashboardCards,
+  //     event.previousIndex,
+  //     event.currentIndex
+  //   );
+  // }
+
+  onDrop(event: CdkDragDrop<DashboardCards[]>): void {
+    console.log(event);
+
+    // moveItemInArray(
+    //   this.dashboardCards,
+    //   event.previousIndex,
+    //   event.currentIndex
+    // );
+
+    // if (event.previousContainer === event.container) {
+      moveItemInArray(this.dashboardCards, event.previousIndex, event.currentIndex);
+    // } else {
+    //   transferArrayItem(
+    //     event.previousContainer.data,
+    //     event.container.data,
+    //     event.previousIndex,
+    //     event.currentIndex,
+    //   );
+    // }
+  }
 }
