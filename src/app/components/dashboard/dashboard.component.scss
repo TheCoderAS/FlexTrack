@@ -14,12 +14,20 @@
 }
 .my-dashboard-cards-container {
   gap: 20px;
+  display: flex;
+  // flex-direction: column;
+  flex-wrap: wrap;
 }
 .drag-placeholder{
-  background-color: #450d5930;
+  background-color: white;
+  box-shadow: 0px 0px 10px #450d5930;
+  // height: 150px !important;
+  // width: 50% !important;
+  width: 80% !important;
 }
 .my-dashboard-cards {
   // border: 1px solid red;
+  // flex: 1;
   padding: 15px;
   width: calc(50% - 20px);
   height: 140px;
@@ -30,6 +38,13 @@
   flex-direction: column;
   cursor: pointer;
   box-shadow: 0 0 15px #450d5960;
+}
+.reorder-card-container{
+  justify-content: flex-start !important;
+}
+.reorder-card{
+  width: 80%;
+
 }
 .dashboard-card-item {
   width: 100%;

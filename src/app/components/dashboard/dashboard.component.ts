@@ -17,6 +17,7 @@ import {
   CdkDragPlaceholder,
   CdkDropList,
   moveItemInArray,
+  transferArrayItem,
 } from '@angular/cdk/drag-drop';
 
 @Component({
@@ -52,33 +53,27 @@ export class DashboardComponent {
   }
 
   dashboardCards: DashboardCards[] = dashboardCards;
-
-  // onDragEnded(event: CdkDragDrop<DashboardCards[]>): void {
-  //   moveItemInArray(
-  //     this.dashboardCards,
-  //     event.previousIndex,
-  //     event.currentIndex
-  //   );
-  // }
+  reorderEbabled:boolean=false;
 
   onDrop(event: CdkDragDrop<DashboardCards[]>): void {
-    console.log(event);
-
-    // moveItemInArray(
-    //   this.dashboardCards,
-    //   event.previousIndex,
-    //   event.currentIndex
-    // );
-
-    // if (event.previousContainer === event.container) {
+    if (event.previousContainer === event.container) {
       moveItemInArray(this.dashboardCards, event.previousIndex, event.currentIndex);
-    // } else {
-    //   transferArrayItem(
-    //     event.previousContainer.data,
-    //     event.container.data,
-    //     event.previousIndex,
-    //     event.currentIndex,
-    //   );
-    // }
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
+  }
+  enableReorder(event:MouseEvent):void{
+    if(this.reorderEbabled){
+      console.log(dashboardCards);
+    }
+    this.reorderEbabled=!this.reorderEbabled;
+  }
+  addNewWidget(event:MouseEvent):void{
+    this.dashboardCards=[...this.dashboardCards,this.dashboardCards[Math.floor(Math.random()*(this.dashboardCards.length))]]
   }
 }

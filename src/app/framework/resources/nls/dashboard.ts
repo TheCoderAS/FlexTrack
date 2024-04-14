@@ -4,6 +4,8 @@ const nls={
         morning:"Good morning",
         afternoon:"Good afternoon",
         evening:"Good evening"
-    }
+    },
+    save:"Save",
+    reorder:"Reorder"
 }
 export default nls;

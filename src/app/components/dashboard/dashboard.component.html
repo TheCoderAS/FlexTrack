@@ -12,10 +12,15 @@
   </div>
 </div>
 <div class="mt-5 container-fluid">
-  <div class="row justify-content-evenly align-items-center my-dashboard-cards-container" cdkDropList
+  <div class="mb-2 d-flex justify-content-end">
+    <button mat-icon-button [color]="reorderEbabled?'primary':'warn'" (click)="enableReorder($event)">
+      <mat-icon>{{reorderEbabled?'save':'move_down'}}</mat-icon>
+    </button>
+  </div>
+  @if (reorderEbabled) {
+  <div class="my-dashboard-cards-container justify-content-evenly align-items-center reorder-card-container" cdkDropList
     (cdkDropListDropped)="onDrop($event)">
-    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards '+item.bgColor" mat-ripple
-      [routerLink]="item.to" cdkDrag cdkDragBoundary=".my-dashboard-cards-container">
+    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards reorder-card '+item.bgColor" cdkDrag cdkDragBoundary=".my-dashboard-cards-container">
       <div class="my-dashboard-cards drag-placeholder" *cdkDragPlaceholder></div>
       <div style="width: 100%;">
         <div class="dashboard-card-item">
@@ -31,11 +36,35 @@
       </div>
     </div>
   </div>
+  }
+  @if(!reorderEbabled){
+  <div class="my-dashboard-cards-container justify-content-evenly align-items-center">
+    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards '+item.bgColor" mat-ripple
+      [routerLink]="item.to">
+      <div style="width: 100%;">
+        <div class="dashboard-card-item">
+          <span class="h6">{{item.title}}</span>
+          <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon>
+        </div>
+        <div class="dashboard-card-item-2">
+          <img [alt]="item.title" [src]="'../../../assets/images/'+item.subtitle" height="50px" />
+        </div>
+        <div class="dashboard-card-item-2 pt-2">
+          <span>{{item.footer}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
 </div>
 <div class="add-fab-button">
   <div class="container">
     <div class="d-flex justify-content-end align-items-center px-3">
-      <button mat-fab color="primary" aria-label="Add Log" [matMenuTriggerFor]="menu">
+      <button mat-fab color="primary" aria-label="Add Widget" (click)="addNewWidget($event)">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <!-- <button mat-fab color="primary" aria-label="Add Log" [matMenuTriggerFor]="menu">
         <mat-icon>add</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
@@ -43,7 +72,7 @@
           <mat-icon class="dashboard-item-icon pt-1">{{item.icon}}</mat-icon>
           <span>{{item.title}}</span>
         </button>
-      </mat-menu>
+      </mat-menu> -->
     </div>
   </div>
 </div>
