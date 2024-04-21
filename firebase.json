@@ -1,0 +1,11 @@
+{
+  "hosting": [
+    {
+      "target": "workout-tracker",
+      "source": ".",
+      "frameworksBackend": {
+        "region": "us-east1"
+      }
+    }
+  ]
+}

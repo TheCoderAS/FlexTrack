@@ -19,6 +19,12 @@ export const navItemsList: NavItem[] = [
     to: '/reports',
   },
   {
+    name: 'Schedule',
+    icon: 'calendar_month',
+    id: 'schedule-link-navbar',
+    to: '/schedule',
+  },
+  {
     name: 'Account',
     icon: 'account_circle',
     id: 'account-link-navbar',

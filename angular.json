@@ -103,6 +103,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "workout-tracker:build:production",
+              "serveTarget": "workout-tracker:serve:production"
+            },
+            "development": {
+              "buildTarget": "workout-tracker:build:development",
+              "serveTarget": "workout-tracker:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
