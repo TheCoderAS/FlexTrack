@@ -16,8 +16,9 @@ export class NavbarComponent implements OnInit {
   private bottomBarShowCase: string[] = ['/', '/account', '/reports'];
   currentPage: Path = allPaths[0];
   showBottomBar: boolean = true;
+  showTopBar: boolean = false;
   navItems: NavItem[] = navItemsList;
-  paths:Path[]=allPaths;
+  paths: Path[] = allPaths;
 
   constructor(private router: Router) {}
 
@@ -38,15 +39,21 @@ export class NavbarComponent implements OnInit {
 
         if (this.bottomBarShowCase.includes(currentRouterState.snapshot.url)) {
           this.showBottomBar = true;
+          this.showTopBar = false;
         } else {
           this.showBottomBar = false;
+          this.showTopBar = true;
+        }
+        if (currentRouterState.snapshot.url.includes('/auth')) {
+          this.showBottomBar = false;
+          this.showTopBar = false;
         }
       });
   }
-  goBack():void{
+  goBack(): void {
     this.router.navigate(['../']);
   }
-  goToHome():void{
+  goToHome(): void {
     this.router.navigate(['/']);
   }
 }

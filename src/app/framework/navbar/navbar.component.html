@@ -12,9 +12,9 @@
     </div>
   </div>
 </nav>
-<nav class="fixed-top bg-light py-2">
+<nav class="fixed-top bg-light py-2" *ngIf="showTopBar">
   <div class="container">
-    <div class="row align-items-center justify-content-between text-center brand-name-container" *ngIf="!showBottomBar">
+    <div class="row align-items-center justify-content-between text-center brand-name-container">
       <div class="col-2">
         <button mat-icon-button (click)="goBack()">
           <mat-icon>arrow_back</mat-icon>
@@ -35,10 +35,15 @@
         </button>
       </div>
     </div>
-    <div class="row align-items-center justify-content-between text-center py-2 brand-name-container" *ngIf="showBottomBar">
+  </div>
+</nav>
+
+<nav class="fixed-top bg-light py-2" *ngIf="showBottomBar">
+  <div class="container">
+    <div class="row align-items-center justify-content-between text-center py-2 brand-name-container">
       <div class="col">
         <span class="h5 brand-name">Fitness Tracker</span>
       </div>
     </div>
-  </div>
+</div>
 </nav>

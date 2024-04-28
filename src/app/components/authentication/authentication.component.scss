@@ -1,0 +1,32 @@
+.auth-container{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.auth-form-container{
+    max-width: 500px;
+    padding: 25px;
+    
+    @media screen and (min-width:762px) {
+        border-radius: 20px;
+        box-shadow: 0px 0px 15px #c4c4c450;
+        background-color: white;
+    }
+
+}
+.auth-form-logo{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+}
+.auth-form-footer-links{
+    cursor: pointer;
+    color: blueviolet;
+}

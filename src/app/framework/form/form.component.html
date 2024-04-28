@@ -1,0 +1,23 @@
+<form #appForm="ngForm" (ngSubmit)="submitForm($event)" autocomplete="off">
+
+    <mat-form-field appearance="fill" class="w-100" *ngFor="let item of formFields">
+        <mat-label class="app-form-label">{{item.label}}</mat-label>
+        <input [required]="item.required" matInput [name]="item.name" [id]="item.id" [type]="item.type"
+            [(ngModel)]="formState[item.name]" [pattern]="item.pattern" *ngIf="item.type!=='select'" />
+        <mat-select *ngIf="item.type==='select'" [required]="item.required" [name]="item.name"
+            [(ngModel)]="formState[item.name]">
+            @for(option of item.options;track option){
+            <mat-option [value]="option.label">{{option.label}}</mat-option>
+            }
+        </mat-select>
+        <!-- <ng-container *ngFor="let message of item.errorMessage">
+            <mat-error *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</mat-error>
+        </ng-container> -->
+        <!-- <span class="h6">hello world</span> -->
+        <mat-progress-bar mode="determinate" [value]="getPasswordStrengthNum()" [color]="getPasswordProgressColor()"
+            *ngIf="item.type==='password'"></mat-progress-bar>
+
+    </mat-form-field>
+    <button class="w-100" mat-raised-button color="primary" type="submit"
+        [disabled]="!appForm.valid">{{buttonTitle}}</button>
+</form>
