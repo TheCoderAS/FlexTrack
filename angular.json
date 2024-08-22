@@ -100,7 +100,9 @@
               "src/styles.scss",
               "src/app/framework/resources/_variables.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "cordova.js"
+            ]
           }
         },
         "deploy": {

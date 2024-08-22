@@ -1,11 +1,21 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.whpl.tracker" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Tracker</name>
-    <description>A simple tracker application</description>
+<widget id="com.whpl.tracker" version="1.0.0" xmlns="http://www.w3.org/ns/widgets"
+    xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Fitness Tracker</name>
+    <description>A simple Fitness tracker application</description>
     <author email="careers@websiterahouse.com" href="https://websiterahouse.com">
         Websitera House Team
     </author>
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+
+    <platform name="android">
+        <preference name="KeepRunning" value="true" />
+        <preference name="InAppBrowserStorageEnabled" value="true" />
+        <preference name="AndroidWindowSplashScreenBackground" value="#2D0D4F" />
+        <preference name="StatusBarOverlaysWebView" value="true" />
+        <preference name="StatusBarBackgroundColor" value="#012D0D4F" />
+        <preference name="StatusBarStyle" value="default" />
+    </platform>
 </widget>
