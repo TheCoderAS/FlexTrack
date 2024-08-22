@@ -4,6 +4,7 @@ import {
   Signal,
   WritableSignal,
   computed,
+  inject,
   signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -180,7 +181,7 @@ const authFormFields: FormAuthType = {
   styleUrl: './authentication.component.scss',
 })
 export class AuthenticationComponent {
-  constructor(private authService: AuthenticationService) {}
+  private authService:AuthenticationService=inject(AuthenticationService);
 
   authType: WritableSignal<string> = signal('login');
 
@@ -210,13 +211,17 @@ export class AuthenticationComponent {
     this.authService.loginByGoogle();
   }
   loginWithUserPass(data: any) {
-    console.warn(data);
-    // this.authService.loginWithUserPass(this.creds);
+    this.authService.loginWithUserPass(data);
   }
-  signupWithUserPass(event: SubmitEvent) {
-    console.warn(this.creds);
-    event.preventDefault();
-
-    // this.authService.signupWithUserPass(this.creds);
+  signupWithUserPass(data:any) {
+    // console.warn(data);
+    this.authService.signupWithUserPass(data);
+  }
+  submit(data:any){
+    if(this.authType()==='login'){
+      this.loginWithUserPass(data);
+    }else{
+      this.signupWithUserPass(data);
+    }
   }
 }

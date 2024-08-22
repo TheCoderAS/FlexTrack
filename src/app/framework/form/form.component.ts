@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormFields } from './form.interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -25,7 +25,7 @@ import {MatSelectModule} from '@angular/material/select';
 })
 export class FormComponent implements OnInit {
   @Input('form-fields') formFields!: FormFields[];
-  @Input('on-submit') onSubmit!: (formSate: any) => void;
+  @Output('on-submit') onSubmit = new EventEmitter();
   @Input('button-title') buttonTitle!: string;
 
   formState: any = {};
@@ -37,7 +37,7 @@ export class FormComponent implements OnInit {
   submitForm(event: SubmitEvent): void {
     event.preventDefault();
     // console.log(this.formState);
-    this.onSubmit(this.formState);
+    this.onSubmit.emit(this.formState);
   }
   getPasswordStrength(): string[] {
     let password = this.formState.password;

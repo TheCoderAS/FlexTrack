@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-account',
@@ -9,4 +10,8 @@ import { Component } from '@angular/core';
 })
 export class AccountComponent {
 
+  private _authService: AuthenticationService = inject(AuthenticationService);
+  logout() {
+    this._authService.logout()
+  }
 }

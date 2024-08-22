@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, OnInit, inject } from '@angular/core';
 import {
   Auth,
   signInWithEmailAndPassword,
@@ -6,15 +6,32 @@ import {
   GoogleAuthProvider,
   UserCredential,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
 } from '@angular/fire/auth';
 import nls from '../framework/resources/nls/authentication';
+import { Router } from '@angular/router';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   private isAuthenticated: boolean = false;
   private _auth: Auth = inject(Auth);
+  private _router:Router=inject(Router);
 
+  currentUser: any;
+
+  constructor() {
+    onAuthStateChanged(this._auth, (user) => {
+      if (user) {
+        this.currentUser = user;
+        this.isAuthenticated = true;
+      }else{
+        this._router.navigate(['/auth']);
+      }
+      console.log(this.currentUser);
+    })
+  }
   async loginByGoogle(): Promise<void> {
     try {
       const user: UserCredential = await signInWithPopup(
@@ -53,11 +70,13 @@ export class AuthenticationService {
   }
   private login(user: UserCredential) {
     this.isAuthenticated = true;
-    console.warn(user);
+    this._router.navigate([''])
   }
-  logout() {
+  async logout() {
+    await this._auth.signOut();
     this.isAuthenticated = false;
   }
+
   isLoggedIn(): boolean {
     return this.isAuthenticated;
   }
