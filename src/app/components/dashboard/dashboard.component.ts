@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import moment from 'moment';
 import nls from '../../framework/resources/nls/dashboard';
 import {
   DashboardCards,
@@ -41,8 +40,9 @@ export class DashboardComponent {
   nls = nls;
 
   constructor() {
-    const currentTime = moment();
-    const currentHour = currentTime.hour();
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+    // console.log(currentHour,currentTime.getTimezoneOffset());
     if (currentHour < 12) {
       this.greeting = this.nls.greeting.morning;
     } else if (currentHour < 18) {
