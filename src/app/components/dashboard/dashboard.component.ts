@@ -36,13 +36,13 @@ import {
 })
 export class DashboardComponent {
   greeting: string = '';
-  name: string = 'Aalok';
+  name: string = 'Fitty';
   nls = nls;
 
   constructor() {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
-    console.log(currentHour,currentTime.getTimezoneOffset());
+    // console.log(currentHour,currentTime.getTimezoneOffset());
     if (currentHour < 12) {
       this.greeting = this.nls.greeting.morning;
     } else if (currentHour < 18) {

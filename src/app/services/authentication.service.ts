@@ -10,6 +10,8 @@ import {
 } from '@angular/fire/auth';
 import nls from '../framework/resources/nls/authentication';
 import { Router } from '@angular/router';
+import { LoaderService } from './loader.service';
+import { MessagesService } from './messages.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +19,9 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
   private isAuthenticated: boolean = false;
   private _auth: Auth = inject(Auth);
-  private _router:Router=inject(Router);
-
+  private _router: Router = inject(Router);
+  private _loader: LoaderService = inject(LoaderService);
+  private messageService: MessagesService = inject(MessagesService);
   currentUser: any;
 
   constructor() {
@@ -26,10 +29,10 @@ export class AuthenticationService {
       if (user) {
         this.currentUser = user;
         this.isAuthenticated = true;
-      }else{
+      } else {
         this._router.navigate(['/auth']);
       }
-      console.log(this.currentUser);
+      this._loader.changeLoaderState("stop")
     })
   }
   async loginByGoogle(): Promise<void> {
@@ -46,6 +49,7 @@ export class AuthenticationService {
   }
   async signupWithUserPass(data: AuthUserCred): Promise<void> {
     try {
+      this._loader.changeLoaderState('start')
       const user: UserCredential = await createUserWithEmailAndPassword(
         this._auth,
         data.email,
@@ -54,10 +58,13 @@ export class AuthenticationService {
       this.login(user);
     } catch (error) {
       console.error(nls.authFailed, error);
+    } finally {
+      this._loader.changeLoaderState('stop')
     }
   }
   async loginWithUserPass(data: AuthUserCred): Promise<void> {
     try {
+      this._loader.changeLoaderState('start')
       const user: UserCredential = await signInWithEmailAndPassword(
         this._auth,
         data.email,
@@ -65,16 +72,28 @@ export class AuthenticationService {
       );
       this.login(user);
     } catch (error) {
-      console.error(nls.authFailed, error);
+      this.messageService.error(nls.authFailed);
+    } finally {
+      this._loader.changeLoaderState('stop')
     }
   }
   private login(user: UserCredential) {
     this.isAuthenticated = true;
-    this._router.navigate([''])
+    this._router.navigate(['']);
+    this.messageService.success(nls.loginSuccess)
+
   }
   async logout() {
-    await this._auth.signOut();
-    this.isAuthenticated = false;
+    try {
+      this._loader.changeLoaderState('start')
+      await this._auth.signOut();
+      this.isAuthenticated = false;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this._loader.changeLoaderState('stop')
+      this.messageService.success(nls.logoutSuccess)
+    }
   }
 
   isLoggedIn(): boolean {

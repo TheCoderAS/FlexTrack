@@ -21,6 +21,8 @@ const nls = {
   Login:"Login",
   welcome:"Welcome to Fitness Tracker",
   SignupSubheading:"Create a new account",
-  LoginSubheading:"Login to your existing account"
+  LoginSubheading:"Login to your existing account",
+  logoutSuccess:"Logged out successfully!",
+  loginSuccess:"Logged in successfully!"
 };
 export default nls;

@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { Router } from '@angular/router';
+import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -25,16 +26,5 @@ export class AppService {
   getWindow(): Window {
     return this.window;
   }
-
-  //is the route protected  and can be activated?
-  // async canActivate(): Promise<boolean> {
-  //   let user = await this.authService.isLoggedIn();
-  //   console.log(user);
-  //   if (user) {
-  //     return true;
-  //   }
-  //   this.router.navigate(['/auth']);
-  //   return false;
-  // }
 
 }

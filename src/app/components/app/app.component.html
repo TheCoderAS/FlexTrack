@@ -1,4 +1,10 @@
-<app-navbar />
-<div class="container app-container">
-    <router-outlet />
+<div class="my-status">
+    <app-navbar />
+    <div class="container app-container">
+        <router-outlet />
+    </div>
 </div>
+<app-messages />
+@if(_loader.isLoading()){
+<app-loader />
+}
