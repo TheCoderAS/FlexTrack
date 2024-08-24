@@ -5,6 +5,7 @@ const nls={
         afternoon:"Good afternoon",
         evening:"Good evening"
     },
+    addWidget:"Add Widget",
     save:"Save",
     reorder:"Reorder"
 }

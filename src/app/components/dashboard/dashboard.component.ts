@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import nls from '../../framework/resources/nls/dashboard';
 import {
   DashboardCards,
@@ -18,6 +18,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { RightPanelComponent } from '../../framework/right-panel/right-panel.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +30,10 @@ import {
     MatButtonModule,
     RouterModule,
     MatMenuModule,
-    CdkDropList, CdkDrag, CdkDragPlaceholder
+    CdkDropList, 
+    CdkDrag, 
+    CdkDragPlaceholder,
+    RightPanelComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -38,6 +42,7 @@ export class DashboardComponent {
   greeting: string = '';
   name: string = 'Fitty';
   nls = nls;
+  rightPanelOpen: WritableSignal<boolean>=signal(false);
 
   constructor() {
     const currentTime = new Date();
@@ -53,7 +58,7 @@ export class DashboardComponent {
   }
 
   dashboardCards: DashboardCards[] = dashboardCards;
-  reorderEbabled:boolean=false;
+  reorderEbabled: boolean = false;
 
   onDrop(event: CdkDragDrop<DashboardCards[]>): void {
     if (event.previousContainer === event.container) {
@@ -67,13 +72,16 @@ export class DashboardComponent {
       );
     }
   }
-  enableReorder(event:MouseEvent):void{
-    if(this.reorderEbabled){
+  enableReorder(event: MouseEvent): void {
+    if (this.reorderEbabled) {
       // console.log(dashboardCards);
     }
-    this.reorderEbabled=!this.reorderEbabled;
+    this.reorderEbabled = !this.reorderEbabled;
   }
-  addNewWidget(event:MouseEvent):void{
-    this.dashboardCards=[...this.dashboardCards,this.dashboardCards[Math.floor(Math.random()*(this.dashboardCards.length))]]
+  addNewWidget(event: MouseEvent): void {
+    this.rightPanelOpen.set(true);
+  }
+  onPanelStateChange(isOpen: boolean) {
+    this.rightPanelOpen.set(isOpen);
   }
 }

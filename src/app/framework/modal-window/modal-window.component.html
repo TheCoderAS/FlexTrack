@@ -1,0 +1,15 @@
+<div class="modal-backdrop" *ngIf="isOpen"></div>
+<div class="modal-window" *ngIf="isOpen" @fadeZoomInOut>
+  <div class="modal-window-heading" *ngIf="showHeader">
+    <div class="modal-window-heading-text">
+      <span class="h4" *ngIf="heading!==''">{{heading}}</span>
+    </div>
+    <button mat-icon-button color="error" [attr.aria-label]="heading" *ngIf="showCloseButton" (click)="toggleModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="right-panel-content">
+    <mat-divider></mat-divider>
+  </div>
+  <ng-template [ngTemplateOutlet]="content"></ng-template>
+</div>

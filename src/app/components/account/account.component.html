@@ -1,2 +1,7 @@
-<p>account works!</p>
-<button (click)="logout()">Logout</button>
+<app-modal-window [isOpen]="isModalOpen()" (isOpenChange)="onModalStateChange($event)" >
+  <ng-template>
+    Hii there...
+</ng-template>
+</app-modal-window>
+
+<button (click)="openModal()">Logout</button>

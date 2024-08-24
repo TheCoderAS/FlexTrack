@@ -21,7 +21,8 @@
   @if (reorderEbabled) {
   <div class="my-dashboard-cards-container justify-content-evenly align-items-center reorder-card-container" cdkDropList
     (cdkDropListDropped)="onDrop($event)">
-    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards reorder-card '+item.bgColor" cdkDrag cdkDragBoundary=".my-dashboard-cards-container">
+    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards reorder-card '+item.bgColor" cdkDrag
+      cdkDragBoundary=".my-dashboard-cards-container">
       <div class="my-dashboard-cards drag-placeholder" *cdkDragPlaceholder></div>
       <div style="width: 100%;">
         <div class="dashboard-card-item">
@@ -64,16 +65,12 @@
       <button mat-fab color="primary" aria-label="Add Widget" (click)="addNewWidget($event)">
         <mat-icon>add</mat-icon>
       </button>
-
-      <!-- <button mat-fab color="primary" aria-label="Add Log" [matMenuTriggerFor]="menu">
-        <mat-icon>add</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item *ngFor="let item of dashboardCards" [routerLink]="item.to">
-          <mat-icon class="dashboard-item-icon pt-1">{{item.icon}}</mat-icon>
-          <span>{{item.title}}</span>
-        </button>
-      </mat-menu> -->
     </div>
   </div>
 </div>
+
+<app-right-panel [isOpen]="rightPanelOpen()" (panelStateChanged)="onPanelStateChange($event)" [panel-heading]="nls.addWidget">
+  <ng-template>
+    <h1>Hello world!!</h1>
+  </ng-template>
+</app-right-panel>
