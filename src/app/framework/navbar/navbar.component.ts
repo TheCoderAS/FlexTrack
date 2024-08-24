@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { NavItem, Path, allPaths, navItemsList } from '../resources/nav-items';
+import { AuthenticationService } from '../../services/authentication.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -13,6 +14,9 @@ import { NavItem, Path, allPaths, navItemsList } from '../resources/nav-items';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
+  private router: Router = inject(Router);
+  private _authService = inject(AuthenticationService);
+
   private bottomBarShowCase: string[] = ['/', '/account', '/reports'];
   currentPage: Path = allPaths[0];
   showBottomBar: boolean = true;
@@ -20,7 +24,6 @@ export class NavbarComponent implements OnInit {
   navItems: NavItem[] = navItemsList;
   paths: Path[] = allPaths;
 
-  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.router.events
@@ -47,6 +50,13 @@ export class NavbarComponent implements OnInit {
         if (currentRouterState.snapshot.url.includes('/auth')) {
           this.showBottomBar = false;
           this.showTopBar = false;
+        }
+
+        if(this._authService.isAuthenticated() && currentRouterState.snapshot.url.includes('/auth')){
+          this.router.navigate(['']);
+        }
+        if(!this._authService.isAuthenticated()){
+            this.router.navigate(['/auth']);
         }
       });
   }

@@ -69,7 +69,7 @@ export class DashboardComponent {
   }
   enableReorder(event:MouseEvent):void{
     if(this.reorderEbabled){
-      console.log(dashboardCards);
+      // console.log(dashboardCards);
     }
     this.reorderEbabled=!this.reorderEbabled;
   }

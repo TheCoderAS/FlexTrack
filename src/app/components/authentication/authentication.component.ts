@@ -201,9 +201,6 @@ export class AuthenticationComponent {
     },
   };
 
-  constructor(){
-    console.log('authentication');
-  }
   changeAuthType(): void {
     this.authType.update((val) => {
       return val === 'login' ? 'signup' : 'login';
