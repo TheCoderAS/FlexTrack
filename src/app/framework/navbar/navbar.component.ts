@@ -6,6 +6,7 @@ import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { NavItem, Path, allPaths, navItemsList } from '../resources/nav-items';
 import { AuthenticationService } from '../../services/authentication.service';
+import { AppService } from '../../services/app.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -16,6 +17,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class NavbarComponent implements OnInit {
   private router: Router = inject(Router);
   private _authService = inject(AuthenticationService);
+  _appService: AppService = inject(AppService);
 
   private bottomBarShowCase: string[] = ['/', '/account', '/reports'];
   currentPage: Path = allPaths[0];
