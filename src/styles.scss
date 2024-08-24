@@ -1,14 +1,17 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
-html, body { 
-    height: 100%; 
+
+html,
+body {
+    height: 100%;
     user-select: none;
 }
-body{
+
+body {
     margin: 0;
     padding: 0;
     background-color: #ece6ee;
-    margin: 0; 
+    margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     letter-spacing: 1px !important;
 }

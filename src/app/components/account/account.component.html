@@ -1,7 +1,14 @@
-<app-modal-window [isOpen]="isModalOpen()" (isOpenChange)="onModalStateChange($event)" >
+<app-modal-window [isOpen]="isModalOpen()" (isOpenChange)="onModalStateChange($event)" [modal-heading]="nls.logout">
   <ng-template>
-    Hii there...
-</ng-template>
+    <div class="text-center py-3">
+      <mat-icon class="material-symbols-outlined">question_mark</mat-icon>
+      <p class="py-3">{{nls.areYouSure}}</p>
+      <div class="d-flex gap-2 pt-3">
+        <button mat-flat-button class="w-100" (click)="closeModal()">{{nls.cancel}}</button>
+        <button class="w-100" mat-raised-button color="primary" type="button" (click)="logout()">{{nls.okay}}</button>
+      </div>
+    </div>
+  </ng-template>
 </app-modal-window>
 
-<button (click)="openModal()">Logout</button>
+<button (click)="openModal()">{{nls.logout}}</button>

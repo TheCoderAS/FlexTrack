@@ -8,8 +8,8 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <div class="right-panel-content">
-    <mat-divider></mat-divider>
+  <mat-divider></mat-divider>
+  <div class="modal-window-content">
+    <ng-template [ngTemplateOutlet]="content"></ng-template>
   </div>
-  <ng-template [ngTemplateOutlet]="content"></ng-template>
 </div>
