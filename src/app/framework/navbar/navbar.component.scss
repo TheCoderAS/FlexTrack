@@ -15,6 +15,6 @@
 }
 @media only screen and (max-width: 600px) {
     .my_status{
-        margin-top: 45px;
+        margin-top: $status-bar-height;
     }
 }

@@ -1,5 +1,5 @@
 import { Component, ContentChild, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { fadeZoomInOut } from '../../animations/fadeZoomInOut';
+import { fadeZoomInOut } from '../../animations';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';

@@ -18,6 +18,6 @@ import { NgClass } from '@angular/common';
 })
 export class AppComponent{
   _appService: AppService = inject(AppService);
-  private _authService: AuthenticationService = inject(AuthenticationService);
+  _authService: AuthenticationService = inject(AuthenticationService);
   _loader: LoaderService = inject(LoaderService);
 }

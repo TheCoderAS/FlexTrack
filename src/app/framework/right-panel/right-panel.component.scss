@@ -1,3 +1,5 @@
+@import "../resources/_variables.scss";
+
 .right-panel {
   position: fixed;
   top: 0;
@@ -14,7 +16,8 @@
   &.open {
     right: 0;
   }
-  .right-panel-heading{
+
+  .right-panel-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,11 +25,13 @@
     padding: 10px;
     height: 68px;
   }
-  .right-panel-heading-text{
+
+  .right-panel-heading-text {
     text-align: center;
     flex-grow: 1;
   }
-  .right-panel-content{
+
+  .right-panel-content {
     padding: 10px;
   }
 }
@@ -39,4 +44,10 @@
   height: 100%;
   background-color: #2D0D4F80;
   z-index: 9998;
+}
+
+@media only screen and (max-width: 600px) {
+  .my_status {
+    top: $status-bar-height;
+  }
 }

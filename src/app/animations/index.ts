@@ -12,3 +12,10 @@ export const fadeZoomInOut = trigger('fadeZoomInOut', [
   transition('void => *', [animate('0.3s ease-out')]),
   transition('* => void', [animate('0.3s ease-in')]),
 ]);
+
+export const slideInOut = trigger('slideInOut', [
+  state('void', style({ opacity: 0, right: '-500px' })),
+  state('*', style({ opacity: 1, right: '0px' })),
+  transition('void => *', [animate('0.3s ease-out')]),
+  transition('* => void', [animate('0.3s ease-in')]),
+]);
