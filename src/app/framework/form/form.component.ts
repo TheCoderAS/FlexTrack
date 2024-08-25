@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormFields } from './form.interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-form',
@@ -15,6 +15,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     MatButtonModule,
     MatProgressBarModule,
@@ -26,7 +27,9 @@ import {MatSelectModule} from '@angular/material/select';
 export class FormComponent implements OnInit {
   @Input('form-fields') formFields!: FormFields[];
   @Output('on-submit') onSubmit = new EventEmitter();
-  @Input('button-title') buttonTitle!: string;
+  @Output('on-cancel') onCancel = new EventEmitter();
+  @Input('submit-button-title') subButtonTitle!: string;
+  @Input('cancel-button-title') canButtonTitle!: string;
 
   formState: any = {};
   ngOnInit(): void {
@@ -36,8 +39,10 @@ export class FormComponent implements OnInit {
   }
   submitForm(event: SubmitEvent): void {
     event.preventDefault();
-    // console.log(this.formState);
     this.onSubmit.emit(this.formState);
+  }
+  cancelForm() {
+    this.onCancel.emit(false);
   }
   getPasswordStrength(): string[] {
     let password = this.formState.password;

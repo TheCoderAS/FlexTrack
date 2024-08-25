@@ -7,7 +7,7 @@
             <h2 class="h2">{{authType()==='login'?nls.LoginSubheading:nls.SignupSubheading}}</h2>
         </div>
         <app-form (on-submit)="submit($event)" [form-fields]="authFields()"
-            [button-title]="authType()==='login'?nls.Login:nls.Signup"></app-form>
+            [submit-button-title]="authType()==='login'?nls.Login:nls.Signup"></app-form>
         <div class="pt-4">
             <p class="text-center auth-form-footer-links" (click)="changeAuthType()">{{ authType() === 'login' ?
                 nls.createAccount : nls.loginExisting }}</p>

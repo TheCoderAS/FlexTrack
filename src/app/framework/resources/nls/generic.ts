@@ -1,6 +1,7 @@
-const nls={
-  okay:"Okay",
-  cancel:"Cancel",
-  areYouSure:"Are you sure?"
+const nls = {
+  okay: "Okay",
+  cancel: "Cancel",
+  save: 'Save',
+  areYouSure: "Are you sure?"
 }
 export default nls;

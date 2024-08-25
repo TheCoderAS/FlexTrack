@@ -10,14 +10,21 @@
             <mat-option [value]="option.label">{{option.label}}</mat-option>
             }
         </mat-select>
-        <!-- <ng-container *ngFor="let message of item.errorMessage">
-            <mat-error *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</mat-error>
-        </ng-container> -->
+        <div *ngIf="item.type!=='password' && appForm.controls[item.name]?.touched ">
+            <div *ngFor="let message of item.errorMessage">
+                <span class="text-danger error-text"
+                    *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</span>
+            </div>
+        </div>
         <!-- <span class="h6">hello world</span> -->
         <mat-progress-bar mode="determinate" [value]="getPasswordStrengthNum()" [color]="getPasswordProgressColor()"
-            *ngIf="item.type==='password'"></mat-progress-bar>
+            *ngIf="item.type==='password'&& appForm.controls[item.name]?.touched "></mat-progress-bar>
 
     </mat-form-field>
-    <button class="w-100" mat-raised-button color="primary" type="submit"
-        [disabled]="!appForm.valid">{{buttonTitle}}</button>
+    <div class="d-flex gap-2 pt-3">
+        <button *ngIf="canButtonTitle" type="button" mat-flat-button class="w-100"
+            (click)="cancelForm()">{{canButtonTitle}}</button>
+        <button class="w-100" mat-raised-button color="primary" type="submit"
+            [disabled]="!appForm.valid">{{subButtonTitle}}</button>
+    </div>
 </form>

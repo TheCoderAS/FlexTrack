@@ -1,4 +1,4 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, inject, signal, WritableSignal } from '@angular/core';
 import nls from '../../framework/resources/nls/dashboard';
 import {
   DashboardCards,
@@ -19,7 +19,43 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { RightPanelComponent } from '../../framework/right-panel/right-panel.component';
+import { ApiService } from '../../services/api.service';
+import { FormComponent } from "../../framework/form/form.component";
+import { FormFields } from '../../framework/form/form.interfaces';
 
+const widgetForm = [
+  {
+    name: 'title',
+    label: nls.title,
+    options: [],
+    errorMessage: [
+      {
+        type: 'required',
+        message: nls.titleRequired,
+      },
+      {
+        type: 'pattern',
+        message: nls.invalidTitle,
+      },
+    ],
+    required: true,
+    id: 'title',
+    type: 'text',
+    model: 'title',
+    pattern: "^(?=.{1,15}$)[A-Za-z][A-Za-z\' \\-]*[A-Za-z]$",
+  },
+  {
+    name: 'target',
+    label: nls.target,
+    options: [],
+    errorMessage: [],
+    required: false,
+    id: 'target',
+    type: 'text',
+    model: 'target',
+    pattern:''
+  }
+]
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -33,16 +69,20 @@ import { RightPanelComponent } from '../../framework/right-panel/right-panel.com
     CdkDropList,
     CdkDrag,
     CdkDragPlaceholder,
-    RightPanelComponent
+    RightPanelComponent,
+    FormComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
+  private _apiService: ApiService = inject(ApiService);
+
   greeting: string = '';
   name: string = 'Fitty';
   nls = nls;
   rightPanelOpen: WritableSignal<boolean> = signal(false);
+  widgetFormFields: WritableSignal<FormFields[]> = signal(widgetForm);
 
   constructor() {
     const currentTime = new Date();
@@ -81,7 +121,8 @@ export class DashboardComponent {
   togglePanel(state: boolean) {
     this.rightPanelOpen.set(state);
   }
-  submitPanel(state: boolean): void {
-    this.rightPanelOpen.set(state);
+  submitPanel(data: any): void {
+    console.log(data)
+    this.rightPanelOpen.set(false);
   }
 }

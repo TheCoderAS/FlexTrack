@@ -1,7 +1,5 @@
-import { inject, Injectable } from '@angular/core';
-import { AuthenticationService } from './authentication.service';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'

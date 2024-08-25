@@ -70,8 +70,9 @@
 </div>
 
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="togglePanel($event)" (onSubmit)="submitPanel($event)"
-  [panel-heading]="nls.addWidget" [type]="'confirm'">
+  [panel-heading]="nls.addWidget" [type]="'info'">
   <ng-template>
-    <h1>Hello world!!</h1>
+    <app-form (on-submit)="submitPanel($event)" [form-fields]="widgetFormFields()" [submit-button-title]="nls.save" [cancel-button-title]="nls.cancel"
+      (on-cancel)="togglePanel($event)"></app-form>
   </ng-template>
 </app-right-panel>
