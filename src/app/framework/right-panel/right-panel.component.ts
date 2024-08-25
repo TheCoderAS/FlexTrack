@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { AppService } from '../../services/app.service';
 import { slideInOut } from '../../animations';
+import nls from '../resources/nls/generic';
 
 @Component({
   selector: 'app-right-panel',
@@ -19,23 +20,29 @@ import { slideInOut } from '../../animations';
   ],
   templateUrl: './right-panel.component.html',
   styleUrl: './right-panel.component.scss',
-  animations:[slideInOut]
+  animations: [slideInOut]
 })
 export class RightPanelComponent {
 
   _appService: AppService = inject(AppService);
 
+  @Input() type: 'confirm' | 'info' = 'confirm';
   @Input('panel-heading') heading: string = '';
   @Input() isOpen: boolean = false;
   @Input() showCloseButton: boolean = true;
-  @Output() panelStateChanged = new EventEmitter<boolean>();
   @Input() showHeader: boolean = true;
+  @Output() onCancel = new EventEmitter<boolean>();
+  @Output() onSubmit = new EventEmitter<boolean>();
 
   @ContentChild(TemplateRef) content!: TemplateRef<any>;
 
-  togglePanel() {
+  nls = nls;
+  cancelPanel() {
     this.isOpen = !this.isOpen;
-    this.panelStateChanged.emit(this.isOpen);
+    this.onCancel.emit(this.isOpen);
   }
-
+  submitPanel() {
+    this.isOpen = !this.isOpen;
+    this.onSubmit.emit(this.isOpen);
+  }
 }

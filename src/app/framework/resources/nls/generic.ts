@@ -1,5 +1,6 @@
 const nls={
   okay:"Okay",
-  cancel:"Cancel"
+  cancel:"Cancel",
+  areYouSure:"Are you sure?"
 }
 export default nls;

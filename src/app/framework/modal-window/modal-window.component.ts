@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import nls from '../resources/nls/generic';
 
 @Component({
   selector: 'app-modal-window',
@@ -14,17 +15,24 @@ import { MatButtonModule } from '@angular/material/button';
   animations: [fadeZoomInOut]
 })
 export class ModalWindowComponent {
+  @Input() type: 'confirm' | 'info' = 'confirm';
   @Input() isOpen = false;
   @Input('modal-heading') heading: string = '';
   @Input() showCloseButton: boolean = true;
   @Input() showHeader: boolean = true;
-  
-  @Output() isOpenChange = new EventEmitter<boolean>();
+  @Output() onCancel = new EventEmitter<boolean>();
+  @Output() onSubmit = new EventEmitter<boolean>();
 
   @ContentChild(TemplateRef) content!: TemplateRef<any>;
 
-  toggleModal() {
+  nls = nls;
+  cancelModal() {
     this.isOpen = !this.isOpen;
-    this.isOpenChange.emit(this.isOpen);
+    this.onCancel.emit(this.isOpen);
   }
+  submitModal() {
+    this.isOpen = !this.isOpen;
+    this.onSubmit.emit(this.isOpen);
+  }
+
 }

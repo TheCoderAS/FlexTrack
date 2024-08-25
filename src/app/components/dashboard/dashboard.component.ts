@@ -30,8 +30,8 @@ import { RightPanelComponent } from '../../framework/right-panel/right-panel.com
     MatButtonModule,
     RouterModule,
     MatMenuModule,
-    CdkDropList, 
-    CdkDrag, 
+    CdkDropList,
+    CdkDrag,
     CdkDragPlaceholder,
     RightPanelComponent
   ],
@@ -42,7 +42,7 @@ export class DashboardComponent {
   greeting: string = '';
   name: string = 'Fitty';
   nls = nls;
-  rightPanelOpen: WritableSignal<boolean>=signal(false);
+  rightPanelOpen: WritableSignal<boolean> = signal(false);
 
   constructor() {
     const currentTime = new Date();
@@ -78,10 +78,10 @@ export class DashboardComponent {
     }
     this.reorderEbabled = !this.reorderEbabled;
   }
-  addNewWidget(event: MouseEvent): void {
-    this.rightPanelOpen.set(true);
+  togglePanel(state: boolean) {
+    this.rightPanelOpen.set(state);
   }
-  onPanelStateChange(isOpen: boolean) {
-    this.rightPanelOpen.set(isOpen);
+  submitPanel(state: boolean): void {
+    this.rightPanelOpen.set(state);
   }
 }

@@ -18,20 +18,19 @@ export class AccountComponent {
   private _authService: AuthenticationService = inject(AuthenticationService);
 
   nls = nls;
+
   isModalOpen: WritableSignal<boolean> = signal(false);
 
+  toggleModal(state: boolean) {
+    this.isModalOpen.set(state);
+  }
+  submitModal(state: boolean) {
+    this.isModalOpen.set(state);
+    this.logout();
+  }
 
-  openModal() {
-    this.isModalOpen.set(true);
-  }
-  closeModal() {
-    this.isModalOpen.set(false);
-  }
-  logout() {
+  private logout() {
     this._authService.logout();
-    this.closeModal();
   }
-  onModalStateChange(isOpen: boolean) {
-    this.isModalOpen.set(isOpen);
-  }
+
 }

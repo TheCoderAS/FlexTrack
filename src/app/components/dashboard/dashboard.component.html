@@ -62,14 +62,15 @@
 <div class="add-fab-button">
   <div class="container">
     <div class="d-flex justify-content-end align-items-center px-3">
-      <button mat-fab color="primary" aria-label="Add Widget" (click)="addNewWidget($event)">
+      <button mat-fab color="primary" aria-label="Add Widget" (click)="togglePanel(true)">
         <mat-icon>add</mat-icon>
       </button>
     </div>
   </div>
 </div>
 
-<app-right-panel [isOpen]="rightPanelOpen()" (panelStateChanged)="onPanelStateChange($event)" [panel-heading]="nls.addWidget">
+<app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="togglePanel($event)" (onSubmit)="submitPanel($event)"
+  [panel-heading]="nls.addWidget" [type]="'confirm'">
   <ng-template>
     <h1>Hello world!!</h1>
   </ng-template>

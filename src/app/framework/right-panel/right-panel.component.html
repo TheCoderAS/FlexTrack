@@ -1,15 +1,23 @@
 <div class="overlay" *ngIf="isOpen"></div>
-<div class="right-panel" *ngIf="isOpen" [class.my_status]="_appService.getCordova()" @slideInOut>
+<div class="right-panel" *ngIf="isOpen" [class.my_status]="_appService.getCordova()" @slideInOut role="dialog"
+  [attr.aria-label]="heading">
   <div class="right-panel-heading" *ngIf="showHeader">
     <div class="right-panel-heading-text">
       <span class="h4" *ngIf="heading!==''">{{heading}}</span>
     </div>
-    <button mat-icon-button color="error" [attr.aria-label]="heading" *ngIf="showCloseButton" (click)="togglePanel()">
+    <button mat-icon-button color="error" [attr.aria-label]="heading" *ngIf="showCloseButton" (click)="cancelPanel()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
   <mat-divider></mat-divider>
   <div class="right-panel-content">
     <ng-template [ngTemplateOutlet]="content"></ng-template>
+    <div *ngIf="type==='confirm'">
+      <div class="d-flex gap-2 pt-3">
+        <button mat-flat-button class="w-100" (click)="cancelPanel()">{{nls.cancel}}</button>
+        <button class="w-100" mat-raised-button color="primary" type="button"
+          (click)="submitPanel()">{{nls.okay}}</button>
+      </div>
+    </div>
   </div>
 </div>

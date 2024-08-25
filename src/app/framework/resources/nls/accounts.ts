@@ -3,6 +3,6 @@ import generic from './generic';
 const nls = {
   ...generic,
   logout: "Logout",
-  areYouSure: "Are you sure to logout?"
+  logoutText: "You want to logout."
 }
 export default nls;

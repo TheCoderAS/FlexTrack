@@ -1,14 +1,8 @@
-<app-modal-window [isOpen]="isModalOpen()" (isOpenChange)="onModalStateChange($event)" [modal-heading]="nls.logout">
+<app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
+  [modal-heading]="nls.logout" [type]="'confirm'">
   <ng-template>
-    <div class="text-center py-3">
-      <mat-icon class="material-symbols-outlined">question_mark</mat-icon>
-      <p class="py-3">{{nls.areYouSure}}</p>
-      <div class="d-flex gap-2 pt-3">
-        <button mat-flat-button class="w-100" (click)="closeModal()">{{nls.cancel}}</button>
-        <button class="w-100" mat-raised-button color="primary" type="button" (click)="logout()">{{nls.okay}}</button>
-      </div>
-    </div>
+    <p>{{nls.logoutText}}</p>
   </ng-template>
 </app-modal-window>
 
-<button (click)="openModal()">{{nls.logout}}</button>
+<button (click)="toggleModal(true)">{{nls.logout}}</button>
