@@ -8,4 +8,11 @@ export interface FormFields {
   model: string;
   pattern: string;
   options: any[];
+  defaultValue?: string | '';
+  min?: number;
+  max?: number;
+  step?: number
+  maxlength?: number,
+  accept?: string,
+  maxSize?:number
 }

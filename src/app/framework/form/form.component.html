@@ -1,26 +1,60 @@
-<form #appForm="ngForm" (ngSubmit)="submitForm($event)" autocomplete="off">
+<form [formGroup]="appForm" (ngSubmit)="submitForm($event)" autocomplete="off">
 
-    <mat-form-field appearance="fill" class="w-100" *ngFor="let item of formFields">
-        <mat-label class="app-form-label">{{item.label}}</mat-label>
-        <input [required]="item.required" matInput [name]="item.name" [id]="item.id" [type]="item.type"
-            [(ngModel)]="formState[item.name]" [pattern]="item.pattern" *ngIf="item.type!=='select'" />
-        <mat-select *ngIf="item.type==='select'" [required]="item.required" [name]="item.name"
-            [(ngModel)]="formState[item.name]">
-            @for(option of item.options;track option){
-            <mat-option [value]="option.label">{{option.label}}</mat-option>
-            }
-        </mat-select>
-        <div *ngIf="item.type!=='password' && appForm.controls[item.name]?.touched ">
-            <div *ngFor="let message of item.errorMessage">
-                <span class="text-danger error-text"
-                    *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</span>
+    <ng-container *ngFor="let item of formFields">
+        <mat-form-field appearance="fill" class="w-100" *ngIf="item.type !== 'slider' && item.type !== 'file'">
+            <mat-label class="app-form-label">{{item.label}}</mat-label>
+            <input [required]="item.required" matInput [name]="item.name" [id]="item.id" [type]="item.type"
+                [formControlName]="item.name" [pattern]="item.pattern"
+                *ngIf="item.type !== 'select' && item.type!=='file'" [min]="item.min" [max]="item.max"
+                [maxlength]="item.maxlength || null" />
+
+            <mat-select [required]="item.required" [formControlName]="item.name" *ngIf="item.type==='select'">
+                @for(option of item.options;track option){
+                <mat-option [value]="option.label">{{option.label}}</mat-option>
+                }
+            </mat-select>
+
+            <div *ngIf="item.type!=='password' && appForm.controls[item.name]?.touched ">
+                <div *ngFor="let message of item.errorMessage">
+                    <span class="text-danger error-text"
+                        *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</span>
+                </div>
             </div>
-        </div>
-        <!-- <span class="h6">hello world</span> -->
-        <mat-progress-bar mode="determinate" [value]="getPasswordStrengthNum()" [color]="getPasswordProgressColor()"
-            *ngIf="item.type==='password'&& appForm.controls[item.name]?.touched "></mat-progress-bar>
+            <mat-progress-bar mode="determinate" [value]="getPasswordStrengthNum()" [color]="getPasswordProgressColor()"
+                *ngIf="item.type==='password'&& appForm.controls[item.name]?.touched "></mat-progress-bar>
 
-    </mat-form-field>
+        </mat-form-field>
+
+        <div *ngIf="item.type === 'slider'">
+            <div class="form-field-container">
+                <div class="form-field-inner-container">
+                    <label class="form-field-label mb-1">{{item.label}}</label>
+                    <mat-slider [min]="item.min || 0" [max]="item.max || 100" [step]="item.step || 1" discrete
+                        [displayWith]="thumbLabel">
+                        <input matSliderThumb [formControlName]="item.name" />
+                    </mat-slider>
+                </div>
+            </div>
+            <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align"></div>
+        </div>
+
+        <div *ngIf="item.type === 'file'">
+            <div class="form-field-container">
+                <div class="form-field-inner-container">
+                    <label class="form-field-label mb-1">{{item.label}}{{item.required&&'*'}}</label>
+                    <div>
+                        <input type="file" [accept]="item.accept" (change)="onFileSelected($event)"
+                            [required]="item.required" [formControlName]="item.name" [name]="item.name" />
+                    </div>
+                    <div *ngIf="inputFileMaxSizeError[item.name]">
+                        <span class="text-danger error-text">{{inputFileMaxSizeError[item.name]}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align"></div>
+        </div>
+    </ng-container>
+    <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align"></div>
     <div class="d-flex gap-2 pt-3">
         <button *ngIf="canButtonTitle" type="button" mat-flat-button class="w-100"
             (click)="cancelForm()">{{canButtonTitle}}</button>

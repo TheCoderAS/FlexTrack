@@ -1,6 +1,36 @@
-.app-form-label{
+.app-form-label {
     font-size: 14px;
 }
-.error-text{
+
+.error-text {
     font-size: 12px;
+}
+
+.mat-mdc-slider {
+    width: 97.5% !important;
+    margin: 0 !important;
+}
+
+.align-center {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.form-field-container {
+    background-color: var(--mdc-filled-text-field-container-color);
+    border-radius: 4px;
+}
+
+.form-field-inner-container {
+    margin-bottom: 1px;
+    border-bottom: 1px solid grey;
+    padding: 15px;
+
+    .form-field-label {
+        font-family: var(--mdc-filled-text-field-label-text-font);
+        font-size: 11.5px;
+        font-weight: var(--mdc-filled-text-field-label-text-weight);
+        letter-spacing: var(--mdc-filled-text-field-label-text-tracking);
+        color: var(--mdc-filled-text-field-label-text-color);
+    }
 }

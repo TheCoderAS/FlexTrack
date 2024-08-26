@@ -10,9 +10,13 @@ const nls = {
     },
     addWidget: "Add Widget",
     reorder: "Reorder",
-    title:'Title',
-    titleRequired:"Title is required.",
-    invalidTitle:"Title can contain alphabets only.",
-    target:'Target',
+    title: 'Title',
+    titleRequired: "Title is required.",
+    invalidTitle: "Title can contain alphabets only.",
+    target: 'Target',
+    color: "Choose color",
+    transparency: "Transparency(%)",
+    motivation: "Motivation Image",
+    maxSizeError: 'File size must be <= '
 }
 export default nls;
