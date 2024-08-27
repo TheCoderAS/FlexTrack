@@ -49,7 +49,12 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     let formGroupItems: any = {};
     this.formFields.forEach((item) => {
-      formGroupItems[item.name] = item.defaultValue ? item.defaultValue : '';
+      if (item.type === 'file') {
+        formGroupItems[item.name] = '';
+        this.uploadedFile[item.name] = item.defaultValue;
+      } else {
+        formGroupItems[item.name] = item.defaultValue ? item.defaultValue : '';
+      }
       if (item.type === 'file') {
         this.inputFileField[item.name] = item;
       }

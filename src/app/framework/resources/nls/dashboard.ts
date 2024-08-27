@@ -3,6 +3,7 @@ import generic from './generic';
 const nls = {
     ...generic,
     trackHealth: "Track your daily activity & stay healthy",
+    myWidgets: "My Widgets",
     greeting: {
         morning: "Good morning",
         afternoon: "Good afternoon",
@@ -18,8 +19,12 @@ const nls = {
     transparency: "Transparency(%)",
     motivation: "Motivation Image",
     maxSizeError: 'File size must be <= ',
-    motivationRequired:"Motivation image is required.",
-    preview:"Widget Preview",
-    cancelWidget:"You want to cancel this operation."
+    motivationRequired: "Motivation image is required.",
+    preview: "Widget Preview",
+    cancelWidget: "You want to cancel this operation.",
+    editWidget: "Edit Widget",
+    deleteWidget: "Delete Widget",
+    deleteWidgetText: "You want delete this widget.",
+    addWidgetsUsingPlusButton: "Add widgets using plus button below."
 }
 export default nls;

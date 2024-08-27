@@ -35,8 +35,6 @@
 }
 
 .my-dashboard-cards {
-  // border: 1px solid red;
-  // flex: 1;
   padding: 15px;
   width: calc(50% - 20px);
   height: 140px;
@@ -55,8 +53,15 @@
 }
 
 .reorder-card {
-  width: 80%;
+  width: 90%;
+}
 
+.dashboard-card-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 110px;
 }
 
 .dashboard-card-item {
@@ -66,8 +71,26 @@
   align-items: center;
 }
 
+.dashboard-card-item-title {
+  font-size: 0.75rem;
+}
+
+.dashboard-card-item-target {
+  font-size: 0.7rem;
+}
+
 .dashboard-item-icon {
-  font-size: 16px;
+  font-size: 14px;
+  z-index: 9000;
+  position: relative;
+  top: -87px;
+  right: -65px;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -24px;
 }
 
 .dashboard-card-item-2 {
@@ -75,26 +98,6 @@
   display: flex;
   justify-content: center;
   align-items: baseline;
-}
-
-.purple-gradient {
-  background: #450d59; //linear-gradient(135deg, rgba(29,17,96,1) 0%, rgba(128,0,128,1) 100%);
-  color: white;
-}
-
-.red-gradient {
-  background: #ff6250;
-  color: white;
-}
-
-.pink-gradient {
-  background: #FF69B4;
-  color: white;
-}
-
-.suns-gradient {
-  background: #662d91;
-  color: white;
 }
 
 .add-fab-button {

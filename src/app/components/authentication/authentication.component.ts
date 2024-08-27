@@ -33,7 +33,7 @@ const authFormFields: FormAuthType = {
     {
       name: 'email',
       label: nls.email,
-      options:[],
+      options: [],
       errorMessage: [
         {
           type: 'required',
@@ -48,12 +48,12 @@ const authFormFields: FormAuthType = {
       id: 'email',
       type: 'email',
       model: 'email',
-      pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}',
+      pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$',
     },
     {
       name: 'password',
       label: nls.password,
-      options:[],
+      options: [],
       errorMessage: [
         {
           type: 'required',
@@ -75,7 +75,7 @@ const authFormFields: FormAuthType = {
     {
       name: 'email',
       label: nls.email,
-      options:[],
+      options: [],
       errorMessage: [
         {
           type: 'required',
@@ -95,7 +95,7 @@ const authFormFields: FormAuthType = {
     {
       name: 'password',
       label: nls.password,
-      options:[],
+      options: [],
       errorMessage: [
         {
           type: 'required',
@@ -115,7 +115,7 @@ const authFormFields: FormAuthType = {
     {
       name: 'fname',
       label: nls.fname,
-      options:[],
+      options: [],
       errorMessage: [
         {
           type: 'required',
@@ -131,7 +131,7 @@ const authFormFields: FormAuthType = {
     {
       name: 'lname',
       label: nls.lname,
-      options:[],
+      options: [],
       errorMessage: [{ type: 'required', message: nls.lnameRequired }],
       required: true,
       id: 'lname',
@@ -181,7 +181,7 @@ const authFormFields: FormAuthType = {
   styleUrl: './authentication.component.scss',
 })
 export class AuthenticationComponent {
-  private authService:AuthenticationService=inject(AuthenticationService);
+  private authService: AuthenticationService = inject(AuthenticationService);
 
   authType: WritableSignal<string> = signal('login');
 
@@ -213,14 +213,14 @@ export class AuthenticationComponent {
   loginWithUserPass(data: any) {
     this.authService.loginWithUserPass(data);
   }
-  signupWithUserPass(data:any) {
+  signupWithUserPass(data: any) {
     // console.warn(data);
     this.authService.signupWithUserPass(data);
   }
-  submit(data:any){
-    if(this.authType()==='login'){
+  submit(data: any) {
+    if (this.authType() === 'login') {
       this.loginWithUserPass(data);
-    }else{
+    } else {
       this.signupWithUserPass(data);
     }
   }

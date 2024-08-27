@@ -13,6 +13,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import {
   CdkDrag,
   CdkDragDrop,
+  CdkDragMove,
   CdkDragPlaceholder,
   CdkDropList,
   moveItemInArray,
@@ -23,6 +24,8 @@ import { ApiService } from '../../services/api.service';
 import { FormComponent } from "../../framework/form/form.component";
 import { FormFields } from '../../framework/form/form.interfaces';
 import { ModalWindowComponent } from "../../framework/modal-window/modal-window.component";
+import { AppService } from '../../services/app.service';
+import { BehaviorSubject } from 'rxjs';
 
 const widgetForm = [
   {
@@ -130,7 +133,8 @@ const widgetForm = [
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  private _apiService: ApiService = inject(ApiService);
+
+  private _app: AppService = inject(AppService);
 
   greeting: string = '';
   name: string = 'Fitty';
@@ -138,9 +142,11 @@ export class DashboardComponent {
   rightPanelOpen: WritableSignal<boolean> = signal(false);
   widgetFormFields: WritableSignal<FormFields[]> = signal(widgetForm);
   addWidgetData: any = null;
-  dashboardCards: DashboardCards[] = [];
+  dashboardCards: WritableSignal<DashboardCards[]> = this._app.widgets;
   reorderEbabled: boolean = false;
   isModalOpen: WritableSignal<boolean> = signal(false);
+  isDeleteModalOpen: WritableSignal<boolean> = signal(false);
+  isEdit = new BehaviorSubject<any>(null);
 
   constructor() {
     const currentTime = new Date();
@@ -153,15 +159,35 @@ export class DashboardComponent {
     } else {
       this.greeting = this.nls.greeting.evening;
     }
-    this.dashboardCards = this._apiService.get('widgets');
-    this.dashboardCards = this.dashboardCards.map((item: DashboardCards) => {
-      item.to = '/logging/' + item.title.toLowerCase();
-      return item;
-    })
+    this.isEdit.subscribe(value => {
+      if (value) {
+        widgetForm.map((el: any) => {
+          el.defaultValue = value[el.name];
+          if (el.type === 'file') {
+            el.required = false;
+          }
+          return el;
+        });
+      } else {
+        widgetForm.map((el: any) => {
+          el.defaultValue = '';
+          if (el.type === 'file') {
+            el.required = true;
+          }
+          if (el.type === 'slider') {
+            el.defaultValue = 100;
+          }
+          if (el.type === 'color') {
+            el.defaultValue = '#450d59';
+          }
+          return el;
+        });
+      }
+    });
   }
   onDrop(event: CdkDragDrop<DashboardCards[]>): void {
     if (event.previousContainer === event.container) {
-      moveItemInArray(this.dashboardCards, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.dashboardCards(), event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(
         event.previousContainer.data,
@@ -173,7 +199,8 @@ export class DashboardComponent {
   }
   enableReorder(event: MouseEvent): void {
     if (this.reorderEbabled) {
-      this._apiService.update('widgets',this.dashboardCards);
+      // console.log(this.dashboardCards());
+      this._app.setWidget(this.dashboardCards());
     }
     this.reorderEbabled = !this.reorderEbabled;
   }
@@ -222,14 +249,41 @@ export class DashboardComponent {
   }
   submitPanel(data: any): void {
     this.rightPanelOpen.set(false);
-    this._apiService.save('widgets', this.addWidgetData);
+    if (this.isEdit.getValue()) {
+      let updateData = { ...this.addWidgetData, id: this.isEdit.getValue().id };
+      this._app.updateWidget(updateData);
+      this.isEdit.next(null);
+
+    } else {
+      this._app.createWidget(this.addWidgetData);
+    }
   }
   toggleModal(state: boolean) {
     this.isModalOpen.set(state);
   }
+  toggleDeleteModal(state: boolean) {
+    this.isDeleteModalOpen.set(state);
+  }
+
   submitModal(state: boolean) {
     this.isModalOpen.set(state);
     this.togglePanel(false);
+    if (this.isEdit.getValue()) {
+      this.isEdit.next(null);
+    }
+  }
+  submitDeleteModal(state: boolean) {
+    this.isDeleteModalOpen.set(state);
+    this.togglePanel(false);
+    this.deleteWidget();
   }
 
+  editWidget(item: any) {
+    this.isEdit.next(item);
+    this.togglePanel(true);
+  }
+  deleteWidget() {
+    this._app.deleteWidget(this.isEdit.getValue().id);
+    this.isEdit.next(null);
+  }
 }

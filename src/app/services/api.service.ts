@@ -1,26 +1,41 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { LoaderService } from './loader.service';
+import { DashboardCards } from '../framework/resources/dashboard-cards';
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private storage: Storage = localStorage;
+  private _loader: LoaderService = inject(LoaderService);
+
   constructor() { }
 
   // Create or Update
-  save(key: string, value: any): void {
+  async post(key: string, value: any): Promise<void> {
+    this._loader.changeLoaderState('start');
+    await delay(200);
     let newData = [];
     let prevData = this.storage.getItem(key);
     if (prevData) {
       newData = JSON.parse(prevData);
     }
     value.order = newData.length + 1;
+    value.id = "id" + (newData.length + 1);
     newData.push(value);
     this.storage.setItem(key, JSON.stringify(newData));
+    this._loader.changeLoaderState('stop');
   }
 
   // Read
-  get(key: string): any {
+  async get(key: string): Promise<any> {
+    this._loader.changeLoaderState('start');
+    await delay(200);
+
     let result;
     if (key === 'widgets') {
       let item = this.storage.getItem(key);
@@ -30,25 +45,56 @@ export class ApiService {
       })
       result = parsedItem;
     }
+    this._loader.changeLoaderState('stop');
+
     return result;
   }
 
   // Update (can be combined with save)
-  update(key: string, value: any): void {
+  async put(key: string, value: any): Promise<void> {
+    this._loader.changeLoaderState('start');
+    await delay(200);
+
     let data;
     if (key === 'widgets') {
-      let newData = value.map((item: any, index: number) => {
-        item.order = index + 1;
-        return item;
-      });
-      data = newData;
+      if (Array.isArray(value)) {
+        let newData = value.map((item: any, index: number) => {
+          item.order = index + 1;
+          return item;
+        });
+        data = newData;
+      } else {
+        let oldData = await this.get('widgets');
+        oldData = oldData.map((item: any) => {
+          if (item.id === value.id) {
+            item = value;
+          }
+          return item;
+        });
+        data = oldData;
+
+      }
     }
     this.storage.setItem(key, JSON.stringify(data));
+    this._loader.changeLoaderState('stop');
   }
 
   // Delete
-  delete(key: string): void {
-    this.storage.removeItem(key);
+  async delete(key: string, id: string): Promise<void> {
+    this._loader.changeLoaderState('start');
+    await delay(200);
+    let data;
+    if (key === 'widgets') {
+      let oldData = await this.get('widgets');
+      oldData = oldData.filter((item: any) => {
+        return item.id !== id;
+      });
+      data = oldData;
+    }
+
+    this.storage.setItem(key, JSON.stringify(data));
+    this._loader.changeLoaderState('stop');
+
   }
 
   // List all keys

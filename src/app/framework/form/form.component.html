@@ -41,7 +41,7 @@
         <div *ngIf="item.type === 'file'">
             <div class="form-field-container">
                 <div class="form-field-inner-container">
-                    <label class="form-field-label mb-1">{{item.label}}{{item.required&&'*'}}</label>
+                    <label class="form-field-label mb-1">{{item.label}}{{item.required==true?'*':''}}</label>
                     <div>
                         <input type="file" [accept]="item.accept" (change)="onFileSelected($event)"
                             [required]="item.required" [formControlName]="item.name" [name]="item.name" />

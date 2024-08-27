@@ -1,4 +1,4 @@
-<div class="mt-3">
+<div class="my-3">
   <div class="d-flex justify-content-start align-items-center column-gap-2">
     <div>
       <img src="../../../assets/images/woman-athlete.webp" alt="Woman Athlete" class="dashboard-header-image" />
@@ -8,33 +8,36 @@
     </div>
   </div>
   <div class="mt-2 text-secondary">
-    <span>{{nls.trackHealth}}</span>
+    <span class="mb-0">{{nls.trackHealth}}</span>
   </div>
 </div>
-<div class="mt-5 container-fluid">
+<div class="container-fluid">
   <div class="mb-2 d-flex justify-content-between align-items-center">
-    <span class="h6">My Widgets</span>
-    <button mat-icon-button [color]="reorderEbabled?'primary':'warn'" (click)="enableReorder($event)">
+    <span class="h6 mb-0">{{nls.myWidgets}}</span>
+    <button mat-icon-button [color]="reorderEbabled?'primary':'warn'" (click)="enableReorder($event)"
+      [disabled]="dashboardCards().length===0">
       <mat-icon>{{reorderEbabled?'save':'move_down'}}</mat-icon>
     </button>
+  </div>
+  <div *ngIf="dashboardCards().length===0" class="mt-5">
+    <p class="h6 text-secondary text-center">{{nls.addWidgetsUsingPlusButton}}</p>
   </div>
   @if (reorderEbabled) {
   <div class="my-dashboard-cards-container justify-content-evenly align-items-center reorder-card-container" cdkDropList
     (cdkDropListDropped)="onDrop($event)">
-    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards reorder-card '" cdkDrag
+    <div *ngFor="let item of dashboardCards()" [class]="'my-dashboard-cards reorder-card '" cdkDrag
       cdkDragBoundary=".my-dashboard-cards-container"
       [ngStyle]="{'background-color':item.color+mapToHex(item.transparency)}">
       <div class="my-dashboard-cards drag-placeholder" *cdkDragPlaceholder></div>
-      <div style="width: 100%;">
+      <div class="dashboard-card-card">
         <div class="dashboard-card-item">
-          <span class="h6">{{item.title}}</span>
-          <!-- <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon> -->
+          <span class="dashboard-card-item-title m-0 flex-grow-1">{{item.title}}</span>
         </div>
         <div class="dashboard-card-item-2">
           <img [alt]="item.title" [src]="item.motivation" height="50px" />
         </div>
         <div class="dashboard-card-item-2 pt-2">
-          <span>{{item.target}}</span>
+          <span class="dashboard-card-item-target m-0">{{item.target}}</span>
         </div>
       </div>
     </div>
@@ -42,20 +45,20 @@
   }
   @if(!reorderEbabled){
   <div class="my-dashboard-cards-container justify-content-evenly align-items-center">
-    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards'" mat-ripple [routerLink]="item.to"
+    <div *ngFor="let item of dashboardCards()" [class]="'my-dashboard-cards'" mat-ripple
       [ngStyle]="{'background-color':item.color+mapToHex(item.transparency)}">
-      <div style="width: 100%;">
+      <div class="dashboard-card-card" [routerLink]="item.to">
         <div class="dashboard-card-item">
-          <span class="h6">{{item.title}}</span>
-          <!-- <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon> -->
+          <span class="dashboard-card-item-title m-0 flex-grow-1">{{item.title}}</span>
         </div>
         <div class="dashboard-card-item-2">
           <img [alt]="item.title" [src]="item.motivation" height="50px" />
         </div>
         <div class="dashboard-card-item-2 pt-2">
-          <span>{{item.target}}</span>
+          <span class="dashboard-card-item-target m-0">{{item.target}}</span>
         </div>
       </div>
+      <mat-icon class="dashboard-item-icon" (click)="editWidget(item)">edit</mat-icon>
     </div>
   </div>
   }
@@ -71,31 +74,37 @@
 </div>
 
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)" (onSubmit)="submitPanel($event)"
-  [panel-heading]="nls.addWidget" [type]="'info'">
+  [panel-heading]="isEdit.getValue()?nls.editWidget:nls.addWidget" [type]="'info'">
   <ng-template>
     <app-form (on-submit)="submitPanel($event)" [form-fields]="widgetFormFields()" [submit-button-title]="nls.save"
       [cancel-button-title]="nls.cancel" (on-cancel)="closePanel($event)"
       (on-change)="handleFormChange($event)"></app-form>
 
     <div class="d-flex justify-content-evenly align-items-center mt-5 flex-column" *ngIf="addWidgetData">
-      <p>
       <p>{{nls.preview}}</p>
       <mat-divider></mat-divider>
-      <div class="my-dashboard-cards preview"
-        [ngStyle]="{'background-color':addWidgetData.color+mapToHex(addWidgetData.transparency)}">
-        <div style="width: 100%;">
-          <div class="dashboard-card-item">
-            <span class="h6">{{addWidgetData.title}}</span>
-          </div>
-          <div class="dashboard-card-item-2">
-            <img [alt]="addWidgetData.title" [src]="addWidgetData.motivation" height="50px" />
-          </div>
-          <div class="dashboard-card-item-2 pt-2">
-            <span>{{addWidgetData.target}}</span>
+      <div class="d-flex justify-content-evenly align-items-center w-100">
+        <div class="my-dashboard-cards preview"
+          [ngStyle]="{'background-color':addWidgetData.color+mapToHex(addWidgetData.transparency)}">
+          <div class="dashboard-card-card">
+            <div class="dashboard-card-item">
+              <span class="dashboard-card-item-title m-0 flex-grow-1">{{addWidgetData.title}}</span>
+            </div>
+            <div class="dashboard-card-item-2">
+              <img [alt]="addWidgetData.title" [src]="addWidgetData.motivation" height="50px" />
+            </div>
+            <div class="dashboard-card-item-2 pt-2">
+              <span class="dashboard-card-item-target m-0">{{addWidgetData.target}}</span>
+            </div>
           </div>
         </div>
-      </div>
+        <div *ngIf="isEdit.getValue()">
+          <button mat-fab color="error" aria-label="Delete Widget" (click)="toggleDeleteModal(true)">
+            <mat-icon>delete</mat-icon>
+          </button>
 
+        </div>
+      </div>
     </div>
   </ng-template>
 </app-right-panel>
@@ -104,5 +113,11 @@
   [type]="'confirm'" [modal-heading]="nls.addWidget">
   <ng-template>
     <p>{{nls.cancelWidget}}</p>
+  </ng-template>
+</app-modal-window>
+<app-modal-window [isOpen]="isDeleteModalOpen()" (onCancel)="toggleDeleteModal($event)"
+  (onSubmit)="submitDeleteModal($event)" [type]="'confirm'" [modal-heading]="nls.deleteWidget">
+  <ng-template>
+    <p>{{nls.deleteWidgetText}}</p>
   </ng-template>
 </app-modal-window>
