@@ -5,4 +5,5 @@ export interface DashboardCards {
   target: string;
   transparency: number;
   to: string;
+  order:number
 }

@@ -173,7 +173,7 @@ export class DashboardComponent {
   }
   enableReorder(event: MouseEvent): void {
     if (this.reorderEbabled) {
-      // console.log(dashboardCards);
+      this._apiService.update('widgets',this.dashboardCards);
     }
     this.reorderEbabled = !this.reorderEbabled;
   }

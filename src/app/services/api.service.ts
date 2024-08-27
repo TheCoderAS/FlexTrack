@@ -14,19 +14,36 @@ export class ApiService {
     if (prevData) {
       newData = JSON.parse(prevData);
     }
+    value.order = newData.length + 1;
     newData.push(value);
     this.storage.setItem(key, JSON.stringify(newData));
   }
 
   // Read
   get(key: string): any {
-    const item = this.storage.getItem(key);
-    return item ? JSON.parse(item) : [];
+    let result;
+    if (key === 'widgets') {
+      let item = this.storage.getItem(key);
+      let parsedItem = item ? JSON.parse(item) : [];
+      parsedItem.sort((a: any, b: any) => {
+        return a.order - b.order;
+      })
+      result = parsedItem;
+    }
+    return result;
   }
 
   // Update (can be combined with save)
   update(key: string, value: any): void {
-    this.save(key, value);
+    let data;
+    if (key === 'widgets') {
+      let newData = value.map((item: any, index: number) => {
+        item.order = index + 1;
+        return item;
+      });
+      data = newData;
+    }
+    this.storage.setItem(key, JSON.stringify(data));
   }
 
   // Delete
