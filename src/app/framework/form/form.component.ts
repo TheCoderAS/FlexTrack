@@ -36,6 +36,7 @@ export class FormComponent implements OnInit {
   @Output('on-cancel') onCancel = new EventEmitter();
   @Input('submit-button-title') subButtonTitle!: string;
   @Input('cancel-button-title') canButtonTitle!: string;
+  @Output('on-change') onChange = new EventEmitter();
 
   thumbLabel(value: number): string {
     return `${value}%`;
@@ -56,6 +57,11 @@ export class FormComponent implements OnInit {
 
     this.appForm = this.fb.group(formGroupItems);
     this.cdRef.detectChanges();
+    //Emit for first time if there is default value and then subscribe it
+    this.onChange.emit({ ...this.appForm.value, ...this.uploadedFile });
+    this.appForm.valueChanges.subscribe((value) => {
+      this.onChange.emit({ ...value, ...this.uploadedFile });
+    })
   }
   onFileSelected(event: Event): void {
     let inputFile = this.inputFileField[(event as any).target.name];
@@ -76,6 +82,7 @@ export class FormComponent implements OnInit {
       }
     }
   }
+
   submitForm(event: SubmitEvent): void {
     event.preventDefault();
     let data = {

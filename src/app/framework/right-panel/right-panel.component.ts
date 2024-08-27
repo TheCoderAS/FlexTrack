@@ -38,11 +38,11 @@ export class RightPanelComponent {
 
   nls = nls;
   cancelPanel() {
-    this.isOpen = !this.isOpen;
-    this.onCancel.emit(this.isOpen);
+    // this.isOpen = !this.isOpen;
+    this.onCancel.emit(!this.isOpen);
   }
   submitPanel() {
-    this.isOpen = !this.isOpen;
-    this.onSubmit.emit(this.isOpen);
+    // this.isOpen = !this.isOpen;
+    this.onSubmit.emit(!this.isOpen);
   }
 }

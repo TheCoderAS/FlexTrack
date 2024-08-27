@@ -9,13 +9,19 @@ export class ApiService {
 
   // Create or Update
   save(key: string, value: any): void {
-    this.storage.setItem(key, JSON.stringify(value));
+    let newData = [];
+    let prevData = this.storage.getItem(key);
+    if (prevData) {
+      newData = JSON.parse(prevData);
+    }
+    newData.push(value);
+    this.storage.setItem(key, JSON.stringify(newData));
   }
 
   // Read
   get(key: string): any {
     const item = this.storage.getItem(key);
-    return item ? JSON.parse(item) : null;
+    return item ? JSON.parse(item) : [];
   }
 
   // Update (can be combined with save)

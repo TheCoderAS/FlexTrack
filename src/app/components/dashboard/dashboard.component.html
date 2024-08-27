@@ -21,19 +21,20 @@
   @if (reorderEbabled) {
   <div class="my-dashboard-cards-container justify-content-evenly align-items-center reorder-card-container" cdkDropList
     (cdkDropListDropped)="onDrop($event)">
-    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards reorder-card '+item.bgColor" cdkDrag
-      cdkDragBoundary=".my-dashboard-cards-container">
+    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards reorder-card '" cdkDrag
+      cdkDragBoundary=".my-dashboard-cards-container"
+      [ngStyle]="{'background-color':item.color+mapToHex(item.transparency)}">
       <div class="my-dashboard-cards drag-placeholder" *cdkDragPlaceholder></div>
       <div style="width: 100%;">
         <div class="dashboard-card-item">
           <span class="h6">{{item.title}}</span>
-          <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon>
+          <!-- <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon> -->
         </div>
         <div class="dashboard-card-item-2">
-          <img [alt]="item.title" [src]="'../../../assets/images/'+item.subtitle" height="50px" />
+          <img [alt]="item.title" [src]="item.motivation" height="50px" />
         </div>
         <div class="dashboard-card-item-2 pt-2">
-          <span>{{item.footer}}</span>
+          <span>{{item.target}}</span>
         </div>
       </div>
     </div>
@@ -41,18 +42,18 @@
   }
   @if(!reorderEbabled){
   <div class="my-dashboard-cards-container justify-content-evenly align-items-center">
-    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards '+item.bgColor" mat-ripple
-      [routerLink]="item.to">
+    <div *ngFor="let item of dashboardCards" [class]="'my-dashboard-cards'" mat-ripple [routerLink]="item.to"
+      [ngStyle]="{'background-color':item.color+mapToHex(item.transparency)}">
       <div style="width: 100%;">
         <div class="dashboard-card-item">
           <span class="h6">{{item.title}}</span>
-          <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon>
+          <!-- <mat-icon class="dashboard-item-icon">{{item.icon}}</mat-icon> -->
         </div>
         <div class="dashboard-card-item-2">
-          <img [alt]="item.title" [src]="'../../../assets/images/'+item.subtitle" height="50px" />
+          <img [alt]="item.title" [src]="item.motivation" height="50px" />
         </div>
         <div class="dashboard-card-item-2 pt-2">
-          <span>{{item.footer}}</span>
+          <span>{{item.target}}</span>
         </div>
       </div>
     </div>
@@ -69,10 +70,39 @@
   </div>
 </div>
 
-<app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="togglePanel($event)" (onSubmit)="submitPanel($event)"
+<app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)" (onSubmit)="submitPanel($event)"
   [panel-heading]="nls.addWidget" [type]="'info'">
   <ng-template>
-    <app-form (on-submit)="submitPanel($event)" [form-fields]="widgetFormFields()" [submit-button-title]="nls.save" [cancel-button-title]="nls.cancel"
-      (on-cancel)="togglePanel($event)"></app-form>
+    <app-form (on-submit)="submitPanel($event)" [form-fields]="widgetFormFields()" [submit-button-title]="nls.save"
+      [cancel-button-title]="nls.cancel" (on-cancel)="closePanel($event)"
+      (on-change)="handleFormChange($event)"></app-form>
+
+    <div class="d-flex justify-content-evenly align-items-center mt-5 flex-column" *ngIf="addWidgetData">
+      <p>
+      <p>{{nls.preview}}</p>
+      <mat-divider></mat-divider>
+      <div class="my-dashboard-cards preview"
+        [ngStyle]="{'background-color':addWidgetData.color+mapToHex(addWidgetData.transparency)}">
+        <div style="width: 200px;">
+          <div class="dashboard-card-item">
+            <span class="h6">{{addWidgetData.title}}</span>
+          </div>
+          <div class="dashboard-card-item-2">
+            <img [alt]="addWidgetData.title" [src]="addWidgetData.motivation" height="50px" />
+          </div>
+          <div class="dashboard-card-item-2 pt-2">
+            <span>{{addWidgetData.target}}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </ng-template>
 </app-right-panel>
+
+<app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
+  [type]="'confirm'" [modal-heading]="nls.addWidget">
+  <ng-template>
+    <p>{{nls.cancelWidget}}</p>
+  </ng-template>
+</app-modal-window>
