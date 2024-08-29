@@ -58,6 +58,9 @@ export class FormComponent implements OnInit {
       if (item.type === 'file') {
         this.inputFileField[item.name] = item;
       }
+      if (item.type === 'file') {
+        this.inputFileField[item.name] = item;
+      }
     });
 
     this.appForm = this.fb.group(formGroupItems);
@@ -65,8 +68,19 @@ export class FormComponent implements OnInit {
     //Emit for first time if there is default value and then subscribe it
     this.onChange.emit({ ...this.appForm.value, ...this.uploadedFile });
     this.appForm.valueChanges.subscribe((value) => {
+      if (value.password && value.confirmpassword) {
+        this.passwordMatching(value.password, value.confirmpassword)
+      }
       this.onChange.emit({ ...value, ...this.uploadedFile });
-    })
+    });
+  }
+  passwordMatching(password: string, confirmpassword: string) {
+    // console.log(this.appForm.controls['confirmpassword'])
+    if (password === confirmpassword) {
+      this.appForm.controls['confirmpassword'].setErrors(null);
+    } else {
+      this.appForm.controls['confirmpassword'].setErrors({ required: true });
+    }
   }
   onFileSelected(event: Event): void {
     let inputFile = this.inputFileField[(event as any).target.name];
@@ -99,8 +113,8 @@ export class FormComponent implements OnInit {
   cancelForm() {
     this.onCancel.emit(false);
   }
-  getPasswordStrength(): string[] {
-    let password = 'Aalok@123';
+  getPasswordStrength(password: string): string[] {
+    // let password = 'Aalok@123';
 
     const failedCriteria: string[] = [];
     if (!/(?=.*[a-z])/.test(password)) {
@@ -121,8 +135,8 @@ export class FormComponent implements OnInit {
 
     return failedCriteria;
   }
-  getPasswordStrengthNum(): number {
-    let failures = this.getPasswordStrength();
+  getPasswordStrengthNum(name: string): number {
+    let failures = this.getPasswordStrength(this.appForm.controls[name].value);
     return (1 - failures.length / 5) * 100;
     // if(failures.length){
     //   return 100/(failures.length+1);
@@ -130,8 +144,8 @@ export class FormComponent implements OnInit {
     //   return 100;
     // }
   }
-  getPasswordProgressColor(): string {
-    let failpercent = this.getPasswordStrengthNum();
+  getPasswordProgressColor(name: string): string {
+    let failpercent = this.getPasswordStrengthNum(name);
     if (failpercent <= 80) return 'warn';
     else return 'primary';
   }

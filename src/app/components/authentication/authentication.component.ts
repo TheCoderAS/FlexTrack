@@ -28,6 +28,8 @@ interface FormAuthType {
 }
 const passwordPattern: string =
   '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$';
+const emailPattern: string = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
+
 const authFormFields: FormAuthType = {
   login: [
     {
@@ -48,7 +50,7 @@ const authFormFields: FormAuthType = {
       id: 'email',
       type: 'email',
       model: 'email',
-      pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$',
+      pattern: emailPattern,
     },
     {
       name: 'password',
@@ -58,17 +60,13 @@ const authFormFields: FormAuthType = {
         {
           type: 'required',
           message: nls.passwordRequired,
-        },
-        {
-          type: 'pattern',
-          message: nls.invalidPassword,
-        },
+        }
       ],
       required: true,
       id: 'password',
       type: 'password',
       model: 'password',
-      pattern: passwordPattern,
+      pattern: '',
     },
   ],
   signup: [
@@ -90,7 +88,7 @@ const authFormFields: FormAuthType = {
       id: 'email',
       type: 'email',
       model: 'email',
-      pattern: '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}',
+      pattern: emailPattern,
     },
     {
       name: 'password',
@@ -111,6 +109,23 @@ const authFormFields: FormAuthType = {
       type: 'password',
       model: 'password',
       pattern: passwordPattern,
+    },
+    {
+      name: 'confirmpassword',
+      label: nls.confirmpassword,
+      options: [],
+      errorMessage: [
+        {
+          type: 'required',
+          message: nls.passwordMatchError,
+        }
+      ],
+      required: true,
+      id: 'confirmpassword',
+      type: 'password',
+      model: 'confirmpassword',
+      pattern: '',
+      matching: true
     },
     {
       name: 'fname',
@@ -182,24 +197,12 @@ const authFormFields: FormAuthType = {
 })
 export class AuthenticationComponent {
   private authService: AuthenticationService = inject(AuthenticationService);
+  nls = nls;
 
   authType: WritableSignal<string> = signal('login');
-
   authFields: Signal<FormFields[]> = computed(() => {
     return authFormFields[this.authType()];
   });
-  nls = nls;
-  creds: AuthUserCred = {
-    email: '',
-    password: '',
-    otherDetails: {
-      confirmPassword: '',
-      fname: '',
-      lname: '',
-      phone: '',
-      gender: '',
-    },
-  };
 
   changeAuthType(): void {
     this.authType.update((val) => {
@@ -210,13 +213,16 @@ export class AuthenticationComponent {
   loginByGoogle() {
     this.authService.loginByGoogle();
   }
+
   loginWithUserPass(data: any) {
     this.authService.loginWithUserPass(data);
   }
+
   signupWithUserPass(data: any) {
     // console.warn(data);
     this.authService.signupWithUserPass(data);
   }
+
   submit(data: any) {
     if (this.authType() === 'login') {
       this.loginWithUserPass(data);

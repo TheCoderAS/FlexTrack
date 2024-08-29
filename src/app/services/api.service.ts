@@ -12,22 +12,50 @@ function delay(ms: number): Promise<void> {
 export class ApiService {
   private storage: Storage = localStorage;
   private _loader: LoaderService = inject(LoaderService);
-
-  constructor() { }
-
+  private _user: any;
+  constructor() {
+    this._user = this.storage.getItem('currentuser');
+    if (this._user) {
+      this._user = JSON.parse(this._user);
+    }
+  }
+  getSavingKey(key: string) {
+    return this._user?.email + '/' + key;
+  }
   // Create or Update
   async post(key: string, value: any): Promise<void> {
     this._loader.changeLoaderState('start');
     await delay(200);
-    let newData = [];
-    let prevData = this.storage.getItem(key);
-    if (prevData) {
-      newData = JSON.parse(prevData);
+    if (key === 'widgets') {
+      let newData = [];
+      let prevData = this.storage.getItem(this.getSavingKey(key));
+      if (prevData) {
+        newData = JSON.parse(prevData);
+      }
+      value.order = newData.length + 1;
+      value.id = "id" + (newData.length + 1);
+      newData.push(value);
+      this.storage.setItem(this.getSavingKey(key), JSON.stringify(newData));
+    } else if (key === 'users') {
+      let prevData: any = this.storage.getItem(key);
+      prevData = prevData ? JSON.parse(prevData) : [];
+
+      let exists: boolean = false;
+      let newData = prevData.map((item: any) => {
+        if (item.email === value.email) {
+          item = value;
+          exists = true;
+        }
+        return item
+      });
+      if (!exists) {
+        newData.push(value);
+      }
+
+      this.storage.setItem(key, JSON.stringify(newData));
+      this.storage.setItem('currentuser', JSON.stringify(value));
+      this._user = value;
     }
-    value.order = newData.length + 1;
-    value.id = "id" + (newData.length + 1);
-    newData.push(value);
-    this.storage.setItem(key, JSON.stringify(newData));
     this._loader.changeLoaderState('stop');
   }
 
@@ -38,7 +66,7 @@ export class ApiService {
 
     let result;
     if (key === 'widgets') {
-      let item = this.storage.getItem(key);
+      let item = this.storage.getItem(this.getSavingKey(key));
       let parsedItem = item ? JSON.parse(item) : [];
       parsedItem.sort((a: any, b: any) => {
         return a.order - b.order;
@@ -64,18 +92,29 @@ export class ApiService {
         });
         data = newData;
       } else {
-        let oldData = await this.get('widgets');
-        oldData = oldData.map((item: any) => {
+        let oldData: any = this.storage.getItem(this.getSavingKey(key));
+        oldData = oldData ? JSON.parse(oldData) : [];
+        let updatedData = oldData?.map((item: any) => {
           if (item.id === value.id) {
             item = value;
           }
           return item;
         });
-        data = oldData;
+        data = updatedData;
 
       }
+    } else if (key === 'currentuser') {
+      // let prevData: any = this.storage.getItem('users');
+      // prevData = prevData ? JSON.parse(prevData) : [];
+
+      // let existingValue = prevData.find((item: any) => item.email === value.email);
+      // if (existingValue) {
+      this.storage.setItem('currentuser', JSON.stringify({ email: value.email }));
+      // }
+      this._user = value
+      return;
     }
-    this.storage.setItem(key, JSON.stringify(data));
+    this.storage.setItem(this.getSavingKey(key), JSON.stringify(data));
     this._loader.changeLoaderState('stop');
   }
 
@@ -85,14 +124,15 @@ export class ApiService {
     await delay(200);
     let data;
     if (key === 'widgets') {
-      let oldData = await this.get('widgets');
+      let oldData: any = this.storage.getItem(this.getSavingKey(key));
+      oldData = oldData ? JSON.parse(oldData) : [];
       oldData = oldData.filter((item: any) => {
         return item.id !== id;
       });
       data = oldData;
     }
 
-    this.storage.setItem(key, JSON.stringify(data));
+    this.storage.setItem(this.getSavingKey(key), JSON.stringify(data));
     this._loader.changeLoaderState('stop');
 
   }

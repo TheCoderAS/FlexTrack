@@ -2,12 +2,20 @@
 <div class="auth-container">
     <div class="auth-form-container">
         <div class="auth-form-logo mb-2">
-            <img height="150px" width="150px" src="../../../assets/images/loader-logo.webp" style="filter: invert(100%);"/>
+            <img height="150px" width="150px" src="../../../assets/images/loader-logo.webp"
+                style="filter: invert(100%);" />
             <p class="mb-0">{{nls.welcome}}</p>
             <h2 class="h2">{{authType()==='login'?nls.LoginSubheading:nls.SignupSubheading}}</h2>
         </div>
-        <app-form (on-submit)="submit($event)" [form-fields]="authFields()"
-            [submit-button-title]="authType()==='login'?nls.Login:nls.Signup"></app-form>
+        <ng-container *ngIf="authType()==='login'">
+            <app-form (on-submit)="submit($event)" [form-fields]="authFields()"
+                [submit-button-title]="nls.Login"></app-form>
+        </ng-container>
+        <ng-container *ngIf="authType()==='signup'">
+            <app-form (on-submit)="submit($event)" [form-fields]="authFields()"
+                [submit-button-title]="nls.Signup"></app-form>
+        </ng-container>
+
         <div class="pt-4">
             <p class="text-center auth-form-footer-links" (click)="changeAuthType()">{{ authType() === 'login' ?
                 nls.createAccount : nls.loginExisting }}</p>

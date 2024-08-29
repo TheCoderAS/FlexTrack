@@ -14,5 +14,6 @@ export interface FormFields {
   step?: number
   maxlength?: number,
   accept?: string,
-  maxSize?:number
+  maxSize?: number,
+  matching?: boolean
 }

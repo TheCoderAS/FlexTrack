@@ -1,4 +1,4 @@
-import { Injectable, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import {
   Auth,
   signInWithEmailAndPassword,
@@ -12,7 +12,7 @@ import nls from '../framework/resources/nls/authentication';
 import { Router } from '@angular/router';
 import { LoaderService } from './loader.service';
 import { MessagesService } from './messages.service';
-import { error } from 'console';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +22,7 @@ export class AuthenticationService {
   private _auth: Auth = inject(Auth);
   private _router: Router = inject(Router);
   private _loader: LoaderService = inject(LoaderService);
+  private _api: ApiService = inject(ApiService);
   private messageService: MessagesService = inject(MessagesService);
   currentUser: any;
 
@@ -58,6 +59,11 @@ export class AuthenticationService {
         data.email,
         data.password
       );
+      let postData = {
+        ...data,
+        photo: ''
+      }
+      await this._api.post('users', postData);
       this.login(user);
     } catch (error: any) {
       this.messageService.error(error.message);
@@ -74,6 +80,7 @@ export class AuthenticationService {
         data.email,
         data.password
       );
+      await this._api.put('currentuser', data);
       this.login(user);
     } catch (error: any) {
       this.messageService.error(error.message);
@@ -105,5 +112,8 @@ export interface AuthUserCred {
   [key: string]: any;
   email: string;
   password: string;
-  otherDetails: any;
+  fname: string;
+  lname: string;
+  gender: string;
+  photo?: string;
 }

@@ -23,6 +23,8 @@ const nls = {
   SignupSubheading:"Create a new account",
   LoginSubheading:"Login to your existing account",
   logoutSuccess:"Logged out successfully!",
-  loginSuccess:"Logged in successfully!"
+  loginSuccess:"Logged in successfully!",
+  confirmpassword:"Confirm Password",
+  passwordMatchError:"Passwords do not match."
 };
 export default nls;

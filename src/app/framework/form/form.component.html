@@ -20,8 +20,15 @@
                         *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</span>
                 </div>
             </div>
-            <mat-progress-bar mode="determinate" [value]="getPasswordStrengthNum()" [color]="getPasswordProgressColor()"
-                *ngIf="item.type==='password'&& appForm.controls[item.name]?.touched "></mat-progress-bar>
+            <div *ngIf="item.type==='password' &&item.name==='confirmpassword' && appForm.controls[item.name]?.touched ">
+                <div *ngFor="let message of item.errorMessage">
+                    <span class="text-danger error-text"
+                        *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</span>
+                </div>
+            </div>
+            <mat-progress-bar mode="determinate" [value]="getPasswordStrengthNum(item.name)"
+                [color]="getPasswordProgressColor(item.name)"
+                *ngIf="item.type==='password' && item.pattern!==''&& appForm.controls[item.name]?.touched "></mat-progress-bar>
 
         </mat-form-field>
 
