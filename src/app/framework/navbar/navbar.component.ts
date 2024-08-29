@@ -54,11 +54,11 @@ export class NavbarComponent implements OnInit {
           this.showTopBar = false;
         }
 
-        if(this._authService.isAuthenticated() && currentRouterState.snapshot.url.includes('/auth')){
+        if (this._authService.isAuthenticated.getValue() && currentRouterState.snapshot.url.includes('/auth')) {
           this.router.navigate(['']);
         }
-        if(!this._authService.isAuthenticated()){
-            this.router.navigate(['/auth']);
+        if (!this._authService.isAuthenticated.getValue()) {
+          this.router.navigate(['/auth']);
         }
       });
   }

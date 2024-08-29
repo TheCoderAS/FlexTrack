@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Signal,
   WritableSignal,
   computed,
@@ -8,10 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  AuthUserCred,
-  AuthenticationService,
-} from '../../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -20,166 +16,8 @@ import { CommonModule } from '@angular/common';
 import nls from '../../framework/resources/nls/authentication';
 import { FormFields } from '../../framework/form/form.interfaces';
 import { FormComponent } from '../../framework/form/form.component';
+import { authFormFields } from './auth.resources';
 
-interface FormAuthType {
-  [key: string]: any;
-  login: FormFields[];
-  signup: FormFields[];
-}
-const passwordPattern: string =
-  '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z\\d]).{8,}$';
-const emailPattern: string = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
-
-const authFormFields: FormAuthType = {
-  login: [
-    {
-      name: 'email',
-      label: nls.email,
-      options: [],
-      errorMessage: [
-        {
-          type: 'required',
-          message: nls.emailRequired,
-        },
-        {
-          type: 'pattern',
-          message: nls.invalidEmail,
-        },
-      ],
-      required: true,
-      id: 'email',
-      type: 'email',
-      model: 'email',
-      pattern: emailPattern,
-    },
-    {
-      name: 'password',
-      label: nls.password,
-      options: [],
-      errorMessage: [
-        {
-          type: 'required',
-          message: nls.passwordRequired,
-        }
-      ],
-      required: true,
-      id: 'password',
-      type: 'password',
-      model: 'password',
-      pattern: '',
-    },
-  ],
-  signup: [
-    {
-      name: 'email',
-      label: nls.email,
-      options: [],
-      errorMessage: [
-        {
-          type: 'required',
-          message: nls.emailRequired,
-        },
-        {
-          type: 'pattern',
-          message: nls.invalidEmail,
-        },
-      ],
-      required: true,
-      id: 'email',
-      type: 'email',
-      model: 'email',
-      pattern: emailPattern,
-    },
-    {
-      name: 'password',
-      label: nls.password,
-      options: [],
-      errorMessage: [
-        {
-          type: 'required',
-          message: nls.passwordRequired,
-        },
-        {
-          type: 'pattern',
-          message: nls.invalidPassword,
-        },
-      ],
-      required: true,
-      id: 'password',
-      type: 'password',
-      model: 'password',
-      pattern: passwordPattern,
-    },
-    {
-      name: 'confirmpassword',
-      label: nls.confirmpassword,
-      options: [],
-      errorMessage: [
-        {
-          type: 'required',
-          message: nls.passwordMatchError,
-        }
-      ],
-      required: true,
-      id: 'confirmpassword',
-      type: 'password',
-      model: 'confirmpassword',
-      pattern: '',
-      matching: true
-    },
-    {
-      name: 'fname',
-      label: nls.fname,
-      options: [],
-      errorMessage: [
-        {
-          type: 'required',
-          message: nls.fnameRequired,
-        },
-      ],
-      required: true,
-      id: 'fname',
-      type: 'text',
-      model: 'fname',
-      pattern: '',
-    },
-    {
-      name: 'lname',
-      label: nls.lname,
-      options: [],
-      errorMessage: [{ type: 'required', message: nls.lnameRequired }],
-      required: true,
-      id: 'lname',
-      type: 'text',
-      model: 'lname',
-      pattern: '',
-    },
-    {
-      name: 'gender',
-      label: nls.gender,
-      options: [
-        {
-          label: 'Male',
-          value: 'MALE',
-        },
-        {
-          label: 'Female',
-          value: 'FEMALE',
-        },
-        {
-          label: 'Other',
-          value: 'OTHER',
-        },
-      ],
-      errorMessage: [{ type: 'required', message: nls.genderRequired }],
-      required: true,
-      id: 'gender',
-      type: 'select',
-      model: 'gender',
-      pattern: '',
-    },
-  ],
-};
 @Component({
   selector: 'app-authentication',
   standalone: true,
@@ -210,9 +48,9 @@ export class AuthenticationComponent {
     });
   }
 
-  loginByGoogle() {
-    this.authService.loginByGoogle();
-  }
+  // loginByGoogle() {
+  //   this.authService.loginByGoogle();
+  // }
 
   loginWithUserPass(data: any) {
     this.authService.loginWithUserPass(data);

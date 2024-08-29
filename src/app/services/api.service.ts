@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { LoaderService } from './loader.service';
-import { DashboardCards } from '../framework/resources/dashboard-cards';
+import axios from 'axios';
+import { MessagesService } from './messages.service';
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -10,72 +11,107 @@ function delay(ms: number): Promise<void> {
   providedIn: 'root'
 })
 export class ApiService {
-  private storage: Storage = localStorage;
-  private _loader: LoaderService = inject(LoaderService);
+  private _base_url = 'https://api.websiterahouse.com/';
+  private _storage: Storage = localStorage;
   private _user: any;
+  private _loader: LoaderService = inject(LoaderService);
+
   constructor() {
-    this._user = this.storage.getItem('currentuser');
+    this._user = this._storage.getItem('currentuser');
     if (this._user) {
       this._user = JSON.parse(this._user);
     }
   }
+
   getSavingKey(key: string) {
-    return this._user?.email + '/' + key;
+    let userString = this._storage.getItem('user');
+    if (userString) {
+      let user = JSON.parse(userString);
+      return `${user.email}/${key}`;
+    }
+
+    throw new Error("User not logged in!");
   }
   // Create or Update
-  async post(key: string, value: any): Promise<void> {
+  async hit(endpoint: string, method: string = 'get', data: any = null): Promise<any> {
     this._loader.changeLoaderState('start');
-    await delay(200);
-    if (key === 'widgets') {
-      let newData = [];
-      let prevData = this.storage.getItem(this.getSavingKey(key));
-      if (prevData) {
-        newData = JSON.parse(prevData);
+    let result: any;
+    let config = {
+      headers: {
+        'Authorization': `Bearer ${await this.local_get('access')}`
       }
-      value.order = newData.length + 1;
-      value.id = "id" + (newData.length + 1);
-      newData.push(value);
-      this.storage.setItem(this.getSavingKey(key), JSON.stringify(newData));
-    } else if (key === 'users') {
-      let prevData: any = this.storage.getItem(key);
-      prevData = prevData ? JSON.parse(prevData) : [];
-
-      let exists: boolean = false;
-      let newData = prevData.map((item: any) => {
-        if (item.email === value.email) {
-          item = value;
-          exists = true;
-        }
-        return item
-      });
-      if (!exists) {
-        newData.push(value);
-      }
-
-      this.storage.setItem(key, JSON.stringify(newData));
-      this.storage.setItem('currentuser', JSON.stringify(value));
-      this._user = value;
     }
-    this._loader.changeLoaderState('stop');
+    try {
+      let response: any;
+      switch (method) {
+        case 'get':
+          response = await axios.get(this._base_url + endpoint, config);
+          break;
+        case 'post':
+          response = await axios.post(this._base_url + endpoint, data, config);
+          break;
+        case 'put':
+          response = await axios.put(this._base_url + endpoint, data, config);
+          break;
+        case 'delete':
+          response = await axios.get(this._base_url + endpoint, config);
+          break;
+      }
+      result = response.data;
+      result.success = true;
+    } catch (error) {
+      result = (error as any).response.data;
+      result.success = false;
+    } finally {
+      this._loader.changeLoaderState('stop');
+      return result;
+    }
   }
 
-  // Read
-  async get(key: string): Promise<any> {
-    this._loader.changeLoaderState('start');
-    await delay(200);
+  async local_post(key: string, value: any): Promise<any> {
+    switch (key) {
+      case 'widgets':
+        try {
+          let newData = [];
+          let prevData = this._storage.getItem(this.getSavingKey(key));
+          if (prevData) {
+            newData = JSON.parse(prevData);
+          }
+          value.order = newData.length + 1;
+          value.id = "id" + (newData.length + 1);
+          newData.push(value);
+          this._storage.setItem(this.getSavingKey(key), JSON.stringify(newData));
+          return { message: "Added successfully in storage.", success: true };
+        } catch (error: any) {
+          return { message: error.message, success: false };
+        }
+      case 'access':
+      case 'user':
+        this._storage.setItem(key, JSON.stringify(value));
+        return { message: "Added successfully in storage.", success: true };
 
-    let result;
-    if (key === 'widgets') {
-      let item = this.storage.getItem(this.getSavingKey(key));
-      let parsedItem = item ? JSON.parse(item) : [];
-      parsedItem.sort((a: any, b: any) => {
-        return a.order - b.order;
-      })
-      result = parsedItem;
+      default:
+        console.log("No default action configured.")
     }
-    this._loader.changeLoaderState('stop');
 
-    return result;
+  }
+  async local_get(key: string): Promise<any> {
+
+    switch (key) {
+      case 'widgets': {
+        let item = this._storage.getItem(this.getSavingKey(key));
+        let parsedItem = item ? JSON.parse(item) : [];
+        parsedItem.sort((a: any, b: any) => {
+          return a.order - b.order;
+        })
+        return parsedItem;
+      }
+      case 'access':
+      case 'user': {
+        let item = this._storage.getItem(key);
+        return item ? JSON.parse(item) : null;
+      }
+    }
   }
 
   // Update (can be combined with save)
@@ -92,7 +128,7 @@ export class ApiService {
         });
         data = newData;
       } else {
-        let oldData: any = this.storage.getItem(this.getSavingKey(key));
+        let oldData: any = this._storage.getItem(this.getSavingKey(key));
         oldData = oldData ? JSON.parse(oldData) : [];
         let updatedData = oldData?.map((item: any) => {
           if (item.id === value.id) {
@@ -104,46 +140,47 @@ export class ApiService {
 
       }
     } else if (key === 'currentuser') {
-      // let prevData: any = this.storage.getItem('users');
+      // let prevData: any = this._storage.getItem('users');
       // prevData = prevData ? JSON.parse(prevData) : [];
 
       // let existingValue = prevData.find((item: any) => item.email === value.email);
       // if (existingValue) {
-      this.storage.setItem('currentuser', JSON.stringify({ email: value.email }));
+      this._storage.setItem('currentuser', JSON.stringify({ email: value.email }));
       // }
       this._user = value
       return;
     }
-    this.storage.setItem(this.getSavingKey(key), JSON.stringify(data));
+    this._storage.setItem(this.getSavingKey(key), JSON.stringify(data));
     this._loader.changeLoaderState('stop');
   }
 
   // Delete
-  async delete(key: string, id: string): Promise<void> {
-    this._loader.changeLoaderState('start');
-    await delay(200);
-    let data;
-    if (key === 'widgets') {
-      let oldData: any = this.storage.getItem(this.getSavingKey(key));
-      oldData = oldData ? JSON.parse(oldData) : [];
-      oldData = oldData.filter((item: any) => {
-        return item.id !== id;
-      });
-      data = oldData;
+  async local_delete(key: string, data: any = null): Promise<void> {
+    switch (key) {
+      case 'widgets': {
+        let oldData: any = this._storage.getItem(this.getSavingKey(key));
+        oldData = oldData ? JSON.parse(oldData) : [];
+        let newdata = oldData.filter((item: any) => {
+          return item.id !== data;
+        });
+        this._storage.setItem(this.getSavingKey(key), JSON.stringify(newdata));
+        return;
+      }
+      case 'user':
+      case 'access': {
+        this._storage.removeItem(key);
+      }
     }
-
-    this.storage.setItem(this.getSavingKey(key), JSON.stringify(data));
-    this._loader.changeLoaderState('stop');
 
   }
 
   // List all keys
   listKeys(): string[] {
-    return Object.keys(this.storage);
+    return Object.keys(this._storage);
   }
 
   // Clear all
   clearAll(): void {
-    this.storage.clear();
+    this._storage.clear();
   }
 }

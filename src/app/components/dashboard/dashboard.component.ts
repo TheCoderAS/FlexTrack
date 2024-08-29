@@ -20,7 +20,6 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { RightPanelComponent } from '../../framework/right-panel/right-panel.component';
-import { ApiService } from '../../services/api.service';
 import { FormComponent } from "../../framework/form/form.component";
 import { FormFields } from '../../framework/form/form.interfaces';
 import { ModalWindowComponent } from "../../framework/modal-window/modal-window.component";

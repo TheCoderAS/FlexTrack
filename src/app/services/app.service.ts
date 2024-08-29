@@ -24,7 +24,6 @@ export class AppService {
 
     //get widgets data
     this.getWidgets();
-
   }
   getCordova(): any {
     return this.cordova;
@@ -34,7 +33,7 @@ export class AppService {
   }
 
   async getWidgets(): Promise<void> {
-    let result = await this._api.get('widgets');
+    let result = await this._api.local_get('widgets');
     result = result.map((item: DashboardCards) => {
       item.to = '/logging/' + item.title.toLowerCase();
       return item;
@@ -46,7 +45,7 @@ export class AppService {
     this.getWidgets();
   }
   async createWidget(data: DashboardCards): Promise<void> {
-    await this._api.post('widgets', data);
+    await this._api.local_post('widgets', data);
     this.getWidgets();
   }
   async updateWidget(data: DashboardCards): Promise<void> {
@@ -54,7 +53,7 @@ export class AppService {
     this.getWidgets();
   }
   async deleteWidget(id: string): Promise<void> {
-    await this._api.delete('widgets', id);
+    await this._api.local_delete('widgets', id);
     this.getWidgets();
   }
 }
