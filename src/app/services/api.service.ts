@@ -96,7 +96,6 @@ export class ApiService {
 
   }
   async local_get(key: string): Promise<any> {
-
     switch (key) {
       case 'widgets': {
         let item = this._storage.getItem(this.getSavingKey(key));
@@ -115,43 +114,31 @@ export class ApiService {
   }
 
   // Update (can be combined with save)
-  async put(key: string, value: any): Promise<void> {
-    this._loader.changeLoaderState('start');
-    await delay(200);
-
-    let data;
-    if (key === 'widgets') {
-      if (Array.isArray(value)) {
-        let newData = value.map((item: any, index: number) => {
-          item.order = index + 1;
-          return item;
-        });
-        data = newData;
-      } else {
-        let oldData: any = this._storage.getItem(this.getSavingKey(key));
-        oldData = oldData ? JSON.parse(oldData) : [];
-        let updatedData = oldData?.map((item: any) => {
-          if (item.id === value.id) {
-            item = value;
-          }
-          return item;
-        });
-        data = updatedData;
-
+  async local_put(key: string, value: any): Promise<void> {
+    switch (key) {
+      case 'widgets': {
+        let data;
+        if (Array.isArray(value)) {
+          let newData = value.map((item: any, index: number) => {
+            item.order = index + 1;
+            return item;
+          });
+          data = newData;
+        } else {
+          let oldData: any = this._storage.getItem(this.getSavingKey(key));
+          oldData = oldData ? JSON.parse(oldData) : [];
+          let updatedData = oldData?.map((item: any) => {
+            if (item.id === value.id) {
+              item = value;
+            }
+            return item;
+          });
+          data = updatedData;
+        }
+        this._storage.setItem(this.getSavingKey(key), JSON.stringify(data));
+        return;
       }
-    } else if (key === 'currentuser') {
-      // let prevData: any = this._storage.getItem('users');
-      // prevData = prevData ? JSON.parse(prevData) : [];
-
-      // let existingValue = prevData.find((item: any) => item.email === value.email);
-      // if (existingValue) {
-      this._storage.setItem('currentuser', JSON.stringify({ email: value.email }));
-      // }
-      this._user = value
-      return;
     }
-    this._storage.setItem(this.getSavingKey(key), JSON.stringify(data));
-    this._loader.changeLoaderState('stop');
   }
 
   // Delete

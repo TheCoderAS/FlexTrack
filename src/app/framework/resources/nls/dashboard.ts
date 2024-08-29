@@ -25,6 +25,11 @@ const nls = {
     editWidget: "Edit Widget",
     deleteWidget: "Delete Widget",
     deleteWidgetText: "You want delete this widget.",
-    addWidgetsUsingPlusButton: "Add widgets using plus button below."
+    addWidgetsUsingPlusButton: "Add widgets using plus button below.",
+    addWidgetSuccess: "Widget created successfully.",
+    updateWidgetSuccess: "Widget updated successfully.",
+    deleteWidgetSuccess: "Widget deleted successfully.",
+    widgetError: "Widget went wrong.",
+    reorderWidgetSuccess: "Widget order saved successfully"
 }
 export default nls;

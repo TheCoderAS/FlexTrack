@@ -13,7 +13,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import {
   CdkDrag,
   CdkDragDrop,
-  CdkDragMove,
   CdkDragPlaceholder,
   CdkDropList,
   moveItemInArray,
@@ -23,93 +22,11 @@ import { RightPanelComponent } from '../../framework/right-panel/right-panel.com
 import { FormComponent } from "../../framework/form/form.component";
 import { FormFields } from '../../framework/form/form.interfaces';
 import { ModalWindowComponent } from "../../framework/modal-window/modal-window.component";
-import { AppService } from '../../services/app.service';
 import { BehaviorSubject } from 'rxjs';
+import { ApiService } from '../../services/api.service';
+import { widgetForm } from './widget.resources';
+import { MessagesService } from '../../services/messages.service';
 
-const widgetForm = [
-  {
-    name: 'color',
-    label: nls.color,
-    options: [],
-    errorMessage: [],
-    defaultValue: '#450d59',
-    required: false,
-    id: 'color',
-    type: 'color',
-    model: 'color',
-    pattern: ''
-  },
-  {
-    name: 'transparency',
-    label: nls.transparency,
-    options: [],
-    errorMessage: [],
-    defaultValue: '100',
-    required: false,
-    id: 'transparency',
-    type: 'slider',
-    model: 'transparency',
-    pattern: '',
-    min: 0,
-    max: 100
-  },
-
-  {
-    name: 'title',
-    label: nls.title,
-    options: [],
-    errorMessage: [
-      {
-        type: 'required',
-        message: nls.titleRequired,
-      },
-      {
-        type: 'pattern',
-        message: nls.invalidTitle,
-      },
-    ],
-    required: true,
-    id: 'title',
-    type: 'text',
-    model: 'title',
-    pattern: "^(?=.{1,15}$)[A-Za-z][A-Za-z\' \\-]*[A-Za-z]$",
-    maxlength: 15
-  },
-  {
-    name: 'target',
-    label: nls.target,
-    options: [],
-    errorMessage: [],
-    required: false,
-    id: 'target',
-    type: 'text',
-    model: 'target',
-    pattern: '',
-    maxlength: 20
-  },
-  {
-    name: 'motivation',
-    label: nls.motivation,
-    options: [],
-    errorMessage: [
-      {
-        type: 'required',
-        message: nls.motivationRequired,
-      },
-      {
-        type: 'maxSize',
-        message: nls.maxSizeError
-      }
-    ],
-    required: true,
-    id: 'motivation',
-    type: 'file',
-    model: 'motivation',
-    pattern: '',
-    accept: ".png,.svg,.webp,.jpg,.jpeg",
-    maxSize: 100 * 1024 //100 kB
-  }
-]
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -133,7 +50,8 @@ const widgetForm = [
 })
 export class DashboardComponent {
 
-  private _app: AppService = inject(AppService);
+  private _api: ApiService = inject(ApiService);
+  private _message: MessagesService = inject(MessagesService);
 
   greeting: string = '';
   name: string = 'Fitty';
@@ -141,13 +59,18 @@ export class DashboardComponent {
   rightPanelOpen: WritableSignal<boolean> = signal(false);
   widgetFormFields: WritableSignal<FormFields[]> = signal(widgetForm);
   addWidgetData: any = null;
-  dashboardCards: WritableSignal<DashboardCards[]> = this._app.widgets;
+  dashboardCards: WritableSignal<DashboardCards[]> = signal([]);
   reorderEbabled: boolean = false;
   isModalOpen: WritableSignal<boolean> = signal(false);
   isDeleteModalOpen: WritableSignal<boolean> = signal(false);
   isEdit = new BehaviorSubject<any>(null);
 
   constructor() {
+    this.setGreeting();
+    this.isEditSubscription();
+    this.getWidgets();
+  }
+  async setGreeting() {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
     // console.log(currentHour,currentTime.getTimezoneOffset());
@@ -158,6 +81,12 @@ export class DashboardComponent {
     } else {
       this.greeting = this.nls.greeting.evening;
     }
+    let user = await this._api.local_get('user');
+    if (user) {
+      this.name = user.first_name
+    }
+  }
+  isEditSubscription() {
     this.isEdit.subscribe(value => {
       if (value) {
         widgetForm.map((el: any) => {
@@ -183,6 +112,7 @@ export class DashboardComponent {
         });
       }
     });
+
   }
   onDrop(event: CdkDragDrop<DashboardCards[]>): void {
     if (event.previousContainer === event.container) {
@@ -196,10 +126,40 @@ export class DashboardComponent {
       );
     }
   }
+  async getWidgets(): Promise<void> {
+    let result = await this._api.local_get('widgets');
+    result = result.map((item: DashboardCards) => {
+      item.to = '/logging/' + item.title.toLowerCase();
+      return item;
+    });
+    this.dashboardCards.set(result);
+  }
+  async setWidget(data: DashboardCards[]): Promise<void> {
+    await this._api.local_put('widgets', data);
+    this.getWidgets();
+    this._message.success(nls.reorderWidgetSuccess)
+  }
+  async createWidget(data: DashboardCards): Promise<void> {
+    await this._api.local_post('widgets', data);
+    this.getWidgets();
+    this._message.success(nls.addWidgetSuccess)
+  }
+  async updateWidget(data: DashboardCards): Promise<void> {
+    await this._api.local_put('widgets', data)
+    this.getWidgets();
+    this._message.success(nls.updateWidgetSuccess)
+
+  }
+  async deleteWidget(id: string): Promise<void> {
+    await this._api.local_delete('widgets', id);
+    this.getWidgets();
+    this._message.success(nls.deleteWidgetSuccess)
+
+  }
+
   enableReorder(event: MouseEvent): void {
     if (this.reorderEbabled) {
-      // console.log(this.dashboardCards());
-      this._app.setWidget(this.dashboardCards());
+      this.setWidget(this.dashboardCards());
     }
     this.reorderEbabled = !this.reorderEbabled;
   }
@@ -250,11 +210,11 @@ export class DashboardComponent {
     this.rightPanelOpen.set(false);
     if (this.isEdit.getValue()) {
       let updateData = { ...this.addWidgetData, id: this.isEdit.getValue().id };
-      this._app.updateWidget(updateData);
+      this.updateWidget(updateData);
       this.isEdit.next(null);
 
     } else {
-      this._app.createWidget(this.addWidgetData);
+      this.createWidget(this.addWidgetData);
     }
   }
   toggleModal(state: boolean) {
@@ -274,15 +234,11 @@ export class DashboardComponent {
   submitDeleteModal(state: boolean) {
     this.isDeleteModalOpen.set(state);
     this.togglePanel(false);
-    this.deleteWidget();
+    this.deleteWidget(this.isEdit.getValue().id);
+    this.isEdit.next(null);
   }
-
   editWidget(item: any) {
     this.isEdit.next(item);
     this.togglePanel(true);
-  }
-  deleteWidget() {
-    this._app.deleteWidget(this.isEdit.getValue().id);
-    this.isEdit.next(null);
   }
 }
