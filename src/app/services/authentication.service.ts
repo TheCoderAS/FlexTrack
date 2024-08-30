@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 // import {
 //   Auth,
 //   signInWithEmailAndPassword,
@@ -24,7 +24,7 @@ export class AuthenticationService {
   // private _loader: LoaderService = inject(LoaderService);
   private _api: ApiService = inject(ApiService);
   private messageService: MessagesService = inject(MessagesService);
-  currentUser: any;
+  currentUser: WritableSignal<any> = signal(null);
 
   constructor() {
     // onAuthStateChanged(this._auth, (user) => {
@@ -67,7 +67,7 @@ export class AuthenticationService {
       let currentUser = await this._api.hit('users/current', 'get');
       if (currentUser.isAuthenticated) {
         await this._api.local_post('user', currentUser.user);
-        this.currentUser = currentUser.user;
+        this.currentUser.set(currentUser.user);
         this.isAuthenticated.next(true);
         this.messageService.success(result.message);
       } else {
@@ -84,7 +84,7 @@ export class AuthenticationService {
       this.messageService.success(result.message);
       await this._api.local_post('access', result.accessToken);
       await this._api.local_post('user', result.user);
-      this.currentUser = result.user;
+      this.currentUser.set(result.user);
       this.isAuthenticated.next(true);
     } else {
       this.messageService.error(result.message);
@@ -94,12 +94,12 @@ export class AuthenticationService {
     let currentUser = await this._api.hit('users/current', 'get');
     if (currentUser.isAuthenticated) {
       await this._api.local_post('user', currentUser.user);
-      this.currentUser = currentUser.user;
+      this.currentUser.set(currentUser.user);
       this.isAuthenticated.next(true);
     } else {
       await this._api.local_delete('user');
       await this._api.local_delete('access');
-      this.currentUser = null;
+      this.currentUser.set(null);
       this.isAuthenticated.next(false);
       this.messageService.success(nls.UserSessionExpired);
     }
@@ -115,7 +115,7 @@ export class AuthenticationService {
     await this._api.local_delete('user');
     await this._api.local_delete('access');
     this.isAuthenticated.next(false);
-    this.currentUser = null;
+    this.currentUser.set(null);
     this.messageService.success(nls.logoutSuccess);
   }
 }

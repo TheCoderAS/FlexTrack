@@ -1,8 +1,56 @@
+<div class="row pt-md-3">
+  <div class="col-12 col-md-8 col-lg-6 account py-3">
+    <div>
+      <div class="text-center my-3">
+        <img src="../../../assets/images/avatar.svg" alt="User Avtar" class="avatar" />
+        <p class="h5 my-3">Aalok Kumar</p>
+      </div>
+      <div class="my-3">
+        <mat-list role="list" class="profile-item-list-container mb-2">
+          <mat-list-item role="listitem" mat-ripple *ngFor="let item of accountItems()"
+            (click)="onClickAccountItem(item.id, item.disabled)" class="profile-item-list"
+            [disabled]="item.disabled"><span class="profile-item-list-label">{{item.label}}</span></mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+    <button mat-flat-button (click)="onClickAccountItem('logout')"
+      class="w-100 bg-danger text-white py-1">{{nls.logout}}</button>
+  </div>
+</div>
 <app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
-  [modal-heading]="nls.logout" [type]="'confirm'">
+  [modal-heading]="modalHeading()" [type]="modalType()">
   <ng-template>
-    <p>{{nls.logoutText}}</p>
+    <p *ngIf="modalId()==='logout'">{{nls.logoutText}}</p>
+
+    <div *ngIf="modalId()==='view-profile'">
+      <div class="profile-detail-item">
+        <label>{{nls.fname}}</label>
+        <p>{{myProfileData().first_name}}</p>
+      </div>
+      <div class="profile-detail-item">
+        <label>{{nls.lname}}</label>
+        <p>{{myProfileData().last_name}}</p>
+      </div>
+      <div class="profile-detail-item">
+        <label>{{nls.email}}</label>
+        <p>{{myProfileData().email}}</p>
+      </div>
+      <div class="profile-detail-item">
+        <label>{{nls.phone}}</label>
+        <p>{{myProfileData().phone}}</p>
+      </div>
+      <div class="profile-detail-item">
+        <label>{{nls.verified}}?</label>
+        <p [class.small-text]="!myProfileData().verified">{{myProfileData().verified?nls.done:nls.unverified}}</p>
+      </div>
+      <div class="profile-detail-item">
+        <label>{{nls.lastLogin}}</label>
+        <p>{{moment(myProfileData().last_login).format('lll')}}</p>
+      </div>
+      <div class="profile-detail-item">
+        <label>{{nls.memberSince}}</label>
+        <p>{{moment(myProfileData().createdAt).format('lll')}}</p>
+      </div>
+    </div>
   </ng-template>
 </app-modal-window>
-
-<button (click)="toggleModal(true)">{{nls.logout}}</button>

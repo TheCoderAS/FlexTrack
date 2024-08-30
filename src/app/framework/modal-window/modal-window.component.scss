@@ -1,3 +1,5 @@
+@import "../../framework/resources/_variables.scss";
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -18,6 +20,7 @@
   background: #ECE6EE;
   box-shadow: 0 0 15px #2D0D4F90;
   z-index: 10001;
+  border-radius: $border-radius;
 
   .modal-window-heading {
     display: flex;
@@ -26,6 +29,7 @@
     background-color: white;
     padding: 0px 10px;
     height: 50px;
+    border-radius: $border-radius $border-radius 0 0;
   }
 
   .modal-window-heading-text {

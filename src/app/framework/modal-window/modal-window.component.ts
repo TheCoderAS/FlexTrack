@@ -15,7 +15,7 @@ import nls from '../resources/nls/generic';
   animations: [fadeZoomInOut]
 })
 export class ModalWindowComponent {
-  @Input() type: 'confirm' | 'info' = 'confirm';
+  @Input() type: 'confirm' | 'info' | string = 'confirm';
   @Input() isOpen = false;
   @Input('modal-heading') heading: string = '';
   @Input() showCloseButton: boolean = true;
