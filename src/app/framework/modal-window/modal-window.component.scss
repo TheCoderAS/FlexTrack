@@ -5,7 +5,7 @@
   width: 100%;
   height: 100%;
   background-color: #2D0D4F80;
-  z-index: 9998;
+  z-index: 10000;
 }
 
 .modal-window {
@@ -17,15 +17,15 @@
   width: 90%;
   background: #ECE6EE;
   box-shadow: 0 0 15px #2D0D4F90;
-  z-index: 9999;
+  z-index: 10001;
 
   .modal-window-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: white;
-    padding: 10px;
-    height: 68px;
+    padding: 0px 10px;
+    height: 50px;
   }
 
   .modal-window-heading-text {

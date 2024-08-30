@@ -2,7 +2,7 @@
 <div class="modal-window" *ngIf="isOpen" @fadeZoomInOut role="dialog" [attr.aria-label]="heading">
   <div class="modal-window-heading" *ngIf="showHeader">
     <div class="modal-window-heading-text">
-      <span class="h4" *ngIf="heading!==''">{{heading}}</span>
+      <span class="h5" *ngIf="heading!==''">{{heading}}</span>
     </div>
     <button mat-icon-button color="error" [attr.aria-label]="heading" *ngIf="showCloseButton" (click)="cancelModal()">
       <mat-icon>close</mat-icon>
@@ -15,9 +15,9 @@
     </div>
 
     <div *ngIf="type==='confirm'">
-      <div class="text-center py-3">
+      <div class="text-center pt-1">
         <mat-icon class="material-symbols-outlined">question_mark</mat-icon>
-        <p class="pt-2 m-0">{{nls.areYouSure}}</p>
+        <p class="pt-1 m-0 h6">{{nls.areYouSure}}</p>
         <ng-template [ngTemplateOutlet]="content"></ng-template>
       </div>
       <div class="d-flex gap-2 pt-3">

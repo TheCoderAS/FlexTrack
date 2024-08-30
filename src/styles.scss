@@ -19,3 +19,21 @@ body {
 .mat-mdc-form-field-subscript-wrapper {
     height: 10px !important;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #00000020;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #00000040;
+}

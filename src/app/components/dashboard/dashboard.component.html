@@ -1,5 +1,5 @@
 <div class="my-3">
-  <div class="d-flex justify-content-start align-items-center column-gap-2">
+  <div class="d-flex justify-content-start align-items-center column-gap-3">
     <div>
       <img src="../../../assets/images/woman-athlete.webp" alt="Woman Athlete" class="dashboard-header-image" />
     </div>
@@ -23,7 +23,7 @@
     <p class="h6 text-secondary text-center">{{nls.addWidgetsUsingPlusButton}}</p>
   </div>
   @if (reorderEbabled) {
-  <div class="my-dashboard-cards-container justify-content-evenly align-items-center reorder-card-container" cdkDropList
+  <div class="my-dashboard-cards-container justify-content-start align-items-center" cdkDropList
     (cdkDropListDropped)="onDrop($event)">
     <div *ngFor="let item of dashboardCards()" [class]="'my-dashboard-cards reorder-card '" cdkDrag
       cdkDragBoundary=".my-dashboard-cards-container"
@@ -80,9 +80,9 @@
       [cancel-button-title]="nls.cancel" (on-cancel)="closePanel($event)"
       (on-change)="handleFormChange($event)"></app-form>
 
-    <div class="d-flex justify-content-evenly align-items-center mt-5 flex-column" *ngIf="addWidgetData">
+    <div class="d-flex justify-content-evenly align-items-center mt-4 flex-column" *ngIf="addWidgetData">
+      <mat-divider class="w-100 mb-2"></mat-divider>
       <p>{{nls.preview}}</p>
-      <mat-divider></mat-divider>
       <div class="d-flex justify-content-evenly align-items-center w-100">
         <div class="my-dashboard-cards preview"
           [ngStyle]="{'background-color':addWidgetData.color+mapToHex(addWidgetData.transparency)}">

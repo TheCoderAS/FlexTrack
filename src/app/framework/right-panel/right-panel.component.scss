@@ -13,6 +13,8 @@
   z-index: 9999;
   background-color: #ece6ee;
   overflow-y: auto;
+  overflow-x: hidden;
+
   &.open {
     right: 0;
   }
@@ -22,8 +24,12 @@
     justify-content: space-between;
     align-items: center;
     background-color: white;
-    padding: 10px;
-    height: 68px;
+    padding: 0px 10px;
+    height: 50px;
+    position: fixed;
+    width: 100%;
+    max-width: 500px;
+    z-index: 9999;
   }
 
   .right-panel-heading-text {
@@ -33,6 +39,7 @@
 
   .right-panel-content {
     padding: 10px;
+    margin: 50px 0px;
   }
 }
 
