@@ -167,7 +167,14 @@ export class ApiService {
   }
 
   // Clear all
-  clearAll(): void {
-    this._storage.clear();
+  async local_clear(): Promise<void> {
+    for (let i = 0; i < this._storage.length; i++) {
+      const key = this._storage.key(i);
+      const user = await this.local_get('user');
+      if (key?.startsWith(`${user.email}/`)) {
+        this._storage.removeItem(key);
+        i--;
+      }
+    }
   }
 }

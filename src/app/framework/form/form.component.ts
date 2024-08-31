@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
-import nls from '../resources/nls/generic';
 
 @Component({
   selector: 'app-form',
@@ -53,7 +52,7 @@ export class FormComponent implements OnInit {
         formGroupItems[item.name] = '';
         this.uploadedFile[item.name] = item.defaultValue;
       } else {
-        formGroupItems[item.name] = item.defaultValue ? item.defaultValue : '';
+        formGroupItems[item.name] = [{ value: item.defaultValue ? item.defaultValue : '', disabled: item.disabled ? true : false }];
       }
       if (item.type === 'file') {
         this.inputFileField[item.name] = item;

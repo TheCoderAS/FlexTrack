@@ -3,7 +3,7 @@
     <div>
       <div class="text-center my-3">
         <img src="../../../assets/images/avatar.svg" alt="User Avtar" class="avatar" />
-        <p class="h5 my-3">Aalok Kumar</p>
+        <p class="h5 my-3">{{myProfileData().first_name}} {{myProfileData().last_name}}</p>
       </div>
       <div class="my-3">
         <mat-list role="list" class="profile-item-list-container mb-2">
@@ -18,9 +18,12 @@
   </div>
 </div>
 <app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
-  [modal-heading]="modalHeading()" [type]="modalType()">
+  [modal-heading]="modalHeading()" [type]="modalType()"
+  [showHeader]="modalId()==='logout' || modalId()==='view-profile' || modalId()==='reset-account'">
   <ng-template>
     <p *ngIf="modalId()==='logout'">{{nls.logoutText}}</p>
+
+    <p *ngIf="modalId()==='reset-account'">{{nls.resetText}}</p>
 
     <div *ngIf="modalId()==='view-profile'">
       <div class="profile-detail-item">
@@ -52,5 +55,49 @@
         <p>{{moment(myProfileData().createdAt).format('lll')}}</p>
       </div>
     </div>
+
+    <div *ngIf="modalId()==='about'">
+      <div>
+        <p class="h6">{{nls.aboutApp}}</p>
+        <mat-divider class="w-100 mb-2"></mat-divider>
+        <p>{{nls.aboutText1}}</p>
+      </div>
+
+      <div>
+        <mat-divider class="w-100 mb-2"></mat-divider>
+        <p class="h6">{{nls.appOwnership}}</p>
+        <p>{{nls.aboutText2}} <strong>{{nls.owner}}</strong> {{nls.aboutText3}}</p>
+        <p>{{nls.contactMessage}}</p>
+        <img src="../../../assets/images/red-heart.png" height="40px" width="40px" alt="Heart" />
+      </div>
+      <button class="w-100 mt-2" mat-flat-button (click)="toggleModal(false)">{{nls.okay}}</button>
+    </div>
+
+    <div *ngIf="modalId()==='help'">
+      <div>
+        <p class="h6">{{nls.HelpSupport}}</p>
+        <mat-divider class="w-100 mb-2"></mat-divider>
+        <p>{{nls.supportText1}}</p>
+      </div>
+      <div>
+        <p class="m-0">{{nls.supportEmail}}</p>
+        <p><a [href]="'mailto:'+nls.supportEmailValue">{{nls.supportEmailValue}}</a></p>
+      </div>
+      <button class="w-100 mt-2" mat-flat-button (click)="toggleModal(false)">{{nls.okay}}</button>
+    </div>
+
   </ng-template>
 </app-modal-window>
+
+<app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="togglePanel($event)" (onSubmit)="submitPanel($event)"
+  [panel-heading]="panelHeading()" [type]="'info'">
+  <ng-template>
+
+    <app-form *ngIf="panelId()==='change-password'" (on-submit)="submitPanel($event)"
+      [form-fields]="changePasswordFields()" [submit-button-title]="nls.save" [cancel-button-title]="nls.cancel"
+      (on-cancel)="togglePanel($event)" (on-change)="handleFormChange($event)"></app-form>
+    <app-form *ngIf="panelId()==='edit-profile'" (on-submit)="submitPanel($event)" [form-fields]="editProfileFields()"
+      [submit-button-title]="nls.save" [cancel-button-title]="nls.cancel" (on-cancel)="togglePanel($event)"
+      (on-change)="handleFormChange($event)"></app-form>
+  </ng-template>
+</app-right-panel>

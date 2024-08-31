@@ -20,7 +20,8 @@
                         *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</span>
                 </div>
             </div>
-            <div *ngIf="item.type==='password' &&item.name==='confirmpassword' && appForm.controls[item.name]?.touched ">
+            <div
+                *ngIf="item.type==='password' &&item.name==='confirmpassword' && appForm.controls[item.name]?.touched ">
                 <div *ngFor="let message of item.errorMessage">
                     <span class="text-danger error-text"
                         *ngIf="appForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</span>
