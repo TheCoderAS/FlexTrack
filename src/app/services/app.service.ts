@@ -1,7 +1,5 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardCards } from '../framework/resources/dashboard-cards';
-import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +7,6 @@ import { ApiService } from './api.service';
 export class AppService {
   private cordova: any;
   private window: Window;
-  widgets: WritableSignal<DashboardCards[]> = signal([]);
 
   constructor(private router: Router) {
     if (typeof window != "undefined") {

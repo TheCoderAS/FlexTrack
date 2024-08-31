@@ -1,10 +1,10 @@
 <form [formGroup]="appForm" (ngSubmit)="submitForm($event)" autocomplete="off">
 
-    <ng-container *ngFor="let item of formFields">
+    <ng-container *ngFor="let item of formFields; let i = index">
         <mat-form-field appearance="fill" class="w-100" *ngIf="item.type !== 'slider' && item.type !== 'file'">
             <mat-label class="app-form-label">{{item.label}}</mat-label>
-            <input [required]="item.required" matInput [name]="item.name" [id]="item.id" [type]="item.type"
-                [formControlName]="item.name" [pattern]="item.pattern"
+            <input [required]="item.required" matInput [name]="item.name" [id]="item.id?item.id:'id'+i"
+                [type]="item.type" [formControlName]="item.name" [pattern]="item.pattern?item.pattern:''"
                 *ngIf="item.type !== 'select' && item.type!=='file'" [min]="item.min" [max]="item.max"
                 [maxlength]="item.maxlength || null" />
 
@@ -62,6 +62,10 @@
             <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align"></div>
         </div>
     </ng-container>
+    <div class="d-flex justify-content-end my-2" *ngIf="dynamicFormFields.getValue().length!==0">
+        <button color="primary" mat-button (click)="toggleModal(true)"
+            type="button"><mat-icon>add</mat-icon>{{nls.addNewField}}</button>
+    </div>
     <div class="d-flex gap-2 pt-3">
         <button *ngIf="canButtonTitle" type="button" mat-flat-button class="w-100"
             (click)="cancelForm()">{{canButtonTitle}}</button>
@@ -69,3 +73,39 @@
             [disabled]="!appForm.valid">{{subButtonTitle}}</button>
     </div>
 </form>
+
+<app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" [modal-heading]="nls.addField"
+    [type]="'info'">
+    <ng-template>
+        <form [formGroup]="appAddFormFieldForm" (ngSubmit)="onSubmitAddField($event)" autocomplete="off">
+            <ng-container *ngFor="let item of addFieldFormFields; let i = index">
+                <mat-form-field appearance="fill" class="w-100">
+                    <mat-label class="app-form-label">{{item.label}}</mat-label>
+                    <input [required]="item.required" matInput [name]="item.name" [id]="'id'+i" [type]="item.type"
+                        [formControlName]="item.name" [pattern]="item.pattern?item.pattern:''"
+                        *ngIf="item.type !== 'select'" [maxlength]="item.maxlength || null" />
+
+                    <mat-select [required]="item.required" [formControlName]="item.name" *ngIf="item.type==='select'">
+                        @for(option of item.options;track option){
+                        <mat-option [value]="option.value">{{option.label}}</mat-option>
+                        }
+                    </mat-select>
+
+                    <div *ngIf="appAddFormFieldForm.controls[item.name]?.touched ">
+                        <div *ngFor="let message of item.errorMessage">
+                            <span class="text-danger error-text"
+                                *ngIf="appAddFormFieldForm.controls[item.name]?.errors?.[message.type]">{{message.message}}</span>
+                        </div>
+                    </div>
+                </mat-form-field>
+            </ng-container>
+            <div class="d-flex gap-2 pt-3">
+                <button *ngIf="canButtonTitle" type="button" mat-flat-button class="w-100"
+                    (click)="toggleModal(false)">{{canButtonTitle}}</button>
+                <button class="w-100" mat-raised-button color="primary" type="submit"
+                    [disabled]="!appAddFormFieldForm.valid">{{subButtonTitle}}</button>
+            </div>
+        </form>
+    </ng-template>
+
+</app-modal-window>

@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
   private _authService = inject(AuthenticationService);
   _appService: AppService = inject(AppService);
 
-  private bottomBarShowCase: string[] = ['/', '/account', '/reports'];
+  private bottomBarShowCase: string[] = ['/', '/account', '/reports','/add-tasks'];
   currentPage: Path = allPaths[0];
   showBottomBar: boolean = true;
   showTopBar: boolean = false;

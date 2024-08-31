@@ -26,6 +26,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { widgetForm } from './widget.resources';
 import { MessagesService } from '../../services/messages.service';
+import { FabButtonComponent } from "../../framework/fab-button/fab-button.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -43,8 +44,9 @@ import { MessagesService } from '../../services/messages.service';
     RightPanelComponent,
     FormComponent,
     MatDividerModule,
-    ModalWindowComponent
-  ],
+    ModalWindowComponent,
+    FabButtonComponent
+],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

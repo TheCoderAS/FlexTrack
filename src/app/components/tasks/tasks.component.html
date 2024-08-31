@@ -1,0 +1,17 @@
+<app-fab-button (on-click)="togglePanel(true)" />
+<app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)"
+  [panel-heading]="isEdit.getValue()?nls.editTask:nls.addTasks" [type]="'info'">
+  <ng-template>
+    <app-form [submit-button-title]="nls.okay" (on-submit)="submitPanel($event)" [dynamic-form-fields]="taskFormFields"
+      [cancel-button-title]="nls.cancel" (on-cancel)="closePanel($event)" (on-change)="handleFormChange($event)">
+    </app-form>
+  </ng-template>
+</app-right-panel>
+
+<app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
+  [modal-heading]="modalInfo()[1]" [type]="modalInfo()[2]">
+  <ng-template>
+    <p *ngIf="modalInfo()[0]==='add-edit'">{{nls.CancelAddEdit}}</p>
+  </ng-template>
+
+</app-modal-window>

@@ -37,3 +37,7 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #00000040;
 }
+
+.cdk-overlay-container {
+    z-index: 10001;
+}

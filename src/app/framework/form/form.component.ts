@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output, signal, WritableSignal } from '@angular/core';
 import { FormFields } from './form.interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
+import { BehaviorSubject } from 'rxjs';
+import { ModalWindowComponent } from "../modal-window/modal-window.component";
+import nls from '../resources/nls/generic';
+import { addFieldFormFields } from './form.resources';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-form',
@@ -21,7 +26,9 @@ import { MatSliderModule } from '@angular/material/slider';
     MatButtonModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatSliderModule
+    MatSliderModule,
+    ModalWindowComponent,
+    MatIconModule
   ],
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss',
@@ -30,12 +37,14 @@ export class FormComponent implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   private cdRef: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-  @Input('form-fields') formFields!: FormFields[];
+  @Input('form-fields') formFields: FormFields[] = [];
+  @Input('dynamic-form-fields') dynamicFormFields = new BehaviorSubject<FormFields[]>([]);
   @Output('on-submit') onSubmit = new EventEmitter();
   @Output('on-cancel') onCancel = new EventEmitter();
   @Input('submit-button-title') subButtonTitle!: string;
   @Input('cancel-button-title') canButtonTitle!: string;
   @Output('on-change') onChange = new EventEmitter();
+  @Input('type') formType: 'dynamic' | 'static' = 'static';
 
   thumbLabel(value: number): string {
     return `${value}%`;
@@ -43,11 +52,40 @@ export class FormComponent implements OnInit {
   inputFileField: any = {};
   inputFileMaxSizeError: any = {};
   appForm!: FormGroup;
+  appAddFormFieldForm!: FormGroup;
   uploadedFile: any = {};
+  isModalOpen: WritableSignal<boolean> = signal(false);
+  nls = nls;
+  addFieldFormFields: FormFields[] = addFieldFormFields;
 
   ngOnInit(): void {
+    this.subscribeDynamicForm();
+    this.buildAddFormFieldForm();
+    this.cdRef.detectChanges();
+    this.subscribeValueChanges();
+  }
+  buildAddFormFieldForm() {
     let formGroupItems: any = {};
-    this.formFields.forEach((item) => {
+    addFieldFormFields.forEach((item) => {
+      formGroupItems[item.name] = item.defaultValue ? item.defaultValue : '';
+    });
+
+    this.appAddFormFieldForm = this.fb.group(formGroupItems);
+  }
+  subscribeDynamicForm() {
+    if (this.formFields.length) {
+      this.buildForm(this.formFields);
+      return;
+    }
+    this.dynamicFormFields.subscribe((value) => {
+      this.formFields = value;
+      this.buildForm(value);
+      return;
+    })
+  }
+  buildForm(formFields: FormFields[]) {
+    let formGroupItems: any = {};
+    formFields.forEach((item) => {
       if (item.type === 'file') {
         formGroupItems[item.name] = '';
         this.uploadedFile[item.name] = item.defaultValue;
@@ -63,8 +101,8 @@ export class FormComponent implements OnInit {
     });
 
     this.appForm = this.fb.group(formGroupItems);
-    this.cdRef.detectChanges();
-    //Emit for first time if there is default value and then subscribe it
+  }
+  subscribeValueChanges() {
     this.onChange.emit({ ...this.appForm.value, ...this.uploadedFile });
     this.appForm.valueChanges.subscribe((value) => {
       if (value.password && value.confirmpassword) {
@@ -147,5 +185,30 @@ export class FormComponent implements OnInit {
     let failpercent = this.getPasswordStrengthNum(name);
     if (failpercent <= 80) return 'warn';
     else return 'primary';
+  }
+
+  //dynamic form implemetation
+  toggleModal(state: boolean) {
+    this.isModalOpen.set(state);
+    if (state) {
+      this.buildAddFormFieldForm()
+    }
+  }
+  onSubmitAddField(event: SubmitEvent): void {
+    event.preventDefault();
+    this.toggleModal(false);
+    let data = this.appAddFormFieldForm.value;
+    let prevFields = this.dynamicFormFields.getValue();
+    prevFields.push({
+      name: data.fieldName.replace(' ', '-').toLowerCase().trim(),
+      label: data.fieldName.trim(),
+      type: data.fieldType.toLowerCase(),
+      required: true
+    });
+    prevFields.map((item: any) => {
+      item.defaultValue = this.appForm.value[item.name]
+      return item;
+    })
+    this.dynamicFormFields.next(prevFields);
   }
 }

@@ -12,12 +12,19 @@ export const navItemsList: NavItem[] = [
     id: 'home-link-navbar',
     to: '/',
   },
-  {
-    name: 'Reports',
-    icon: 'data_usage',
-    id: 'report-link-navbar',
-    to: '/reports',
+  // {
+  //   name: 'Reports',
+  //   icon: 'data_usage',
+  //   id: 'report-link-navbar',
+  //   to: '/reports',
+  // },
+    {
+    name: 'Tasks',
+    icon: 'add_task',
+    id: 'add-tasks-link-navbar',
+    to: '/add-tasks',
   },
+
   {
     name: 'Schedule',
     icon: 'calendar_month',
@@ -46,6 +53,11 @@ export const allPaths:Path[]=[
   {
     name: 'Reports',
     to: '/reports',
+    subname:[]
+  },
+  {
+    name: 'Tasks',
+    to: '/add-tasks',
     subname:[]
   },
   {

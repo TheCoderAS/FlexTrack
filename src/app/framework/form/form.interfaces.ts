@@ -1,13 +1,13 @@
 export interface FormFields {
   name: string;
   label: string;
-  errorMessage: any[];
+  errorMessage?: any[];
   required: boolean;
-  id: string;
+  id?: string;
   type: string;
-  model: string;
-  pattern: string;
-  options: any[];
+  model?: string;
+  pattern?: string;
+  options?: any[];
   defaultValue?: string | '';
   min?: number;
   max?: number;

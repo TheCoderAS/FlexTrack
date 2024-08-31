@@ -63,15 +63,7 @@
   </div>
   }
 </div>
-<div class="add-fab-button">
-  <div class="container">
-    <div class="d-flex justify-content-end align-items-center px-3">
-      <button mat-fab color="primary" aria-label="Add Widget" (click)="togglePanel(true)">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-  </div>
-</div>
+<app-fab-button (on-click)="togglePanel(true)" />
 
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)" (onSubmit)="submitPanel($event)"
   [panel-heading]="isEdit.getValue()?nls.editWidget:nls.addWidget" [type]="'info'">
