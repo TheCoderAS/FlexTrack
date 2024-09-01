@@ -125,16 +125,20 @@ export class FormComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (inputFile && input.files && input.files.length) {
       const file = input.files[0];
-      if (file.size <= inputFile?.maxSize) {
-        this.uploadedFile[inputFile.name] = file;
-        this.appForm.controls[inputFile.name].updateValueAndValidity();
-        this.inputFileMaxSizeError[inputFile.name] = '';
+      if (inputFile?.maxSize) {
+        if (file.size <= inputFile?.maxSize) {
+          this.uploadedFile[inputFile.name] = file;
+          this.appForm.controls[inputFile.name].updateValueAndValidity();
+          this.inputFileMaxSizeError[inputFile.name] = '';
 
+        } else {
+          this.appForm.controls[inputFile.name].setValue('');
+          let errMsg = inputFile.errorMessage.find((item: any) => item.type === 'maxSize').message;
+          this.inputFileMaxSizeError[inputFile.name] = errMsg + (inputFile.maxSize / 1024) + "kB.";
+          this.appForm.controls[inputFile.name].setErrors({ maxSize: true });
+        }
       } else {
-        this.appForm.controls[inputFile.name].setValue('');
-        let errMsg = inputFile.errorMessage.find((item: any) => item.type === 'maxSize').message;
-        this.inputFileMaxSizeError[inputFile.name] = errMsg + (inputFile.maxSize / 1024) + "kB.";
-        this.appForm.controls[inputFile.name].setErrors({ maxSize: true });
+        this.uploadedFile[inputFile.name] = file;
       }
     }
   }

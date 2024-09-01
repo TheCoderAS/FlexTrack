@@ -45,6 +45,7 @@ export const accountItems = [
   { id: 'change-password', label: nls.ChangePassword },
   { id: 'my-plan', label: nls.MyPlan, disabled: true },
   { id: 'reset-account', label: nls.resetAccount },
+  { id: 'backup-data', label: nls.backupData },
   { id: 'help', label: nls.HelpSupport },
   { id: 'about', label: nls.About },
 ]
@@ -120,4 +121,24 @@ export const editProfileFields: FormFields[] = [
   }
 
 
+]
+
+export const backupDataFormFields: FormFields[] = [
+  {
+    name: 'backup-file',
+    label: `${nls.backupFile} (${nls.backupFileName})`,
+    options: [],
+    errorMessage: [
+      {
+        type: 'required',
+        message: nls.backupFileIsRequired,
+      }
+    ],
+    required: true,
+    id: 'backup-file',
+    type: 'file',
+    model: 'backup-file',
+    pattern: '',
+    accept: ".bin",
+  }
 ]

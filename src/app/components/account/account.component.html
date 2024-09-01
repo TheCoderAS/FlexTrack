@@ -85,7 +85,12 @@
       </div>
       <button class="w-100 mt-2" mat-flat-button (click)="toggleModal(false)">{{nls.okay}}</button>
     </div>
-
+    <div *ngIf="modalId()==='backup-data'">
+      <button class="w-100 mt-2" mat-flat-button (click)="backupData()" color="primary">{{nls.backupMyData}}</button>
+      <button class="w-100 mt-2" mat-flat-button (click)="restorePanelOpen()"
+        color="accent">{{nls.importMyData}}</button>
+      <button class="w-100 mt-2" mat-flat-button (click)="toggleModal(false)">{{nls.cancel}}</button>
+    </div>
   </ng-template>
 </app-modal-window>
 
@@ -98,6 +103,9 @@
       (on-cancel)="togglePanel($event)" (on-change)="handleFormChange($event)"></app-form>
     <app-form *ngIf="panelId()==='edit-profile'" (on-submit)="submitPanel($event)" [form-fields]="editProfileFields()"
       [submit-button-title]="nls.save" [cancel-button-title]="nls.cancel" (on-cancel)="togglePanel($event)"
+      (on-change)="handleFormChange($event)"></app-form>
+    <app-form *ngIf="panelId()==='backup-data'" (on-submit)="submitPanel($event)" [form-fields]="backupDataFormFields()"
+      [submit-button-title]="nls.import" [cancel-button-title]="nls.cancel" (on-cancel)="togglePanel($event)"
       (on-change)="handleFormChange($event)"></app-form>
   </ng-template>
 </app-right-panel>

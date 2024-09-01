@@ -8,6 +8,20 @@ const nls = {
   fieldName: "Field Name",
   fieldType: "Field Type",
   FieldNameInvlaid: "Alpbhabets with spaces are allowed and no trailing space is allowed",
-  addNewField:"Add Field"
+  addNewField: "Add Field",
+  resolveError: "Failed to resolve filesystem",
+  createBackupError: "Failed to create backup",
+  createBackupSuccess: "Backup created successfully",
+  saveBackupError: "Failed to save backup",
+  backupFileName: "fitness-tracker.backup.bin",
+  backupMyData: "Backup my data",
+  importMyData: "Restore from backup",
+  import: "Import",
+  backupFile: "Select Backup File",
+  backupFileIsRequired: "Please upload the backup file.",
+  readBackupFileError: "Cannot read backup file.",
+  restoreFromBackupSuccessful: "Restore from backup successfully",
+  parseBackupFileError: "Backup file is invalid."
+
 }
 export default nls;

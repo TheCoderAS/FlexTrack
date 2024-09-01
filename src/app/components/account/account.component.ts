@@ -11,7 +11,7 @@ import moment from 'moment';
 import { RightPanelComponent } from "../../framework/right-panel/right-panel.component";
 import { FormComponent } from "../../framework/form/form.component";
 import { FormFields } from '../../framework/form/form.interfaces';
-import { accountItems, chnagePasswordFields, editProfileFields } from './account.resources';
+import { accountItems, backupDataFormFields, chnagePasswordFields, editProfileFields } from './account.resources';
 import { ApiService } from '../../services/api.service';
 import { MessagesService } from '../../services/messages.service';
 
@@ -41,7 +41,7 @@ export class AccountComponent {
   panelHeading: WritableSignal<string> = signal('');
   changePasswordFields: WritableSignal<FormFields[]> = signal(chnagePasswordFields);
   editProfileFields: WritableSignal<FormFields[]> = signal(editProfileFields);
-
+  backupDataFormFields: WritableSignal<FormFields[]> = signal(backupDataFormFields)
   constructor() {
     this.getMyProfileData();
   }
@@ -109,7 +109,23 @@ export class AccountComponent {
         this.toggleModal(true);
         break;
       }
+      case 'backup-data': {
+        this.modalType.set('info');
+        this.modalId.set(id);
+        this.toggleModal(true);
+        break;
+      }
     }
+  }
+  async backupData() {
+    this.toggleModal(false);
+    await this._api.backupData();
+  }
+  restorePanelOpen() {
+    this.toggleModal(false);
+    this.panelHeading.set(nls.importMyData);
+    this.panelId.set('backup-data');
+    this.togglePanel(true);
   }
   toggleModal(state: boolean) {
     this.isModalOpen.set(state);
@@ -129,6 +145,7 @@ export class AccountComponent {
       case 'reset-account': {
         await this._api.local_clear();
         this.toggleModal(false);
+        break;
       }
     }
 
@@ -175,6 +192,12 @@ export class AccountComponent {
         }
         break;
       }
+      case 'backup-data': {
+        await this._api.restoreBackupData(data['backup-file']);
+        this.togglePanel(false)
+        break;
+      }
+
       default:
         break;
     }

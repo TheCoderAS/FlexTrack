@@ -40,6 +40,7 @@ const nls = {
   supportEmail: "Mail us at:",
   supportEmailValue: "support@websiterahouse.com",
   resetAccount:"Reset Account",
-  resetText:"Your all data including widgets, schedules, reports, and logs will be cleared."
+  resetText:"Your all data including widgets, schedules, reports, and logs will be cleared.",
+  backupData:"Backup & Restore Data"
 }
 export default nls;
