@@ -125,6 +125,7 @@ export class FormComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (inputFile && input.files && input.files.length) {
       const file = input.files[0];
+      // console.log(file);
       if (inputFile?.maxSize) {
         if (file.size <= inputFile?.maxSize) {
           this.uploadedFile[inputFile.name] = file;

@@ -46,7 +46,7 @@ import { FabButtonComponent } from "../../framework/fab-button/fab-button.compon
     MatDividerModule,
     ModalWindowComponent,
     FabButtonComponent
-],
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -176,14 +176,18 @@ export class DashboardComponent {
   convertToBlob(file: any): Promise<string> {
     return new Promise((resolve, reject) => {
       if (!file) {
+        // console.log("before reject")
+
         reject("No file provided");
         return;
       }
 
       const reader = new FileReader();
+      // console.log("after reader declare")
 
       reader.onload = () => {
         const blob = reader.result as string;
+        // console.log("before resolve", blob)
         resolve(blob);
       };
 
@@ -191,14 +195,17 @@ export class DashboardComponent {
         reject("Error reading file");
       };
 
+      // console.log("befrore reading as url", file)
       reader.readAsDataURL(file);
     });
   }
   async handleFormChange(data: any) {
     this.addWidgetData = data;
-
-    if (this.addWidgetData.motivation && this.addWidgetData.motivation instanceof File) {
+    // console.log("before converting blob condition", this.addWidgetData.motivation);
+    if (this.addWidgetData.motivation && typeof this.addWidgetData.motivation === 'object') {
+      // console.log("before converting blob", this.addWidgetData.motivation);
       const blob = await this.convertToBlob(this.addWidgetData.motivation);
+      // console.log(blob);
       this.addWidgetData.motivation = blob;
     }
   }

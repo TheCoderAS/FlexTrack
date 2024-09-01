@@ -88,7 +88,7 @@ export class ApiService {
         return { message: "Added successfully in storage.", success: true };
 
       default:
-        console.log("No default action configured.")
+        // console.log("No default action configured.")
     }
 
   }
@@ -215,7 +215,7 @@ export class ApiService {
     dirEntry.getDirectory('Download', { create: true, exclusive: false }, (dirEntry: any) => {
       dirEntry.getFile(fileName, { create: true, exclusive: false }, (fileEntry: any) => {
         this.writeFile(fileEntry, dataObj);
-        console.log(fileEntry, dataObj)
+        // console.log(fileEntry, dataObj)
       }, (error: any) => {
         this._message.error(nls.createBackupError)
       });
