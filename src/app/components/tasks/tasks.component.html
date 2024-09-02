@@ -1,9 +1,27 @@
-<app-fab-button (on-click)="togglePanel(true)" />
+<div class="py-2 d-flex flex-column gap-2">
+  <app-form [submit-button-title]="nls.okay" [submittable]="false" (on-change)="handleFormChange($event)"
+    [form-fields]="widgetSelectFormFields.getValue()" *ngIf="widgetSelectFormFields.getValue().length">
+  </app-form>
+
+  <div class="task-item p-2 bg-white" *ngFor="let item of tasksList(); let index=index;" mat-ripple
+    (click)="onClickTaskItem(item)">
+    <div class="task-content">
+      <p class="task-name m-0">{{item.formData.taskName}}</p>
+      <p class="task-description m-0">{{item.formData.taskDescription}}</p>
+    </div>
+  </div>
+  <div *ngIf="!tasksList().length">
+    <p class="text-center text-secondary">{{nls.notasksFound}}</p>
+  </div>
+</div>
+
+
+<app-fab-button (on-click)="createTask()" />
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)"
   [panel-heading]="isEdit.getValue()?nls.editTask:nls.addTasks" [type]="'info'">
   <ng-template>
     <app-form [submit-button-title]="nls.okay" (on-submit)="submitPanel($event)" [dynamic-form-fields]="taskFormFields"
-      [cancel-button-title]="nls.cancel" (on-cancel)="closePanel($event)" (on-change)="handleFormChange($event)">
+      [cancel-button-title]="nls.cancel" (on-cancel)="closePanel($event)">
     </app-form>
   </ng-template>
 </app-right-panel>
@@ -13,5 +31,4 @@
   <ng-template>
     <p *ngIf="modalInfo()[0]==='add-edit'">{{nls.CancelAddEdit}}</p>
   </ng-template>
-
 </app-modal-window>

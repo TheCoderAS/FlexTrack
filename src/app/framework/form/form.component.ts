@@ -45,6 +45,7 @@ export class FormComponent implements OnInit {
   @Input('cancel-button-title') canButtonTitle!: string;
   @Output('on-change') onChange = new EventEmitter();
   @Input('type') formType: 'dynamic' | 'static' = 'static';
+  @Input('submittable') submittable: boolean = true;
 
   thumbLabel(value: number): string {
     return `${value}%`;
@@ -149,6 +150,9 @@ export class FormComponent implements OnInit {
     let data = {
       ...this.appForm.value,
       ...this.uploadedFile
+    }
+    if (this.dynamicFormFields.getValue().length!==0) {
+      data = { formData: data, formFields: this.formFields }
     }
     this.onSubmit.emit(data);
   }

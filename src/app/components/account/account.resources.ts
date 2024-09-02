@@ -139,6 +139,6 @@ export const backupDataFormFields: FormFields[] = [
     type: 'file',
     model: 'backup-file',
     pattern: '',
-    accept: ".bin",
+    accept: ".bak",
   }
 ]

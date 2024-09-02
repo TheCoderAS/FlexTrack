@@ -7,6 +7,7 @@ const nls = {
   CancelAddHeader: "Add Task",
   SelectedWidget: "Select Widget",
   taskName: "Task Name",
-  taskDescription: "Task Description"
+  taskDescription: "Task Description",
+  notasksFound:"No tasks found. Use plus button to add a task."
 }
 export default nls;

@@ -1,0 +1,13 @@
+@import "../../framework/resources/_variables.scss";
+
+.task-item {
+  border-radius: $border-radius !important;
+
+  .task-name {
+    font-weight: 500;
+  }
+
+  .task-description {
+    font-size: 12px;
+  }
+}

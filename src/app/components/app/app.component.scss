@@ -9,6 +9,10 @@
   overflow-x: hidden;
 }
 
+.with_status {
+  height: calc(100vh - $bottom-bar-height - $status-bar-height) !important;
+}
+
 @media only screen and (max-width: 600px) {
   .my_status {
     padding-top: $status-bar-height;

@@ -13,7 +13,7 @@ const nls = {
   createBackupError: "Failed to create backup",
   createBackupSuccess: "Backup created successfully",
   saveBackupError: "Failed to save backup",
-  backupFileName: "fitness-tracker.backup.bin",
+  backupFileName: "fitness-tracker.bak",
   backupMyData: "Backup my data",
   importMyData: "Restore from backup",
   import: "Import",

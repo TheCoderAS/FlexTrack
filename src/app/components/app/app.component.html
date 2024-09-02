@@ -1,6 +1,6 @@
 <div [class.my_status]="_appService.getCordova()">
     <app-navbar />
-    <div class="container app-container custom-scrollbar">
+    <div class="container app-container custom-scrollbar" [class.with_status]="_appService.getCordova()">
         <router-outlet />
     </div>
 </div>
