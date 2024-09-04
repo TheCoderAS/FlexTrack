@@ -13,6 +13,7 @@ import { ModalWindowComponent } from "../modal-window/modal-window.component";
 import nls from '../resources/nls/generic';
 import { addFieldFormFields } from './form.resources';
 import { MatIconModule } from '@angular/material/icon';
+import { MatRippleModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-form',
@@ -28,7 +29,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatSliderModule,
     ModalWindowComponent,
-    MatIconModule
+    MatIconModule,
+    MatRippleModule
   ],
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss',
@@ -151,7 +153,7 @@ export class FormComponent implements OnInit {
       ...this.appForm.value,
       ...this.uploadedFile
     }
-    if (this.dynamicFormFields.getValue().length!==0) {
+    if (this.dynamicFormFields.getValue().length !== 0) {
       data = { formData: data, formFields: this.formFields }
     }
     this.onSubmit.emit(data);
@@ -203,6 +205,18 @@ export class FormComponent implements OnInit {
       this.buildAddFormFieldForm()
     }
   }
+  deleteAddedField(data: any) {
+    // console.log(data);
+    let prevFields = this.dynamicFormFields.getValue();
+    let newFields = prevFields.filter((item: any) => {
+      return item.name !== data.name
+    });
+    newFields.map((item: any) => {
+      item.defaultValue = this.appForm.value[item.name]
+      return item;
+    })
+    this.dynamicFormFields.next(newFields);
+  }
   onSubmitAddField(event: SubmitEvent): void {
     event.preventDefault();
     this.toggleModal(false);
@@ -212,7 +226,8 @@ export class FormComponent implements OnInit {
       name: data.fieldName.replace(' ', '-').toLowerCase().trim(),
       label: data.fieldName.trim(),
       type: data.fieldType.toLowerCase(),
-      required: true
+      required: true,
+      deletable: true
     });
     prevFields.map((item: any) => {
       item.defaultValue = this.appForm.value[item.name]

@@ -63,6 +63,8 @@ export class CordovaService {
           if (!status.hasPermission) {
             // Permission denied, direct user to settings
             this.showPermissionDeniedAlert();
+          } else {
+            storageOpration();
           }
         });
       } else {
@@ -74,7 +76,7 @@ export class CordovaService {
 
   // Show a message to the user to manually enable permission
   showPermissionDeniedAlert() {
-    if (confirm("Storage permission is required to create a backup. Please enable it from settings.")) {
+    if (confirm("Storage permission is required to create a backup. Please enable it from settings and try again.")) {
       this.openAppSettings();
     }
   }

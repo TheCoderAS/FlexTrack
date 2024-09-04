@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { ApiService } from '../../services/api.service';
 import { MessagesService } from '../../services/messages.service';
 import { MatRippleModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import moment from 'moment';
 
 export interface TaskItem {
   name: string;
@@ -20,7 +22,7 @@ export interface TaskItem {
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [FabButtonComponent, FormComponent, RightPanelComponent, ModalWindowComponent, CommonModule, MatButtonModule, MatRippleModule],
+  imports: [FabButtonComponent, FormComponent, RightPanelComponent, ModalWindowComponent, CommonModule, MatButtonModule, MatRippleModule, MatIconModule],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.scss'
 })
@@ -28,6 +30,7 @@ export class TasksComponent implements OnInit {
   _api: ApiService = inject(ApiService);
   _message: MessagesService = inject(MessagesService);
 
+  moment = moment;
   nls = nls;
   rightPanelOpen: WritableSignal<boolean> = signal(false);
   isModalOpen: WritableSignal<boolean> = signal(false);
@@ -56,9 +59,11 @@ export class TasksComponent implements OnInit {
     this.widgetSelectFormFields.next([widgetemp])
   }
   async getInitialFormFields(): Promise<FormFields[]> {
+    let options = await this.buildWidgetOptions();
+    // console.log(this.selectedWidget());
     return [
       {
-        name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: await this.buildWidgetOptions()
+        name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: options, defaultValue: this.selectedWidget() ? this.selectedWidget().widgetId : options[0].label
       },
       {
         name: 'taskName', label: nls.taskName, type: 'text', required: true,
@@ -93,6 +98,8 @@ export class TasksComponent implements OnInit {
   }
   async submitPanel(data: any): Promise<void> {
     //do something
+    // console.log(data, this.selelctedTask());
+
     let result;
     if (this.selelctedTask()) {
       data.id = this.selelctedTask();
@@ -112,6 +119,20 @@ export class TasksComponent implements OnInit {
     }
   }
 
+  async copyEditAdd(item: any) {
+    this.isEdit.next(false);
+    this.selelctedTask.set('');
+    this.togglePanel(true);
+    let fields = item.formFields;
+    fields.map(async (field: any) => {
+      field.defaultValue = item.formData[field.name];
+      if (field.type === 'select') {
+        field.options = await this.buildWidgetOptions()
+      }
+      return field;
+    });
+    this.taskFormFields.next(fields)
+  }
   async createTask() {
     this.togglePanel(true);
     this.isEdit.next(false);
@@ -131,12 +152,22 @@ export class TasksComponent implements OnInit {
     });
     this.taskFormFields.next(fields)
   }
+  deleteSelectedTask() {
+    this.isModalOpen.set(true);
+    this.modalInfo.set(['delete-task', nls.deleteTask, 'confirm']);
+  }
   toggleModal(state: boolean) {
     this.isModalOpen.set(state);
   }
-  submitModal(data: any) {
-
+  async submitModal(data: any) {
     if (this.modalInfo()[0] === 'add-edit') {
+      this.togglePanel(false);
+    } else if (this.modalInfo()[0] === 'delete-task') {
+      // console.log(this.selelctedTask());
+      let result = await this._api.local_delete('tasks', this.selelctedTask());
+      this._message.success(result.message);
+      this.handleFormChange(this.selectedWidget());
+      this.selelctedTask.set('');
       this.togglePanel(false);
     }
     this.toggleModal(false);

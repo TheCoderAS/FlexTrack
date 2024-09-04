@@ -16,5 +16,6 @@ export interface FormFields {
   accept?: string,
   maxSize?: number,
   matching?: boolean,
-  disabled?: boolean
+  disabled?: boolean,
+  deletable?: boolean
 }

@@ -2,6 +2,7 @@ const nls = {
   okay: "Okay",
   cancel: "Cancel",
   save: 'Save',
+  delete: "Delete",
   areYouSure: "Are you sure?",
   addField: "Add new Form Field",
   AddField: "Add task field",

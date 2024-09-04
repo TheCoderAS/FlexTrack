@@ -3,11 +3,19 @@
     [form-fields]="widgetSelectFormFields.getValue()" *ngIf="widgetSelectFormFields.getValue().length">
   </app-form>
 
-  <div class="task-item p-2 bg-white" *ngFor="let item of tasksList(); let index=index;" mat-ripple
-    (click)="onClickTaskItem(item)">
-    <div class="task-content">
+  <div class="task-item p-2 bg-white" *ngFor="let item of tasksList(); let index=index;">
+    <div class="task-content" (click)="onClickTaskItem(item)" mat-ripple>
       <p class="task-name m-0">{{item.formData.taskName}}</p>
       <p class="task-description m-0">{{item.formData.taskDescription}}</p>
+      <div class="task-timestamp">
+        <p class="item text-muted m-0"><mat-icon class="icon">note_add</mat-icon> {{moment(item.createdAt).format('L')}}
+          {{moment(item.createdAt).format('LT')}}</p>
+        <p class="item text-muted m-0"><mat-icon class="icon">edit_document</mat-icon> {{moment(item.createdAt).format('L')}}
+          {{moment(item.createdAt).format('LT')}}</p>
+      </div>
+    </div>
+    <div class="task-duplicate" mat-ripple (click)="copyEditAdd(item)">
+      <mat-icon>content_copy</mat-icon>
     </div>
   </div>
   <div *ngIf="!tasksList().length">
@@ -23,6 +31,8 @@
     <app-form [submit-button-title]="nls.okay" (on-submit)="submitPanel($event)" [dynamic-form-fields]="taskFormFields"
       [cancel-button-title]="nls.cancel" (on-cancel)="closePanel($event)">
     </app-form>
+    <button *ngIf="isEdit.getValue()" class="w-100 mt-3" mat-flat-button color="accent" (click)="deleteSelectedTask()"
+      type="button">{{nls.delete}}</button>
   </ng-template>
 </app-right-panel>
 
@@ -30,5 +40,6 @@
   [modal-heading]="modalInfo()[1]" [type]="modalInfo()[2]">
   <ng-template>
     <p *ngIf="modalInfo()[0]==='add-edit'">{{nls.CancelAddEdit}}</p>
+    <p *ngIf="modalInfo()[0]==='delete-task'">{{nls.deleteTaskMessage}}</p>
   </ng-template>
 </app-modal-window>

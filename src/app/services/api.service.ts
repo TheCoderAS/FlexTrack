@@ -79,6 +79,8 @@ export class ApiService {
           }
           value.order = newData.length + 1;
           value.id = uuidv4();
+          value.createdAt = Date.now();
+          value.updatedAt = Date.now();
           newData.push(value);
           this._storage.setItem(this.getSavingKey(key), JSON.stringify(newData));
           return { message: "Added successfully in storage.", success: true };
@@ -97,7 +99,14 @@ export class ApiService {
   }
   async local_get(key: string): Promise<any> {
     switch (key) {
-      case 'tasks':
+      case 'tasks': {
+        let item = this._storage.getItem(this.getSavingKey(key));
+        let parsedItem = item ? JSON.parse(item) : [];
+        parsedItem.sort((a: any, b: any) => {
+          return b.updatedAt - a.updatedAt;
+        })
+        return parsedItem;
+      }
       case 'widgets': {
         let item = this._storage.getItem(this.getSavingKey(key));
         let parsedItem = item ? JSON.parse(item) : [];
@@ -132,6 +141,7 @@ export class ApiService {
           let updatedData = oldData?.map((item: any) => {
             if (item.id === value.id) {
               item = value;
+              item.updatedAt = Date.now();
             }
             return item;
           });
@@ -144,8 +154,9 @@ export class ApiService {
   }
 
   // Delete
-  async local_delete(key: string, data: any = null): Promise<void> {
+  async local_delete(key: string, data: any = null): Promise<any> {
     switch (key) {
+      case 'tasks':
       case 'widgets': {
         let oldData: any = this._storage.getItem(this.getSavingKey(key));
         oldData = oldData ? JSON.parse(oldData) : [];
@@ -153,7 +164,7 @@ export class ApiService {
           return item.id !== data;
         });
         this._storage.setItem(this.getSavingKey(key), JSON.stringify(newdata));
-        return;
+        return { message: "Deleted item from the storage.", success: true };
       }
       case 'user':
       case 'access': {
