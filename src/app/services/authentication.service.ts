@@ -60,6 +60,7 @@ export class AuthenticationService {
   //   }
   // }
   async signupWithUserPass(data: AuthUserCred): Promise<void> {
+    data.email = data.email.toLowerCase();
     let result: any = await this._api.hit('users/signup', 'post', data);
     // console.log(result);
     if (result.success) {
@@ -78,6 +79,7 @@ export class AuthenticationService {
     }
   }
   async loginWithUserPass(data: AuthUserCred): Promise<void> {
+    data.email = data.email.toLowerCase();
     let result: any = await this._api.hit('users/signin', 'post', data);
 
     if (result.success) {
