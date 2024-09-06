@@ -18,7 +18,7 @@ export const navItemsList: NavItem[] = [
   //   id: 'report-link-navbar',
   //   to: '/reports',
   // },
-    {
+  {
     name: 'Tasks',
     icon: 'add_task',
     id: 'add-tasks-link-navbar',
@@ -29,7 +29,7 @@ export const navItemsList: NavItem[] = [
     name: 'Schedule',
     icon: 'calendar_month',
     id: 'schedule-link-navbar',
-    to: '/schedule',
+    to: '/add-schedules',
   },
   {
     name: 'Account',
@@ -39,50 +39,55 @@ export const navItemsList: NavItem[] = [
   },
 ];
 
-export interface Path{
-  to:string;
-  subname:string[];
-  name:string;
+export interface Path {
+  to: string;
+  subname: string[];
+  name: string;
 }
-export const allPaths:Path[]=[
+export const allPaths: Path[] = [
   {
     name: 'Home',
     to: '/',
-    subname:[]
+    subname: []
   },
   {
     name: 'Reports',
     to: '/reports',
-    subname:[]
+    subname: []
   },
   {
     name: 'Tasks',
     to: '/add-tasks',
-    subname:[]
+    subname: []
+  },
+  {
+    name: 'Schedules',
+    to: '/add-schedules',
+    subname: []
   },
   {
     name: 'Account',
     to: '/account',
-    subname:[]
+    subname: []
   },
   {
     name: 'Logging',
     to: '/logging/meal',
-    subname:['Meal']
+    subname: ['Meal']
   },
   {
     name: 'Logging',
     to: '/logging/exercise',
-    subname:['Exercise']
+    subname: ['Exercise']
   },
   {
     name: 'Logging',
     to: '/logging/water',
-    subname:['Water']
+    subname: ['Water']
   },
   {
     name: 'Logging',
     to: '/logging/sleep',
-    subname:['Sleep']
+    subname: ['Sleep']
   }
 ]
