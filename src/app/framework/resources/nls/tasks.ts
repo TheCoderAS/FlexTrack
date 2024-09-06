@@ -12,6 +12,9 @@ const nls = {
   taskDescription: "Task Description",
   notasksFound: "No tasks found. Use plus button to add a task.",
   created: "Added:",
-  updated: "Edited:"
+  updated: "Edited:",
+  AddTaskItem: "Add a Task Item",
+  EditTaskItem: "Edit Task Item",
+  createTask: "Create Task"
 }
 export default nls;

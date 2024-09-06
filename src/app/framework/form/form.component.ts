@@ -49,9 +49,6 @@ export class FormComponent implements OnInit {
   @Input('type') formType: 'dynamic' | 'static' = 'static';
   @Input('submittable') submittable: boolean = true;
 
-  thumbLabel(value: number): string {
-    return `${value}%`;
-  }
   inputFileField: any = {};
   inputFileMaxSizeError: any = {};
   appForm!: FormGroup;
@@ -66,6 +63,9 @@ export class FormComponent implements OnInit {
     this.buildAddFormFieldForm();
     this.cdRef.detectChanges();
     this.subscribeValueChanges();
+  }
+  thumbLabel(value: number): string {
+    return `${value}%`;
   }
   buildAddFormFieldForm() {
     let formGroupItems: any = {};
@@ -107,6 +107,7 @@ export class FormComponent implements OnInit {
   }
   subscribeValueChanges() {
     this.onChange.emit({ ...this.appForm.value, ...this.uploadedFile });
+    // console.log(this.appForm)
     this.appForm.valueChanges.subscribe((value) => {
       if (value.password && value.confirmpassword) {
         this.passwordMatching(value.password, value.confirmpassword)
@@ -146,7 +147,6 @@ export class FormComponent implements OnInit {
       }
     }
   }
-
   submitForm(event: SubmitEvent): void {
     event.preventDefault();
     let data = {
@@ -197,8 +197,6 @@ export class FormComponent implements OnInit {
     if (failpercent <= 80) return 'warn';
     else return 'primary';
   }
-
-  //dynamic form implemetation
   toggleModal(state: boolean) {
     this.isModalOpen.set(state);
     if (state) {

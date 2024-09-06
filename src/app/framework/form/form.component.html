@@ -106,10 +106,9 @@
         </mat-form-field>
       </ng-container>
       <div class="d-flex gap-2 pt-3">
-        <button *ngIf="canButtonTitle" type="button" mat-flat-button class="w-100"
-          (click)="toggleModal(false)">{{canButtonTitle}}</button>
+        <button type="button" mat-flat-button class="w-100" (click)="toggleModal(false)">{{nls.cancel}}</button>
         <button class="w-100" mat-raised-button color="primary" type="submit"
-          [disabled]="!appAddFormFieldForm.valid">{{subButtonTitle}}</button>
+          [disabled]="!appAddFormFieldForm.valid">{{nls.okay}}</button>
       </div>
     </form>
   </ng-template>

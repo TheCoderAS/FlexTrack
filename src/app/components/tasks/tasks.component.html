@@ -5,12 +5,13 @@
 
   <div class="task-item p-2 bg-white" *ngFor="let item of tasksList(); let index=index;">
     <div class="task-content" (click)="onClickTaskItem(item)" mat-ripple>
-      <p class="task-name m-0">{{item.formData.taskName}}</p>
-      <p class="task-description m-0">{{item.formData.taskDescription}}</p>
+      <p class="task-name m-0">{{item.taskName}}</p>
+      <p class="task-description m-0">{{item.taskDescription}}</p>
       <div class="task-timestamp">
         <p class="item text-muted m-0"><mat-icon class="icon">note_add</mat-icon> {{moment(item.createdAt).format('L')}}
           {{moment(item.createdAt).format('LT')}}</p>
-        <p class="item text-muted m-0"><mat-icon class="icon">edit_document</mat-icon> {{moment(item.createdAt).format('L')}}
+        <p class="item text-muted m-0"><mat-icon class="icon">edit_document</mat-icon>
+          {{moment(item.createdAt).format('L')}}
           {{moment(item.createdAt).format('LT')}}</p>
       </div>
     </div>
@@ -28,11 +29,35 @@
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)"
   [panel-heading]="isEdit.getValue()?nls.editTask:nls.addTasks" [type]="'info'">
   <ng-template>
-    <app-form [submit-button-title]="nls.okay" (on-submit)="submitPanel($event)" [dynamic-form-fields]="taskFormFields"
-      [cancel-button-title]="nls.cancel" (on-cancel)="closePanel($event)">
+    <app-form [form-fields]="taskFormFields.getValue()" [submittable]="false"
+      (on-change)="handleAddTaskFormChange($event)">
     </app-form>
+
+    <ng-container *ngFor="let item of addTaskItems(); let index=index;">
+      <div class="task-item p-2 bg-white mb-2">
+        <div class="task-content">
+          <div *ngFor="let field of item.formFields;" class="d-flex gap-2 align-items-center">
+            <p class="task-name m-0">{{field.label}}</p>
+            <p class="task-name m-0">:</p>
+            <p class="task-description m-0">{{item.formData[field.name]}}</p>
+          </div>
+        </div>
+        <div>
+          <div class="task-duplicate" mat-ripple (click)="onClickEditTaskItemFromAddPanel(item)">
+            <mat-icon>edit</mat-icon>
+          </div>
+          <div class="task-duplicate" mat-ripple (click)="onClickDeleteTaskItemFromAddPanel(item)">
+            <mat-icon>delete</mat-icon>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <button mat-flat-button class="w-100 mt-3" (click)="onClickAddItem()">{{nls.AddTaskItem}}</button>
     <button *ngIf="isEdit.getValue()" class="w-100 mt-3" mat-flat-button color="accent" (click)="deleteSelectedTask()"
-      type="button">{{nls.delete}}</button>
+    type="button">{{nls.delete}}</button>
+    <button mat-flat-button class="w-100 mt-3" (click)="submitPanel($event)" [disabled]="panelSubmitButtonDisbale()"
+      color="primary">{{nls.okay}}</button>
   </ng-template>
 </app-right-panel>
 
@@ -41,5 +66,11 @@
   <ng-template>
     <p *ngIf="modalInfo()[0]==='add-edit'">{{nls.CancelAddEdit}}</p>
     <p *ngIf="modalInfo()[0]==='delete-task'">{{nls.deleteTaskMessage}}</p>
+
+    <app-form *ngIf="modalInfo()[0]==='add-task-item'" [dynamic-form-fields]="addTaskFormFields"
+      [cancel-button-title]="nls.okay" [submit-button-title]="nls.okay" (on-cancel)="toggleModal(false)"
+      (on-submit)="onSubmitAddField($event)">
+    </app-form>
+
   </ng-template>
 </app-modal-window>
