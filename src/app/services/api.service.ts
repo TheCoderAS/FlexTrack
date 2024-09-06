@@ -70,6 +70,7 @@ export class ApiService {
   async local_post(key: string, value: any): Promise<any> {
     switch (key) {
       case 'tasks':
+      case 'schedules':
       case 'widgets':
         try {
           let newData = [];
@@ -99,6 +100,7 @@ export class ApiService {
   }
   async local_get(key: string): Promise<any> {
     switch (key) {
+      case 'schedules':
       case 'tasks': {
         let item = this._storage.getItem(this.getSavingKey(key));
         let parsedItem = item ? JSON.parse(item) : [];
@@ -126,6 +128,7 @@ export class ApiService {
   // Update (can be combined with save)
   async local_put(key: string, value: any): Promise<any> {
     switch (key) {
+      case 'schedules':
       case 'tasks':
       case 'widgets': {
         let data;

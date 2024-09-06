@@ -67,6 +67,10 @@ export class FormComponent implements OnInit {
   thumbLabel(value: number): string {
     return `${value}%`;
   }
+  getSelectedOption(item: FormFields): any[] {
+    const controlValue = this.appForm.controls[item.name]?.value || [];
+    return item.options?.filter((option: any) => controlValue.includes(option.value)) || [];
+  }
   buildAddFormFieldForm() {
     let formGroupItems: any = {};
     addFieldFormFields.forEach((item) => {

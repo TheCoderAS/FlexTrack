@@ -10,9 +10,24 @@
             *ngIf="item.type !== 'select' && item.type!=='file'" [min]="item.min" [max]="item.max"
             [maxlength]="item.maxlength || null" />
 
-          <mat-select [required]="item.required" [formControlName]="item.name" *ngIf="item.type==='select'">
+          <mat-select [required]="item.required" [formControlName]="item.name" *ngIf="item.type==='select'"
+            [multiple]="item.multiple?item.multiple:false">
+            @if (item.multiple) {
+            <mat-select-trigger>
+              @if ((appForm.controls[item.name].value?.length || 0) >0) {
+
+                <div class="multiple-select-container">
+                  <div *ngFor="let option of getSelectedOption(item)" class="multiple-select-item">
+                      <span>{{ option.label }}</span>
+                      <!-- <mat-icon mat-ripple class="multiple-select-item-remove" (click)="removeItemMultiSelect()">close</mat-icon> -->
+                  </div>
+    
+                </div>
+              }
+            </mat-select-trigger>
+            }
             @for(option of item.options;track option){
-            <mat-option [value]="option.label">{{option.label}}</mat-option>
+            <mat-option [value]="option.value">{{option.label}}</mat-option>
             }
           </mat-select>
 

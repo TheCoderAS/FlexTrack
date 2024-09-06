@@ -97,7 +97,7 @@ export class TasksComponent implements OnInit {
     this.taskFormFields.next(data);
 
     let widgetemp = { ...data[0] };
-    widgetemp.defaultValue = (widgetemp as any).options[0].label
+    widgetemp.defaultValue = (widgetemp as any).options[0].value
     this.widgetSelectFormFields.next([widgetemp])
   }
   async getInitialFormFields(): Promise<FormFields[]> {
@@ -105,7 +105,7 @@ export class TasksComponent implements OnInit {
     // console.log(this.selectedWidget());
     return [
       {
-        name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: options, defaultValue: this.selectedWidget() ? this.selectedWidget().widgetId : options[0].label
+        name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: options, defaultValue: this.selectedWidget() ? this.selectedWidget().widgetId : options[0].value
       },
       {
         name: 'taskName', label: nls.taskName, type: 'text', required: true,

@@ -1,1 +1,43 @@
-<p>schedules works!</p>
+<div class="py-2 d-flex flex-column gap-2">
+  <app-form [submit-button-title]="nls.okay" [submittable]="false" (on-change)="handleFormChange($event)"
+    [form-fields]="widgetSelectFormFields.getValue()" *ngIf="widgetSelectFormFields.getValue().length">
+  </app-form>
+  <div class="schedule-item p-2 bg-white" *ngFor="let item of schedulesList(); let index=index;">
+    <div class="schedule-content" (click)="onClickScheduleItem(item)" mat-ripple>
+      <p class="schedule-name m-0">{{item.scheduleName}}</p>
+      <p class="schedule-description m-0">{{item.scheduleDescription}}</p>
+      <p class="schedule-description m-0">{{item.tasks.length}} {{nls.noOfTasks}}</p>
+      <div class="schedule-timestamp">
+        <p class="item text-muted m-0"><mat-icon class="icon">note_add</mat-icon> {{moment(item.createdAt).format('L')}}
+          {{moment(item.createdAt).format('LT')}}</p>
+        <p class="item text-muted m-0"><mat-icon class="icon">edit_document</mat-icon>
+          {{moment(item.createdAt).format('L')}}
+          {{moment(item.createdAt).format('LT')}}</p>
+      </div>
+    </div>
+    <div class="schedule-duplicate" mat-ripple (click)="copyEditAdd(item)">
+      <mat-icon>content_copy</mat-icon>
+    </div>
+  </div>
+  <div *ngIf="!schedulesList().length">
+    <p class="text-center text-secondary">{{nls.noSchedulesFound}}</p>
+  </div>
+</div>
+<app-fab-button (on-click)="createSchedule()" />
+<app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)"
+  [panel-heading]="isEdit.getValue()?nls.editSchedule:nls.addSchedule" [type]="'info'">
+  <ng-template>
+    <app-form [form-fields]="scheduleFormFields.getValue()" [cancel-button-title]="nls.cancel"
+      [submit-button-title]="nls.okay" (on-cancel)="closePanel($event)" (on-submit)="submitAddSchedule($event)"
+      (on-change)="handleAddScheduleFormChange($event)">
+    </app-form>
+
+  </ng-template>
+</app-right-panel>
+
+<app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
+  [modal-heading]="modalInfo()[1]" [type]="modalInfo()[2]">
+  <ng-template>
+    <p *ngIf="modalInfo()[0]==='add-edit'">{{nls.CancelAddEdit}}</p>
+  </ng-template>
+</app-modal-window>

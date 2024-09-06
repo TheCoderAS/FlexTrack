@@ -20,7 +20,7 @@
 
 .form-field-container {
     background-color: var(--mdc-filled-text-field-container-color);
-    border-radius: 4px;
+    border-radius: $border-radius;
 }
 
 .form-field-inner-container {
@@ -56,5 +56,37 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+}
+
+.multiple-select-container {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 2px;
+
+    .multiple-select-item {
+        padding: 5px 12px;
+        border-radius: 5px;
+        background-color: #ece6ee;
+        box-shadow: 0px 0px 4px rgba(45, 13, 79, 0.2);
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 5px;
+
+        .multiple-select-item-remove {
+            height: 20px;
+            width: 20px;
+            font-size: 14px;
+            padding: 3px;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            font-weight: 800;
+        }
     }
 }
