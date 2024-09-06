@@ -196,15 +196,17 @@ export class TasksComponent implements OnInit {
     this.isEdit.next(false);
     this.selelctedTask.set('');
     this.togglePanel(true);
-    let fields = item.formFields;
-    fields.map(async (field: any) => {
-      field.defaultValue = item.formData[field.name];
-      if (field.type === 'select') {
-        field.options = await this.buildWidgetOptions()
-      }
+
+    let data = await this.getInitialFormFields();
+    // console.log(data);
+    data.map((field: FormFields) => {
+      field.defaultValue = item[field.name];
       return field;
-    });
-    this.taskFormFields.next(fields)
+    })
+
+    this.taskFormFields.next(data);
+    this.addTaskItems.set(item.items);
+    this.addTaskFormData.next(item);
   }
   async createTask() {
     this.togglePanel(true);
