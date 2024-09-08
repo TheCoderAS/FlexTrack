@@ -42,19 +42,23 @@ export class SchedulesComponent implements OnInit {
     this.setWidgetSelectFormFields();
   }
 
+  private isWeekly(widgets: any[], widgetId: string): boolean {
+    return widgets.some(widget => widget.id === widgetId && widget.type === "WEEKLY");
+  }
   async setScheduleFormFields() {
     let widgetData = await this.buildWidgetOptions()
     let widgetOptions = widgetData.options;
     let defaultWidget = this.selectedWidget() ? this.selectedWidget().widgetId : widgetOptions[0].value;
     let taskOptions = await this.buildTasksOptions(defaultWidget);
+    let weekly: boolean = this.isWeekly(widgetData.widgets, defaultWidget);
 
-    let weekly: boolean = widgetData.widgets.find((item: any) => item.id === defaultWidget)?.type === "WEEKLY";
     let data = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions, weekly);
+
     this.scheduleFormFields.next(data);
   }
 
   async getInitialFormFields(widgetOptions: any, defaultWidget: any, taskOptions: any, weekly: boolean = false): Promise<FormFields[]> {
-    console.log(defaultWidget);
+    // console.log(defaultWidget);
     let scheduleFields: FormFields[] = [
       {
         name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: widgetOptions, defaultValue: defaultWidget
@@ -70,9 +74,11 @@ export class SchedulesComponent implements OnInit {
       },
     ];
     if (weekly) {
-      scheduleFields.splice(2, 0, weeklyField);
+      weeklyField.defaultValue = '';
+      scheduleFields.splice(3, 0, weeklyField);
     }
-    return scheduleFields
+    console.log(scheduleFields);
+    return scheduleFields;
   }
 
   async setWidgetSelectFormFields() {
@@ -117,9 +123,9 @@ export class SchedulesComponent implements OnInit {
       let defaultWidget = data.widgetId;
       let taskOptions = await this.buildTasksOptions(defaultWidget);
 
-      let weekly: boolean = widgetData.widgets.find((item: any) => item.id === defaultWidget)?.type === "WEEKLY";
+      let weekly: boolean = this.isWeekly(widgetData.widgets, defaultWidget);
 
-      let fields = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions);
+      let fields = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions, weekly);
       fields.map((field: FormFields) => {
         field.defaultValue = data[field.name];
         if (field.name === 'tasks') {
@@ -127,12 +133,6 @@ export class SchedulesComponent implements OnInit {
         }
         return field;
       });
-      let newFields;
-      if (weekly) {
-        newFields = fields.splice(2, 0, weeklyField);
-      } else {
-        newFields = fields.filter((item: FormFields) => item.name !== 'startDay')
-      }
       this.scheduleFormFields.next(fields);
     }
     this.prevFormData = data;

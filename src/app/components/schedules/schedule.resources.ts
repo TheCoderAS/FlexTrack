@@ -16,11 +16,11 @@ export const dayOptions = [
   { value: days.TUESDAY, label: "Tuesday" },
   { value: days.WEDNESDAY, label: "Wednesday" },
   { value: days.THURSDAY, label: "Thursday" },
-  { value: days.FRIDAY, label: "FRIDAY" },
+  { value: days.FRIDAY, label: "Friday" },
   { value: days.SATURDAY, label: "Saturday" },
   { value: days.SUNDAY, label: "Sunday" },
 ]
 
 export const weeklyField: FormFields = {
-  name: 'startDay', label: nls.startDay, type: 'select', required: true, options: dayOptions
+  name: 'startDay', label: nls.startDay, type: 'select', required: true, options: dayOptions, defaultValue: ''
 }
