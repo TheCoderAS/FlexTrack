@@ -10,6 +10,7 @@ const nls = {
   scheduleDescription: "Schedule Description",
   selectTasks: "Select Tasks",
   noOfTasks: "tasks added",
-  noSchedulesFound: "No schedules found. Use plus button to add a schedule."
+  noSchedulesFound: "No schedules found. Use plus button to add a schedule.",
+  startDay: "Start Day"
 }
 export default nls;

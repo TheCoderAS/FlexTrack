@@ -12,6 +12,7 @@ import { MessagesService } from '../../services/messages.service';
 import moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
+import { dayOptions, weeklyField } from './schedule.resources';
 
 @Component({
   selector: 'app-schedules',
@@ -42,16 +43,19 @@ export class SchedulesComponent implements OnInit {
   }
 
   async setScheduleFormFields() {
-    let widgetOptions = await this.buildWidgetOptions();
+    let widgetData = await this.buildWidgetOptions()
+    let widgetOptions = widgetData.options;
     let defaultWidget = this.selectedWidget() ? this.selectedWidget().widgetId : widgetOptions[0].value;
     let taskOptions = await this.buildTasksOptions(defaultWidget);
 
-    let data = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions);
+    let weekly: boolean = widgetData.widgets.find((item: any) => item.id === defaultWidget)?.type === "WEEKLY";
+    let data = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions, weekly);
     this.scheduleFormFields.next(data);
   }
 
-  async getInitialFormFields(widgetOptions: any, defaultWidget: any, taskOptions: any): Promise<FormFields[]> {
-    return [
+  async getInitialFormFields(widgetOptions: any, defaultWidget: any, taskOptions: any, weekly: boolean = false): Promise<FormFields[]> {
+    console.log(defaultWidget);
+    let scheduleFields: FormFields[] = [
       {
         name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: widgetOptions, defaultValue: defaultWidget
       },
@@ -65,10 +69,14 @@ export class SchedulesComponent implements OnInit {
         name: 'tasks', label: nls.selectTasks, type: 'select', required: true, multiple: true, options: taskOptions
       },
     ];
+    if (weekly) {
+      scheduleFields.splice(2, 0, weeklyField);
+    }
+    return scheduleFields
   }
 
   async setWidgetSelectFormFields() {
-    let options = await this.buildWidgetOptions();
+    let options = (await this.buildWidgetOptions()).options;
     let defaultValue = this.selectedWidget() ? this.selectedWidget().widgetId : options[0].value
     let field = {
       name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: options, defaultValue: defaultValue
@@ -81,7 +89,7 @@ export class SchedulesComponent implements OnInit {
     widgets.forEach((element: any) => {
       options.push({ label: element.title, value: element.id })
     });
-    return options;
+    return { options, widgets };
   }
   async buildTasksOptions(widget: string) {
     let tasks = await this._api.local_get('tasks');
@@ -104,9 +112,12 @@ export class SchedulesComponent implements OnInit {
   async handleAddScheduleFormChange(data: any) {
     // console.log(data)
     if (this.prevFormData && this.prevFormData.widgetId !== data.widgetId) {
-      let widgetOptions = await this.buildWidgetOptions();
+      let widgetData = await this.buildWidgetOptions()
+      let widgetOptions = widgetData.options;
       let defaultWidget = data.widgetId;
       let taskOptions = await this.buildTasksOptions(defaultWidget);
+
+      let weekly: boolean = widgetData.widgets.find((item: any) => item.id === defaultWidget)?.type === "WEEKLY";
 
       let fields = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions);
       fields.map((field: FormFields) => {
@@ -116,8 +127,13 @@ export class SchedulesComponent implements OnInit {
         }
         return field;
       });
+      let newFields;
+      if (weekly) {
+        newFields = fields.splice(2, 0, weeklyField);
+      } else {
+        newFields = fields.filter((item: FormFields) => item.name !== 'startDay')
+      }
       this.scheduleFormFields.next(fields);
-
     }
     this.prevFormData = data;
   }
@@ -134,16 +150,13 @@ export class SchedulesComponent implements OnInit {
       this.modalInfo.set(['add-edit', nls.CancelAddHeader, 'confirm']);
     }
   }
-
   async createSchedule() {
     this.togglePanel(true);
     this.setScheduleFormFields();
   }
-
   toggleModal(state: boolean) {
     this.isModalOpen.set(state);
   }
-
   async submitModal(data: any) {
     this.togglePanel(false);
     this.toggleModal(false);
@@ -175,11 +188,15 @@ export class SchedulesComponent implements OnInit {
     this.isEdit.next(true);
     this.togglePanel(true);
 
-    let widgetOptions = await this.buildWidgetOptions();
+    let widgetData = await this.buildWidgetOptions()
+    let widgetOptions = widgetData.options;
+
     let defaultWidget = data.widgetId;
     let taskOptions = await this.buildTasksOptions(defaultWidget);
 
-    let fields = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions);
+    let weekly: boolean = widgetData.widgets.find((item: any) => item.id === defaultWidget)?.type === "WEEKLY";
+
+    let fields = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions, weekly);
     fields.map((field: FormFields) => {
       field.defaultValue = data[field.name];
       return field;
@@ -189,11 +206,15 @@ export class SchedulesComponent implements OnInit {
   async copyEditAdd(data: any) {
     this.togglePanel(true);
 
-    let widgetOptions = await this.buildWidgetOptions();
+    let widgetData = await this.buildWidgetOptions()
+    let widgetOptions = widgetData.options;
+
     let defaultWidget = data.widgetId;
     let taskOptions = await this.buildTasksOptions(defaultWidget);
 
-    let fields = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions);
+    let weekly: boolean = widgetData.widgets.find((item: any) => item.id === defaultWidget)?.type === "WEEKLY";
+
+    let fields = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions, weekly);
     fields.map((field: FormFields) => {
       field.defaultValue = data[field.name];
       return field;

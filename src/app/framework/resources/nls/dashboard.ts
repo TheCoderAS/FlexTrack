@@ -30,6 +30,8 @@ const nls = {
     updateWidgetSuccess: "Widget updated successfully.",
     deleteWidgetSuccess: "Widget deleted successfully.",
     widgetError: "Widget went wrong.",
-    reorderWidgetSuccess: "Widget order saved successfully"
+    reorderWidgetSuccess: "Widget order saved successfully",
+    widgetType:"Type",
+    typeRequired:"Widget Type is required"
 }
 export default nls;

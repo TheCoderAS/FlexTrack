@@ -62,6 +62,25 @@ export const widgetForm = [
     maxlength: 25
   },
   {
+    name: 'type',
+    label: nls.widgetType,
+    options: [
+      {
+        label: 'Daily',
+        value: 'DAILY',
+      },
+      {
+        label: 'Weekly',
+        value: 'WEEKLY',
+      }
+    ],
+    errorMessage: [{ type: 'required', message: nls.typeRequired }],
+    required: true,
+    id: 'type',
+    type: 'select',
+    model: 'type',
+  },
+  {
     name: 'motivation',
     label: nls.motivation,
     options: [],
