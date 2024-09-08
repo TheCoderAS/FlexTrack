@@ -64,7 +64,7 @@ export class SchedulesComponent implements OnInit {
         name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: widgetOptions, defaultValue: defaultWidget
       },
       {
-        name: 'scheduleName', label: nls.scheduleName, type: 'text', required: true,
+        name: 'scheduleName', label: nls.scheduleName, type: 'text', required: true, maxlength:28
       },
       {
         name: 'scheduleDescription', label: nls.scheduleDescription, type: 'text', required: true,
@@ -77,7 +77,7 @@ export class SchedulesComponent implements OnInit {
       weeklyField.defaultValue = '';
       scheduleFields.splice(3, 0, weeklyField);
     }
-    console.log(scheduleFields);
+    // console.log(scheduleFields);
     return scheduleFields;
   }
 

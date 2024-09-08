@@ -131,7 +131,7 @@ export class DashboardComponent {
   async getWidgets(): Promise<void> {
     let result = await this._api.local_get('widgets');
     result = result.map((item: DashboardCards) => {
-      item.to = '/logging/' + item.title.toLowerCase();
+      item.to = '/logging/' + item.id;
       return item;
     });
     this.dashboardCards.set(result);

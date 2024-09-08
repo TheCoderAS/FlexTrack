@@ -1,20 +1,26 @@
 @import "../resources/_variables.scss";
 
-.my-button-nav{
+.my-button-nav {
     height: $bottom-bar-height;
     border-radius: 0;
 }
-.brand-name{
+
+.brand-name {
     letter-spacing: 1.3px;
 }
-.brand-name-container{
+
+.brand-name-container {
     height: $top-bar-height;
 }
-.navbar-header-icon{
+
+.navbar-header-icon {
     font-size: 20px;
+    height: 20px;
+    width: 20px;
 }
+
 @media only screen and (max-width: 600px) {
-    .my_status{
+    .my_status {
         margin-top: $status-bar-height;
     }
 }

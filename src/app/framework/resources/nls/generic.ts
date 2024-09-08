@@ -22,7 +22,15 @@ const nls = {
   backupFileIsRequired: "Please upload the backup file.",
   readBackupFileError: "Cannot read backup file.",
   restoreFromBackupSuccessful: "Restore from backup successfully",
-  parseBackupFileError: "Backup file is invalid."
-
+  parseBackupFileError: "Backup file is invalid.",
+  navbar: {
+    logging: "Logging",
+    brand: "Fitness Tracker",
+    home:"Home",
+    reports:"Reports",
+    tasks:"Tasks",
+    schedule:"Schedules",
+    account:"Account",
+  }
 }
 export default nls;

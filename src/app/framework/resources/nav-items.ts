@@ -1,3 +1,5 @@
+import nls from "./nls/generic";
+
 export interface NavItem {
   name: string;
   icon: string;
@@ -7,32 +9,26 @@ export interface NavItem {
 
 export const navItemsList: NavItem[] = [
   {
-    name: 'Home',
+    name: nls.navbar.home,
     icon: 'home_app_logo',
     id: 'home-link-navbar',
     to: '/',
   },
-  // {
-  //   name: 'Reports',
-  //   icon: 'data_usage',
-  //   id: 'report-link-navbar',
-  //   to: '/reports',
-  // },
   {
-    name: 'Tasks',
+    name: nls.navbar.tasks,
     icon: 'add_task',
     id: 'add-tasks-link-navbar',
     to: '/add-tasks',
   },
 
   {
-    name: 'Schedule',
+    name: nls.navbar.schedule,
     icon: 'calendar_month',
     id: 'schedule-link-navbar',
     to: '/add-schedules',
   },
   {
-    name: 'Account',
+    name: nls.navbar.account,
     icon: 'account_circle',
     id: 'account-link-navbar',
     to: '/account',
@@ -46,48 +42,28 @@ export interface Path {
 }
 export const allPaths: Path[] = [
   {
-    name: 'Home',
+    name: nls.navbar.home,
     to: '/',
     subname: []
   },
   {
-    name: 'Reports',
+    name: nls.navbar.reports,
     to: '/reports',
     subname: []
   },
   {
-    name: 'Tasks',
+    name: nls.navbar.tasks,
     to: '/add-tasks',
     subname: []
   },
   {
-    name: 'Schedules',
+    name: nls.navbar.schedule,
     to: '/add-schedules',
     subname: []
   },
   {
-    name: 'Account',
+    name: nls.navbar.account,
     to: '/account',
     subname: []
   },
-  {
-    name: 'Logging',
-    to: '/logging/meal',
-    subname: ['Meal']
-  },
-  {
-    name: 'Logging',
-    to: '/logging/exercise',
-    subname: ['Exercise']
-  },
-  {
-    name: 'Logging',
-    to: '/logging/water',
-    subname: ['Water']
-  },
-  {
-    name: 'Logging',
-    to: '/logging/sleep',
-    subname: ['Sleep']
-  }
 ]
