@@ -14,6 +14,8 @@ import nls from '../resources/nls/generic';
 import { addFieldFormFields } from './form.resources';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-form',
@@ -30,10 +32,12 @@ import { MatRippleModule } from '@angular/material/core';
     MatSliderModule,
     ModalWindowComponent,
     MatIconModule,
-    MatRippleModule
+    MatRippleModule,
+    MatDatepickerModule
   ],
   templateUrl: './form.component.html',
   styleUrl: './form.component.scss',
+  providers:[provideNativeDateAdapter()]
 })
 export class FormComponent implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);

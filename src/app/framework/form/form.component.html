@@ -7,7 +7,7 @@
           <mat-label class="app-form-label">{{item.label}}</mat-label>
           <input [required]="item.required" matInput [name]="item.name" [id]="item.id?item.id:'id'+i" [type]="item.type"
             [formControlName]="item.name" [pattern]="item.pattern?item.pattern:''"
-            *ngIf="item.type !== 'select' && item.type!=='file'" [min]="item.min" [max]="item.max"
+            *ngIf="item.type !== 'select' && item.type!=='file' && item.type!=='date'" [min]="item.min" [max]="item.max"
             [maxlength]="item.maxlength || null" />
 
           <mat-select [required]="item.required" [formControlName]="item.name" *ngIf="item.type==='select'"
@@ -16,13 +16,13 @@
             <mat-select-trigger>
               @if ((appForm.controls[item.name].value?.length || 0) >0) {
 
-                <div class="multiple-select-container">
-                  <div *ngFor="let option of getSelectedOption(item)" class="multiple-select-item">
-                      <span>{{ option.label }}</span>
-                      <!-- <mat-icon mat-ripple class="multiple-select-item-remove" (click)="removeItemMultiSelect()">close</mat-icon> -->
-                  </div>
-    
+              <div class="multiple-select-container">
+                <div *ngFor="let option of getSelectedOption(item)" class="multiple-select-item">
+                  <span>{{ option.label }}</span>
+                  <!-- <mat-icon mat-ripple class="multiple-select-item-remove" (click)="removeItemMultiSelect()">close</mat-icon> -->
                 </div>
+
+              </div>
               }
             </mat-select-trigger>
             }
@@ -30,6 +30,13 @@
             <mat-option [value]="option.value">{{option.label}}</mat-option>
             }
           </mat-select>
+
+          <div *ngIf="item.type==='date'" class="d-flex">
+            <input matInput [matDatepicker]="picker" [required]="item.required" [name]="item.name"
+              [id]="item.id?item.id:'id'+i" [formControlName]="item.name" [min]="item.min" [max]="item.max">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
 
           <div *ngIf="item.type!=='password' && appForm.controls[item.name]?.touched ">
             <div *ngFor="let message of item.errorMessage">

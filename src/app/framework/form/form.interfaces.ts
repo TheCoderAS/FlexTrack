@@ -10,8 +10,8 @@ export interface FormFields {
   defaultValue?: string | '';
   disabled?: boolean,
   options?: any[]; //if type is select
-  min?: number; // if type is number
-  max?: number; // if type is number
+  min?: any; // if type is number
+  max?: any; // if type is number
   step?: number; // if type is slider
   maxlength?: number, // if type is text
   accept?: string, // if type is file
