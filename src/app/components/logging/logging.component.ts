@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { FormFields } from '../../framework/form/form.interfaces';
 import { loggingViewFormFieldsInitial, loggingAddFormFieldsInitial } from './logging.resources';
 import { FormComponent } from "../../framework/form/form.component";
-import { ApiService } from '../../services/api.service';
+import { ApiService, delay } from '../../services/api.service';
 import { FabButtonComponent } from "../../framework/fab-button/fab-button.component";
 import { RightPanelComponent } from "../../framework/right-panel/right-panel.component";
 import nls from '../../framework/resources/nls/logging';
@@ -53,8 +53,9 @@ export class LoggingComponent implements OnInit {
     this.widgetData.next(filteredWidget);
   }
   async setScheduleSelectFormFields(day: any) {
+    this.loggingViewFormFields.next([])
     let today = (new Date()).toISOString();
-
+    await delay(20);
     let options = await this.buildScheduleOptions(day);
     let fields: FormFields[] = [...loggingViewFormFieldsInitial];
     let defaultSchedule = options[0]?.value;
@@ -101,7 +102,7 @@ export class LoggingComponent implements OnInit {
     let selectedSchedule = this.scheduleList.getValue().find((schedule) => schedule.id === data.scheduleId);
     this.selectedScheduleData.next(selectedSchedule);
 
-    if (moment(this.loggingViewFormData.getValue()?.loggingDate) !== moment(data.loggingDate)) {
+    if (moment(this.loggingViewFormData.getValue()?.loggingDate).format('L') !== moment(data.loggingDate).format('L')) {
       this.setScheduleSelectFormFields(data.loggingDate);
     }
     this.loggingViewFormData.next(data);

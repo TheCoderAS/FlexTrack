@@ -12,7 +12,7 @@ import { MessagesService } from '../../services/messages.service';
 import moment from 'moment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
-import { dayOptions, weeklyField } from './schedule.resources';
+import { weeklyField } from './schedule.resources';
 
 @Component({
   selector: 'app-schedules',
@@ -64,7 +64,7 @@ export class SchedulesComponent implements OnInit {
         name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: widgetOptions, defaultValue: defaultWidget
       },
       {
-        name: 'scheduleName', label: nls.scheduleName, type: 'text', required: true, maxlength:28
+        name: 'scheduleName', label: nls.scheduleName, type: 'text', required: true, maxlength: 28
       },
       {
         name: 'scheduleDescription', label: nls.scheduleDescription, type: 'text', required: true,
@@ -118,6 +118,9 @@ export class SchedulesComponent implements OnInit {
   async handleAddScheduleFormChange(data: any) {
     // console.log(data)
     if (this.prevFormData && this.prevFormData.widgetId !== data.widgetId) {
+      // this.scheduleFormFields.next([]);
+      // await delay(20);
+
       let widgetData = await this.buildWidgetOptions()
       let widgetOptions = widgetData.options;
       let defaultWidget = data.widgetId;
@@ -128,9 +131,10 @@ export class SchedulesComponent implements OnInit {
       let fields = await this.getInitialFormFields(widgetOptions, defaultWidget, taskOptions, weekly);
       fields.map((field: FormFields) => {
         field.defaultValue = data[field.name];
-        if (field.name === 'tasks') {
+        if (field.name === 'tasks' || field.name === 'startDay') {
           field.defaultValue = ''
         }
+
         return field;
       });
       this.scheduleFormFields.next(fields);
