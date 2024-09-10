@@ -83,7 +83,7 @@ export class SchedulesComponent implements OnInit {
 
   async setWidgetSelectFormFields() {
     let options = (await this.buildWidgetOptions()).options;
-    let defaultValue = this.selectedWidget() ? this.selectedWidget().widgetId : options[0].value
+    let defaultValue = this.selectedWidget() ? this.selectedWidget().widgetId : options[0]?.value
     let field = {
       name: 'widgetId', label: nls.SelectedWidget, type: 'select', required: true, options: options, defaultValue: defaultValue
     }

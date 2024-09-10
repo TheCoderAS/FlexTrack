@@ -12,11 +12,13 @@ import { RightPanelComponent } from "../../framework/right-panel/right-panel.com
 import nls from '../../framework/resources/nls/logging';
 import { ModalWindowComponent } from "../../framework/modal-window/modal-window.component";
 import moment from 'moment';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-logging',
   standalone: true,
-  imports: [CommonModule, MatRippleModule, FormComponent, FabButtonComponent, RightPanelComponent, ModalWindowComponent],
+  imports: [CommonModule, MatRippleModule, FormComponent, FabButtonComponent, RightPanelComponent, ModalWindowComponent, MatDividerModule, MatButtonModule],
   templateUrl: './logging.component.html',
   styleUrl: './logging.component.scss'
 })
@@ -26,7 +28,7 @@ export class LoggingComponent implements OnInit {
   widgetId: string = '';
   widgetData = new BehaviorSubject<any>(null);
   loggingViewFormFields = new BehaviorSubject<FormFields[]>([]);
-  loggingAddFormFields = new BehaviorSubject<FormFields[]>([]);
+  loggingAddFormFields = new BehaviorSubject<any>({});
   scheduleList = new BehaviorSubject<any[]>([]);
   selectedScheduleData = new BehaviorSubject<any>(null);
   rightPanelOpen: WritableSignal<boolean> = signal(false);
@@ -35,6 +37,8 @@ export class LoggingComponent implements OnInit {
   isModalOpen: WritableSignal<boolean> = signal(false);
   modalInfo: WritableSignal<string[]> = signal(['', '', '']);
   weekly = new BehaviorSubject<boolean>(false);
+  scheduledTasks = new BehaviorSubject<any[]>([]);
+
   nls = nls;
   moment = moment
   constructor(private route: ActivatedRoute) { }
@@ -98,14 +102,15 @@ export class LoggingComponent implements OnInit {
     this.scheduleList.next(filteredSchedule);
     return options;
   }
-  handleLoggingViewFormChange(data: any) {
+  async handleLoggingViewFormChange(data: any) {
     let selectedSchedule = this.scheduleList.getValue().find((schedule) => schedule.id === data.scheduleId);
     this.selectedScheduleData.next(selectedSchedule);
-
+    this.scheduledTasks.next(await this.getScheduledTasks());
     if (moment(this.loggingViewFormData.getValue()?.loggingDate).format('L') !== moment(data.loggingDate).format('L')) {
       this.setScheduleSelectFormFields(data.loggingDate);
     }
     this.loggingViewFormData.next(data);
+    // console.log(this.selectedScheduleData.getValue())
   }
   toggleModal(state: boolean) {
     this.isModalOpen.set(state);
@@ -116,13 +121,23 @@ export class LoggingComponent implements OnInit {
     this.modalInfo.set(['', '', '', '']);
     this.isEdit.next(false);
   }
+  async getScheduledTasks() {
+    let tasks = await this._api.local_get('tasks');
+    let filteredTasks = tasks.filter((task: any) => {
+      return task.widgetId === this.widgetId && this.selectedScheduleData.getValue()?.tasks?.includes(task.id)
+    });
+    console.log(filteredTasks);
 
-  async createLogging() {
+    return filteredTasks;
+  }
+  async createLogging(task: any) {
     this.togglePanel(true);
     let scheduleOptions = await this.buildScheduleOptions(this.loggingViewFormData.getValue().loggingDate);
-    let fields = [...loggingAddFormFieldsInitial];
 
-    fields.map((field: FormFields) => {
+    //basic fields
+    let basicFields = [...loggingAddFormFieldsInitial];
+
+    basicFields.map((field: FormFields) => {
       if (field.name === "scheduleId") {
         field.defaultValue = this.loggingViewFormData.getValue().scheduleId;
         field.options = scheduleOptions
@@ -132,6 +147,22 @@ export class LoggingComponent implements OnInit {
       }
       return field;
     });
+
+    let fields = { basic: { fields: basicFields } };
+
+    task.items.forEach((taskItem: any, index: number) => {
+      let taskFields = taskItem.formFields;
+      taskFields = taskFields.filter((field: any) => field.name !== 'itemName')
+      taskFields.map((taskField: FormFields) => {
+
+        taskField.deletable = false;
+        taskField.defaultValue = '';
+        return taskField;
+      });
+      fields = { ...fields, [`item${index}`]: { fields: taskFields, id: taskItem.id, oldvalue: taskItem.formData } };
+    });
+    console.log(fields);
+
     this.loggingAddFormFields.next(fields);
   }
   async togglePanel(state: boolean) {
@@ -149,7 +180,10 @@ export class LoggingComponent implements OnInit {
   submitAddLogging(data: any) {
     console.log(data);
   }
-  handleAddLoggingFormChange(data: any) {
-    console.log(data);
+  handleAddLoggingFormSubmit(data: any, fields: any) {
+    console.log(data, fields);
+  }
+  getFlatFieldItems(): any[] {
+    return Object.keys(this.loggingAddFormFields.getValue());
   }
 }

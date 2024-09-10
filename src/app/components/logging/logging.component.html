@@ -1,19 +1,59 @@
 <div class="py-2 d-flex flex-column gap-2">
   <app-form [form-fields]="loggingViewFormFields.getValue()" *ngIf="loggingViewFormFields.getValue().length"
     [submittable]="false" (on-change)="handleLoggingViewFormChange($event)"></app-form>
+  <div class="scheduled-tasks-container">
+    <div *ngFor="let task of scheduledTasks.getValue(); let index=index;" class="task-item mb-3"
+      (click)="createLogging(task)">
+      <div class="task-item-content">
+        <div class="flex-grow-1">
+          <p class="m-0 task-name">{{task.taskName}}</p>
+          <p class="m-0 task-description">{{task.taskDescription}}</p>
+        </div>
+      </div>
+      <mat-divider class="w-100"></mat-divider>
+    </div>
+  </div>
   <div *ngIf="scheduleList.getValue().length<=0">
     <p class="text-center text-secondary">{{nls.pleaseAddSchedule}}</p>
   </div>
 </div>
-<app-fab-button (on-click)="createLogging()" [disabled]="scheduleList.getValue().length<=0" />
+<!-- <app-fab-button (on-click)="createLogging()" [disabled]="!selectedScheduleData.getValue()" /> -->
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)"
   [panel-heading]="isEdit.getValue()?nls.editLog:nls.addLog" [type]="'info'">
   <ng-template>
 
-    <app-form [form-fields]="loggingAddFormFields.getValue()" [cancel-button-title]="nls.cancel"
-      [submit-button-title]="nls.okay" (on-cancel)="closePanel($event)" (on-submit)="submitAddLogging($event)"
-      (on-change)="handleAddLoggingFormChange($event)">
-    </app-form>
+    @for (item of getFlatFieldItems(); track $index) {
+    <div class="logging-form-divider">
+      @if (loggingAddFormFields.getValue()[item].oldvalue) {
+      <p class="text-center logging-task-name">{{loggingAddFormFields.getValue()[item].oldvalue.itemName}}</p>
+      }
+      <div class="logging-form-container" [class.d-flex]="$index!==0">
+        @if ($index!==0) {
+        <div class="w-100">
+          <p>{{nls.target}}</p>
+          <ng-container *ngFor="let field of loggingAddFormFields.getValue()[item].fields">
+            <div class="target-field-container">
+              <div class="target-field-inner-container">
+                <label class="target-field-label">{{field.label}}</label>
+                <div class="wrapped-value">
+                  <span
+                    class="m-0 target-field-value">{{loggingAddFormFields.getValue()[item].oldvalue[field.name]}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align"></div>
+          </ng-container>
+        </div>
+        }
+        <div [class.max-width]="$index!==0">
+          <p *ngIf="$index!==0">{{nls.achieved}}</p>
+          <app-form [form-fields]="loggingAddFormFields.getValue()[item].fields"
+            (on-submit)="handleAddLoggingFormSubmit($event, loggingAddFormFields.getValue()[item])"
+            [submit-button-title]="nls.save" [submittable]="$index!==0" />
+        </div>
+      </div>
+    </div>
+    }
 
   </ng-template>
 </app-right-panel>
