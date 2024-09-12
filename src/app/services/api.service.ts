@@ -69,6 +69,7 @@ export class ApiService {
 
   async local_post(key: string, value: any): Promise<any> {
     switch (key) {
+      case 'logging':
       case 'tasks':
       case 'schedules':
       case 'widgets':
@@ -124,11 +125,32 @@ export class ApiService {
       }
     }
   }
+  async local_get_by_id(key: string, filter: any): Promise<any> {
+    switch (key) {
+      case 'logging': {
+        let item = this._storage.getItem(this.getSavingKey(key));
+        let parsedItem = item ? JSON.parse(item) : [];
+        let result = parsedItem.filter((log: any) => {
+          let matched = true;
+          let keys = Object.keys(filter);
+          for (let key of keys) {
+            if (filter[key] !== log[key]) {
+              matched = false;
+              break;
+            }
+          }
+          return matched
+        })
+        return result;
+      }
+    }
+  }
 
   // Update (can be combined with save)
   async local_put(key: string, value: any): Promise<any> {
     switch (key) {
       case 'schedules':
+      case 'logging':
       case 'tasks':
       case 'widgets': {
         let data;

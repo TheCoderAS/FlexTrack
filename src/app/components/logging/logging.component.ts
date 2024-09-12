@@ -14,6 +14,7 @@ import { ModalWindowComponent } from "../../framework/modal-window/modal-window.
 import moment from 'moment';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import { MessagesService } from '../../services/messages.service';
 
 @Component({
   selector: 'app-logging',
@@ -24,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class LoggingComponent implements OnInit {
   private _api: ApiService = inject(ApiService);
+  private _message: MessagesService = inject(MessagesService);
 
   widgetId: string = '';
   widgetData = new BehaviorSubject<any>(null);
@@ -38,7 +40,7 @@ export class LoggingComponent implements OnInit {
   modalInfo: WritableSignal<string[]> = signal(['', '', '']);
   weekly = new BehaviorSubject<boolean>(false);
   scheduledTasks = new BehaviorSubject<any[]>([]);
-
+  selectedTask = new BehaviorSubject<any>(null);
   nls = nls;
   moment = moment
   constructor(private route: ActivatedRoute) { }
@@ -120,19 +122,32 @@ export class LoggingComponent implements OnInit {
     this.toggleModal(false);
     this.modalInfo.set(['', '', '', '']);
     this.isEdit.next(false);
+    this.selectedTask.next(null);
+
   }
   async getScheduledTasks() {
     let tasks = await this._api.local_get('tasks');
     let filteredTasks = tasks.filter((task: any) => {
       return task.widgetId === this.widgetId && this.selectedScheduleData.getValue()?.tasks?.includes(task.id)
     });
-    console.log(filteredTasks);
+    // console.log(filteredTasks);
 
     return filteredTasks;
   }
   async createLogging(task: any) {
     this.togglePanel(true);
     let scheduleOptions = await this.buildScheduleOptions(this.loggingViewFormData.getValue().loggingDate);
+
+    //get existing log
+    let existingLog = await this._api.local_get_by_id('logging', {
+      scheduleId: this.loggingViewFormData.getValue().scheduleId,
+      widgetId: this.widgetData.getValue().id,
+      taskId: task.id
+    });
+    existingLog = existingLog?.find((log: any) => {
+      return moment(log.loggingDate).format('L') === moment(this.loggingViewFormData.getValue().loggingDate).format('L')
+    });
+    console.log('Existing Log: ', existingLog);
 
     //basic fields
     let basicFields = [...loggingAddFormFieldsInitial];
@@ -152,17 +167,20 @@ export class LoggingComponent implements OnInit {
 
     task.items.forEach((taskItem: any, index: number) => {
       let taskFields = taskItem.formFields;
+      console.log('Task Item: ', taskItem);
+      console.log('Task Logs: ', existingLog?.logs[taskItem.id]);
+
       taskFields = taskFields.filter((field: any) => field.name !== 'itemName')
       taskFields.map((taskField: FormFields) => {
-
+        console.log("Task Achievement: ", existingLog?.logs[taskItem.id]?.achieved[taskField.name])
         taskField.deletable = false;
-        taskField.defaultValue = '';
+        taskField.defaultValue = existingLog && existingLog.logs[taskItem.id] ? existingLog.logs[taskItem.id].achieved[taskField.name] : '';
         return taskField;
       });
       fields = { ...fields, [`item${index}`]: { fields: taskFields, id: taskItem.id, oldvalue: taskItem.formData } };
     });
     console.log(fields);
-
+    this.selectedTask.next(task);
     this.loggingAddFormFields.next(fields);
   }
   async togglePanel(state: boolean) {
@@ -177,11 +195,51 @@ export class LoggingComponent implements OnInit {
       this.modalInfo.set(['add-edit', nls.addLog, 'confirm']);
     }
   }
-  submitAddLogging(data: any) {
-    console.log(data);
-  }
-  handleAddLoggingFormSubmit(data: any, fields: any) {
-    console.log(data, fields);
+  async handleAddLoggingFormSubmit(data: any, taskItem: any, basic: any) {
+    data.itemName = taskItem.oldvalue.itemName
+    let logData;
+    let result;
+    let loggingDate = basic.fields.find((it: any) => it.name === 'loggingDate')?.defaultValue;
+
+    let existingLog = await this._api.local_get_by_id('logging', {
+      scheduleId: this.selectedScheduleData.getValue().id,
+      widgetId: this.widgetData.getValue().id,
+      taskId: this.selectedTask.getValue().id
+    });
+    existingLog = existingLog?.find((log: any) => {
+      return moment(log.loggingDate).format('L') === moment(loggingDate).format('L')
+    });
+    // console.log(existingLog)
+    if (existingLog) {
+      existingLog.logs[taskItem.id] = {
+        fields: taskItem.fields,
+        target: taskItem.oldvalue,
+        achieved: data
+      }
+      result = await this._api.local_put('logging', existingLog);
+    } else {
+      logData = {
+        widget: this.widgetData.getValue(),
+        schedule: this.selectedScheduleData.getValue(),
+        logs: {
+          [taskItem.id]: {
+            fields: taskItem.fields,
+            target: taskItem.oldvalue,
+            achieved: data
+          }
+        },
+        taskId: this.selectedTask.getValue()?.id,
+        scheduleId: this.selectedScheduleData.getValue().id,
+        widgetId: this.widgetData.getValue().id,
+        loggingDate: loggingDate
+      };
+      result = await this._api.local_post('logging', logData);
+    }
+    if (result.success) {
+      this._message.success(result.message);
+    } else {
+      this._message.error(result.message)
+    }
   }
   getFlatFieldItems(): any[] {
     return Object.keys(this.loggingAddFormFields.getValue());
