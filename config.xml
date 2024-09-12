@@ -14,8 +14,8 @@
         <preference name="KeepRunning" value="true" />
         <preference name="InAppBrowserStorageEnabled" value="true" />
         <preference name="AndroidWindowSplashScreenBackground" value="#2D0D4F" />
-        <preference name="StatusBarOverlaysWebView" value="true" />
-        <preference name="StatusBarBackgroundColor" value="#012D0D4F" />
-        <preference name="StatusBarStyle" value="default" />
+        <preference name="StatusBarOverlaysWebView" value="false" />
+        <preference name="StatusBarBackgroundColor" value="#2D0D4F" />
+        <preference name="StatusBarStyle" value="lightcontent" />
     </platform>
 </widget>

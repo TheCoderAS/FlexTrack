@@ -1,8 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { NavbarComponent } from '../../framework/navbar/navbar.component';
-import { AppService } from '../../services/app.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { LoaderComponent } from '../../framework/loader/loader.component';
 import { LoaderService } from '../../services/loader.service';
@@ -18,7 +17,6 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  _appService: AppService = inject(AppService);
   _authService: AuthenticationService = inject(AuthenticationService);
   _loader: LoaderService = inject(LoaderService);
 }

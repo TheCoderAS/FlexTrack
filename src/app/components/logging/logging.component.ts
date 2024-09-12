@@ -147,7 +147,7 @@ export class LoggingComponent implements OnInit {
     existingLog = existingLog?.find((log: any) => {
       return moment(log.loggingDate).format('L') === moment(this.loggingViewFormData.getValue().loggingDate).format('L')
     });
-    console.log('Existing Log: ', existingLog);
+    // console.log('Existing Log: ', existingLog);
 
     //basic fields
     let basicFields = [...loggingAddFormFieldsInitial];
@@ -167,19 +167,19 @@ export class LoggingComponent implements OnInit {
 
     task.items.forEach((taskItem: any, index: number) => {
       let taskFields = taskItem.formFields;
-      console.log('Task Item: ', taskItem);
-      console.log('Task Logs: ', existingLog?.logs[taskItem.id]);
+      // console.log('Task Item: ', taskItem);
+      // console.log('Task Logs: ', existingLog?.logs[taskItem.id]);
 
       taskFields = taskFields.filter((field: any) => field.name !== 'itemName')
       taskFields.map((taskField: FormFields) => {
-        console.log("Task Achievement: ", existingLog?.logs[taskItem.id]?.achieved[taskField.name])
+        // console.log("Task Achievement: ", existingLog?.logs[taskItem.id]?.achieved[taskField.name])
         taskField.deletable = false;
         taskField.defaultValue = existingLog && existingLog.logs[taskItem.id] ? existingLog.logs[taskItem.id].achieved[taskField.name] : '';
         return taskField;
       });
       fields = { ...fields, [`item${index}`]: { fields: taskFields, id: taskItem.id, oldvalue: taskItem.formData } };
     });
-    console.log(fields);
+    // console.log(fields);
     this.selectedTask.next(task);
     this.loggingAddFormFields.next(fields);
   }

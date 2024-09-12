@@ -3,14 +3,14 @@
 .app-container {
   padding-top: calc($top-bar-height + 16px);
   padding-bottom: 30px;
-  height: calc(100vh - $bottom-bar-height);
+  height: calc(100% - $bottom-bar-height);
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .with_status {
-  height: calc(100vh - $bottom-bar-height - $status-bar-height) !important;
+  height: calc(100% - $bottom-bar-height - $status-bar-height) !important;
 }
 
 @media only screen and (max-width: 600px) {
