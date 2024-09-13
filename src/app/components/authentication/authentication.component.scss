@@ -16,8 +16,8 @@
 
     @media screen and (min-width:762px) {
         border-radius: 20px;
-        box-shadow: 0px 0px 15px #c4c4c450;
-        background-color: white;
+        box-shadow: 0px 0px 15px var(--header-bg-color);
+        background-color: var(--header-bg-color);
     }
 
 }

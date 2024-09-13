@@ -17,7 +17,7 @@
   transform: translate(-50%, -50%);
   max-width: 500px;
   width: 90%;
-  background: #ECE6EE;
+  background: var(--bg-color);
   box-shadow: 0 0 15px #2D0D4F90;
   z-index: 10001;
   border-radius: $border-radius;
@@ -26,7 +26,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
+    background-color: var(--header-bg-color);
+    color: var(--text-color) !important;
     padding: 0px 10px;
     height: 50px;
     border-radius: $border-radius $border-radius 0 0;
@@ -41,6 +42,7 @@
     padding: 10px;
   }
 }
+
 .material-symbols-outlined {
   height: 70px;
   width: 70px;

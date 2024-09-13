@@ -8,9 +8,9 @@
       <p class="schedule-description m-0">{{item.scheduleDescription}}</p>
       <p class="schedule-description m-0">{{item.tasks.length}} {{nls.noOfTasks}}</p>
       <div class="schedule-timestamp">
-        <p class="item text-muted m-0"><mat-icon class="icon">note_add</mat-icon> {{moment(item.createdAt).format('L')}}
+        <p class="item m-0"><mat-icon class="icon">note_add</mat-icon> {{moment(item.createdAt).format('L')}}
           {{moment(item.createdAt).format('LT')}}</p>
-        <p class="item text-muted m-0"><mat-icon class="icon">edit_document</mat-icon>
+        <p class="item m-0"><mat-icon class="icon">edit_document</mat-icon>
           {{moment(item.createdAt).format('L')}}
           {{moment(item.createdAt).format('LT')}}</p>
       </div>

@@ -6,6 +6,7 @@
   justify-content: space-between;
   gap: 10px;
   align-items: center;
+  background-color: var(--header-bg-color) !important;
 
   .task-content {
     flex-grow: 1;
@@ -20,6 +21,8 @@
         display: flex;
         align-items: center;
         gap: 3px;
+        color: var(--text-color-secondary) !important;
+        padding-top: 5px;
 
         .icon {
           font-size: 12px;
@@ -37,13 +40,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--text-color);
   }
 
   .task-name {
     font-weight: 500;
+    color: var(--text-color);
   }
 
   .task-description {
     font-size: 12px;
+    color: var(--text-color-secondary);
   }
 }

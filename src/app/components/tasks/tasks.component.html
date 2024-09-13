@@ -53,10 +53,10 @@
       </div>
     </ng-container>
 
-    <button mat-flat-button class="w-100 mt-3" (click)="onClickAddItem()">{{nls.AddTaskItem}}</button>
-    <button *ngIf="isEdit.getValue()" class="w-100 mt-3" mat-flat-button color="accent" (click)="deleteSelectedTask()"
-    type="button">{{nls.delete}}</button>
-    <button mat-flat-button class="w-100 mt-3" (click)="submitPanel($event)" [disabled]="panelSubmitButtonDisbale()"
+    <button mat-raised-button class="w-100 mt-3" (click)="onClickAddItem()">{{nls.AddTaskItem}}</button>
+    <button *ngIf="isEdit.getValue()" class="w-100 mt-3" mat-raised-button color="accent" (click)="deleteSelectedTask()"
+      type="button">{{nls.delete}}</button>
+    <button mat-raised-button class="w-100 mt-3" (click)="submitPanel($event)" [disabled]="panelSubmitButtonDisbale()"
       color="primary">{{nls.okay}}</button>
   </ng-template>
 </app-right-panel>
@@ -68,7 +68,7 @@
     <p *ngIf="modalInfo()[0]==='delete-task'">{{nls.deleteTaskMessage}}</p>
 
     <app-form *ngIf="modalInfo()[0]==='add-task-item'" [dynamic-form-fields]="addTaskFormFields"
-      [cancel-button-title]="nls.okay" [submit-button-title]="nls.okay" (on-cancel)="toggleModal(false)"
+      [cancel-button-title]="nls.cancel" [submit-button-title]="nls.okay" (on-cancel)="toggleModal(false)"
       (on-submit)="onSubmitAddField($event)">
     </app-form>
 

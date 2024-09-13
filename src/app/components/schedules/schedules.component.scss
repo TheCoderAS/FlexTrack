@@ -6,6 +6,7 @@
   justify-content: space-between;
   gap: 10px;
   align-items: center;
+  background-color: var(--header-bg-color) !important;
 
   .schedule-content {
     flex-grow: 1;
@@ -14,12 +15,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-
+      padding-top: 5px;
       .item {
         font-size: 11px;
         display: flex;
         align-items: center;
         gap: 3px;
+        color: var(--text-color-secondary) !important;
 
         .icon {
           font-size: 12px;
@@ -37,13 +39,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--text-color);
   }
 
   .schedule-name {
     font-weight: 500;
+    color: var(--text-color);
   }
 
   .schedule-description {
     font-size: 12px;
+    color: var(--text-color-secondary);
   }
 }

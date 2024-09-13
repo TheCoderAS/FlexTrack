@@ -3,3 +3,78 @@ $bottom-bar-height: 65px;
 $card-border-radius: 15px;
 $status-bar-height: 45px;
 $border-radius: 5px;
+
+.light-theme {
+  --bg-color: #ece6ee;
+  --text-color: #040D12;
+  --text-color-secondary: #6C757D;
+  --header-bg-color: #ffffff;
+  --header-bg-color-secondary: #64CCC5;
+  --scrollbar-track-color: #f1f1f1;
+  --scrollbar-thumb-color: #00000020;
+  --nav-item-active: #673ab7;
+  --button-bg-primary: #2D0D4F;
+  --button-bg-secondary: #F3F8FF;
+  --button-bg-tertiary: #F57D1F;
+  --button-bg-disabled: #B8A9C9;
+  --mdc-filled-text-field-container-color: #f1f1f1;
+  --mdc-filled-text-field-caret-color: #2D0D4F;
+  --mdc-filled-text-field-focus-active-indicator-color: #2D0D4F;
+  --mdc-filled-text-field-focus-label-text-color: #2D0D4F;
+  --mdc-filled-text-field-label-text-color: #040D12;
+  --mdc-filled-text-field-hover-label-text-color: #2D0D4F;
+  --mdc-filled-text-field-input-text-color: #040D12;
+  --mdc-fab-container-color: #F3F8FF;
+  --mat-fab-foreground-color: #040D12;
+
+}
+
+.dark-theme {
+  --bg-color: #040D12;
+  --text-color: #ffffff;
+  --text-color-secondary: #b3ada8;
+  --header-bg-color: #222831;
+  --header-bg-color-secondary: #003C43;
+  --scrollbar-track-color: #000000;
+  --scrollbar-thumb-color: #333333;
+  --nav-item-active: #dd0000;
+  --button-bg-primary: #2D0D4F;
+  --button-bg-secondary: #222831;
+  --button-bg-tertiary: #F57D1F;
+  --button-bg-disabled: #B8A9C9;
+  --mdc-filled-text-field-container-color: #151b20;
+  --mdc-filled-text-field-disabled-container-color: #151b2050;
+  --mdc-filled-text-field-caret-color: white;
+  --mdc-filled-text-field-focus-active-indicator-color: #2D0D4F;
+  --mdc-filled-text-field-focus-label-text-color: #8A2BE2;
+  --mdc-filled-text-field-label-text-color: #ffffff;
+  --mdc-filled-text-field-hover-label-text-color: #8A2BE2;
+  --mdc-filled-text-field-disabled-label-text-color: #eeeeee;
+  --mdc-filled-text-field-input-text-color: #ffffff;
+  --mdc-filled-text-field-disabled-input-text-color: #eeeeee;
+  --mdc-filled-text-field-input-text-placeholder-color: #5D6D7E;
+  --mat-select-panel-background-color: #222831;
+  --mat-select-enabled-trigger-text-color: #ffffff;
+  --mat-select-disabled-trigger-text-color: #eeeeee;
+  --mat-select-enabled-arrow-color: #ffffff;
+  --mat-select-disabled-arrow-color: #eeeeee;
+  --mat-option-selected-state-label-text-color: #ffffff;
+  --mat-option-label-text-color: #ffffff;
+  --mat-option-hover-state-layer-color: #00000020;
+  --mat-option-selected-state-layer-color: #2D0D4F;
+  --mdc-fab-container-color: #222831;
+  --mat-fab-foreground-color: #ffffff;
+  --mat-datepicker-calendar-container-background-color: #222831;
+  --mat-datepicker-calendar-container-text-color: #ffffff;
+  --mat-datepicker-calendar-date-today-outline-color: #ffffff50;
+  --mat-datepicker-calendar-header-text-color: #ffffffaa;
+  --mat-datepicker-calendar-header-divider-color: #ffffffaa;
+  --mat-datepicker-calendar-date-disabled-state-text-color: #eeeeeeaa;
+  --mat-datepicker-calendar-navigation-button-icon-color: #ffffffaa;
+  --mat-datepicker-calendar-period-button-icon-color: #ffffffaa;
+  --mat-datepicker-calendar-period-button-text-color: #ffffffaa;
+  --mat-datepicker-calendar-body-label-text-color: #ffffffaa;
+  --mat-datepicker-calendar-date-selected-state-background-color: #2D0D4F;
+  --mat-datepicker-calendar-date-text-color: #ffffffdd;
+  --mat-datepicker-toggle-icon-color: var(--text-color);
+}

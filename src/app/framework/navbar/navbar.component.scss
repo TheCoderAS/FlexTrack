@@ -3,6 +3,15 @@
 .my-button-nav {
     height: $bottom-bar-height;
     border-radius: 0;
+    color: var(--text-color) !important;
+}
+
+.themed-nav {
+    background-color: var(--header-bg-color);
+}
+
+.active-nav-item {
+    color: var(--nav-item-active) !important;
 }
 
 .brand-name {

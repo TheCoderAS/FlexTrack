@@ -1,20 +1,15 @@
+@import './app/framework/resources/variables';
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
-
-@media (prefers-color-scheme: dark) {
-    @import '@angular/material/prebuilt-themes/deeppurple-amber-dark.css';
-}
 
 html,
 body {
     height: 100%;
     user-select: none;
-}
-
-body {
     margin: 0;
     padding: 0;
-    background-color: #ece6ee;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     letter-spacing: 1px !important;
@@ -29,19 +24,47 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--scrollbar-track-color);
     border-radius: 0px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #00000020;
+    background: var(--scrollbar-thumb-color);
     border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #00000040;
+    background: var(--scrollbar-thumb-color);
 }
 
 .cdk-overlay-container {
     z-index: 10001;
+}
+
+.text-secondary {
+    color: var(--text-color-secondary) !important;
+}
+
+.mat-typography {
+    color: var(--text-color) !important;
+}
+
+.mat-mdc-raised-button {
+    --mdc-protected-button-container-color: var(--button-bg-secondary) !important;
+    --mdc-protected-button-label-text-color: var(--text-color) !important;
+}
+
+.mat-mdc-raised-button.mat-primary {
+    --mdc-protected-button-container-color: var(--button-bg-primary) !important;
+    --mdc-protected-button-label-text-color: white !important;
+}
+
+.mat-mdc-raised-button.mat-accent {
+    --mdc-protected-button-container-color: var(--button-bg-tertiary) !important;
+    --mdc-protected-button-label-text-color: white !important;
+}
+
+.mat-mdc-raised-button.mat-mdc-button-disabled {
+    --mdc-protected-button-disabled-container-color: var(--button-bg-disabled) !important;
+    --mdc-protected-button-disabled-label-text-color: white !important;
 }

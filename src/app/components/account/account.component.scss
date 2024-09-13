@@ -1,7 +1,7 @@
 @import "../../framework/resources/_variables.scss";
 
 .account {
-  background-color: white;
+  background-color: var(--header-bg-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -11,7 +11,7 @@
   .avatar {
     height: 120px;
     border-radius: 50%;
-    border: 3px solid #ece6ee;
+    border: 3px solid var(--bg-color);
   }
 
   .profile-item-list-container {
@@ -22,28 +22,28 @@
 
   .profile-item-list {
     // border: 1px solid red;
-    box-shadow: 0px 0px 5px #ece6eeaa;
+    // box-shadow: 0px 0px 5px #ece6eeaa;
     height: 40px;
     border-radius: $border-radius;
-
   }
 
   .profile-item-list-label {
+    color: var(--text-color);
     font-size: 13px;
   }
 
   @media screen and (max-width:600px) {
-    background-color: #ece6ee;
+    background-color: var(--bg-color);
     height: calc(100vh - 160px) !important;
 
     .avatar {
-      border-color: white;
+      border-color: var(--header-bg-color);
     }
 
     .profile-item-list {
       // border: 1px solid red;
-      box-shadow: 0px 0px 5px white;
-      background-color: white;
+      // box-shadow: 0px 0px 5px white;
+      background-color: var(--header-bg-color);
     }
 
   }
@@ -55,7 +55,7 @@
 
 .profile-detail-item {
   text-align: left;
-  background-color: white;
+  background-color: var(--header-bg-color);
   padding: 5px 10px;
   margin: 4px 0px;
   border-radius: $border-radius;
@@ -63,7 +63,7 @@
   label {
     font-size: 11px;
     font-weight: 500;
-    color: #6b6b6b;
+    color: var(--text-color);
   }
 
   .small-text {

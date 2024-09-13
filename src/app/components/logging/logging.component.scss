@@ -3,7 +3,7 @@
 .task-item {
   .task-item-content {
     padding: 0.625rem 0.75rem;
-    background-color: white;
+    background-color: var(--header-bg-color);
     border-radius: $border-radius !important;
   }
 
@@ -17,13 +17,13 @@
     font-size: 0.625rem;
     font-weight: 400;
     line-height: 1rem;
-    color: var(--mdc-filled-text-field-label-text-color);
+    color: var(--text-color-secondary);
   }
 }
 
 .logging-form-divider {
   margin-bottom: 1.25rem;
-  background-color: white;
+  background-color: var(--header-bg-color);
   border-radius: $border-radius !important;
 }
 
@@ -42,38 +42,9 @@
   border-radius: $border-radius $border-radius 0px 0px;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #333333;
+  color: var(--text-color);
   text-transform: uppercase;
-  background-color: #450d5940;
+  background-color: var(--header-bg-color-secondary);
   padding: 0.5rem;
   margin: 0;
-}
-
-.target-field-container {
-  background-color: var(--mdc-filled-text-field-container-color);
-  border-radius: $border-radius;
-}
-
-.target-field-inner-container {
-  margin-bottom: 1px;
-  border-bottom: 1px solid grey;
-  padding: 0.27rem 0.9375rem;
-
-  .target-field-label {
-    font-family: var(--mdc-filled-text-field-label-text-font);
-    font-size: 0.625rem;
-    font-weight: var(--mdc-filled-text-field-label-text-weight);
-    letter-spacing: var(--mdc-filled-text-field-label-text-tracking);
-    color: var(--mdc-filled-text-field-label-text-color);
-  }
-
-  .wrapped-value {
-    // white-space: nowrap;
-    // overflow-x: auto;
-    // overflow-y: hidden;
-  }
-
-  .target-field-value {
-    line-height: 1.5rem;
-  }
 }

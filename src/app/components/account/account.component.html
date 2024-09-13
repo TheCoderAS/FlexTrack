@@ -13,8 +13,8 @@
         </mat-list>
       </div>
     </div>
-    <button mat-flat-button (click)="onClickAccountItem('logout')"
-      class="w-100 bg-danger text-white py-1">{{nls.logout}}</button>
+    <button mat-raised-button (click)="onClickAccountItem('logout')" class="w-100"
+      color="accent">{{nls.logout}}</button>
   </div>
 </div>
 <app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
@@ -70,7 +70,7 @@
         <p>{{nls.contactMessage}}</p>
         <img src="../../../assets/images/red-heart.png" height="40px" width="40px" alt="Heart" />
       </div>
-      <button class="w-100 mt-2" mat-flat-button (click)="toggleModal(false)">{{nls.okay}}</button>
+      <button class="w-100 mt-2" mat-raised-button (click)="toggleModal(false)">{{nls.okay}}</button>
     </div>
 
     <div *ngIf="modalId()==='help'">
@@ -83,13 +83,13 @@
         <p class="m-0">{{nls.supportEmail}}</p>
         <p><a [href]="'mailto:'+nls.supportEmailValue">{{nls.supportEmailValue}}</a></p>
       </div>
-      <button class="w-100 mt-2" mat-flat-button (click)="toggleModal(false)">{{nls.okay}}</button>
+      <button class="w-100 mt-2" mat-raised-button (click)="toggleModal(false)">{{nls.okay}}</button>
     </div>
     <div *ngIf="modalId()==='backup-data'">
-      <button class="w-100 mt-2" mat-flat-button (click)="backupData()" color="primary">{{nls.backupMyData}}</button>
-      <button class="w-100 mt-2" mat-flat-button (click)="restorePanelOpen()"
+      <button class="w-100 mt-2" mat-raised-button (click)="backupData()" color="primary">{{nls.backupMyData}}</button>
+      <button class="w-100 mt-2" mat-raised-button (click)="restorePanelOpen()"
         color="accent">{{nls.importMyData}}</button>
-      <button class="w-100 mt-2" mat-flat-button (click)="toggleModal(false)">{{nls.cancel}}</button>
+      <button class="w-100 mt-2" mat-raised-button (click)="toggleModal(false)">{{nls.cancel}}</button>
     </div>
   </ng-template>
 </app-modal-window>

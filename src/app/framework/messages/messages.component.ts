@@ -12,6 +12,4 @@ import { CommonModule } from '@angular/common';
 export class MessagesComponent {
   private messageService = inject(MessagesService);
   messages: Signal<Message[]> = this.messageService.messages;
-
-
 }
