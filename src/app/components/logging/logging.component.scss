@@ -8,7 +8,7 @@
   }
 
   .task-name {
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 500;
     line-height: 1rem;
   }
@@ -29,13 +29,12 @@
 
 .logging-form-container {
   padding: 0.5rem;
-  gap: 0.3125rem;
   justify-content: space-between;
 
   .max-width {
-    min-width: 50%;
-    max-width: 50%;
-    width: 50% !important;
+    min-width: 48%;
+    max-width: 48%;
+    width: 48% !important;
   }
 }
 

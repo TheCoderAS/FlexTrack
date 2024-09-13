@@ -17,7 +17,6 @@
     <p class="text-center text-secondary">{{nls.pleaseAddSchedule}}</p>
   </div>
 </div>
-<!-- <app-fab-button (on-click)="createLogging()" [disabled]="!selectedScheduleData.getValue()" /> -->
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)"
   [panel-heading]="isEdit.getValue()?nls.editLog:nls.addLog" [type]="'info'">
   <ng-template>
@@ -28,28 +27,17 @@
       <p class=" text-center logging-task-name">{{loggingAddFormFields.getValue()[item].oldvalue.itemName}}</p>
       }
       <div class="logging-form-container" [class.d-flex]="$index!==0">
-        @if ($index!==0) {
-        <div class="w-100">
+        <div *ngIf="$index!==0" [class.max-width]="$index!==0">
           <p>{{nls.target}}</p>
-          <ng-container *ngFor="let field of loggingAddFormFields.getValue()[item].fields">
-            <div class="target-field-container">
-              <div class="target-field-inner-container">
-                <label class="target-field-label">{{field.label}}</label>
-                <div class="wrapped-value">
-                  <span
-                    class="m-0 target-field-value">{{loggingAddFormFields.getValue()[item].oldvalue[field.name]}}</span>
-                </div>
-              </div>
-            </div>
-            <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align"></div>
-          </ng-container>
+          <app-form
+            [form-fields]="getDisabledFormTarget(loggingAddFormFields.getValue()[item].fields,loggingAddFormFields.getValue()[item].oldvalue)"
+            [submittable]="false" />
         </div>
-        }
         <div [class.max-width]="$index!==0">
           <p *ngIf="$index!==0">{{nls.achieved}}</p>
           <app-form [form-fields]="loggingAddFormFields.getValue()[item].fields"
-            (on-submit)="handleAddLoggingFormSubmit($event, loggingAddFormFields.getValue()[item], loggingAddFormFields.getValue()['basic'])"
-            [submit-button-title]="nls.save" [submittable]="$index!==0" />
+            (on-change)="handleAddLoggingFormSubmit($event, loggingAddFormFields.getValue()[item])"
+            [submittable]="false" />
         </div>
       </div>
     </div>

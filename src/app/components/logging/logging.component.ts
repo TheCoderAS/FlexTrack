@@ -43,6 +43,8 @@ export class LoggingComponent implements OnInit {
   selectedTask = new BehaviorSubject<any>(null);
   nls = nls;
   moment = moment
+  loggingData = new BehaviorSubject<any>({});
+
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -167,13 +169,11 @@ export class LoggingComponent implements OnInit {
 
     task.items.forEach((taskItem: any, index: number) => {
       let taskFields = taskItem.formFields;
-      // console.log('Task Item: ', taskItem);
-      // console.log('Task Logs: ', existingLog?.logs[taskItem.id]);
 
       taskFields = taskFields.filter((field: any) => field.name !== 'itemName')
       taskFields.map((taskField: FormFields) => {
-        // console.log("Task Achievement: ", existingLog?.logs[taskItem.id]?.achieved[taskField.name])
         taskField.deletable = false;
+        taskField.disabled = false;
         taskField.defaultValue = existingLog && existingLog.logs[taskItem.id] ? existingLog.logs[taskItem.id].achieved[taskField.name] : '';
         return taskField;
       });
@@ -181,67 +181,79 @@ export class LoggingComponent implements OnInit {
     });
     // console.log(fields);
     this.selectedTask.next(task);
+    this.loggingData.next({ scheduleId: this.loggingViewFormData.getValue().scheduleId, loggingDate: this.loggingViewFormData.getValue().loggingDate })
     this.loggingAddFormFields.next(fields);
   }
   async togglePanel(state: boolean) {
     this.rightPanelOpen.set(state);
   }
   closePanel(data: any): void {
-    this.isModalOpen.set(true);
-    if (this.isEdit.getValue()) {
-      this.modalInfo.set(['add-edit', nls.editLog, 'confirm']);
+    this.togglePanel(false);
+    // this.isModalOpen.set(true);
+    // if (this.isEdit.getValue()) {
+    //   this.modalInfo.set(['add-edit', nls.editLog, 'confirm']);
 
-    } else {
-      this.modalInfo.set(['add-edit', nls.addLog, 'confirm']);
-    }
+    // } else {
+    //   this.modalInfo.set(['add-edit', nls.addLog, 'confirm']);
+    // }
   }
-  async handleAddLoggingFormSubmit(data: any, taskItem: any, basic: any) {
-    data.itemName = taskItem.oldvalue.itemName
-    let logData;
+
+  async handleAddLoggingFormSubmit(data: any, taskItem: any) {
     let result;
-    let loggingDate = basic.fields.find((it: any) => it.name === 'loggingDate')?.defaultValue;
+    let loggingDate = this.loggingData.getValue().loggingDate;
 
     let existingLog = await this._api.local_get_by_id('logging', {
-      scheduleId: this.selectedScheduleData.getValue().id,
+      scheduleId: this.loggingData.getValue().scheduleId,
       widgetId: this.widgetData.getValue().id,
       taskId: this.selectedTask.getValue().id
     });
     existingLog = existingLog?.find((log: any) => {
       return moment(log.loggingDate).format('L') === moment(loggingDate).format('L')
     });
-    // console.log(existingLog)
-    if (existingLog) {
-      existingLog.logs[taskItem.id] = {
-        fields: taskItem.fields,
-        target: taskItem.oldvalue,
-        achieved: data
+    if (taskItem.id) {
+      data.itemName = taskItem.oldvalue.itemName
+      if (existingLog) {
+        existingLog.logs[taskItem.id] = {
+          fields: taskItem.fields,
+          target: taskItem.oldvalue,
+          achieved: data
+        }
+        result = await this._api.local_put('logging', existingLog);
+      } else {
+        let logData = {
+          widget: this.widgetData.getValue(),
+          schedule: this.selectedScheduleData.getValue(),
+          logs: {
+            [taskItem.id]: {
+              fields: taskItem.fields,
+              target: taskItem.oldvalue,
+              achieved: data
+            }
+          },
+          taskId: this.selectedTask.getValue()?.id,
+          scheduleId: this.selectedScheduleData.getValue().id,
+          widgetId: this.widgetData.getValue().id,
+          loggingDate: loggingDate
+        };
+        result = await this._api.local_post('logging', logData);
       }
-      result = await this._api.local_put('logging', existingLog);
-    } else {
-      logData = {
-        widget: this.widgetData.getValue(),
-        schedule: this.selectedScheduleData.getValue(),
-        logs: {
-          [taskItem.id]: {
-            fields: taskItem.fields,
-            target: taskItem.oldvalue,
-            achieved: data
-          }
-        },
-        taskId: this.selectedTask.getValue()?.id,
-        scheduleId: this.selectedScheduleData.getValue().id,
-        widgetId: this.widgetData.getValue().id,
-        loggingDate: loggingDate
-      };
-      result = await this._api.local_post('logging', logData);
-    }
-    if (result.success) {
-      this._message.success(result.message);
-    } else {
-      this._message.error(result.message)
+      // if (result.success) {
+      //   this._message.success(result.message);
+      // } else {
+      //   this._message.error(result.message)
+      // }
+
     }
   }
   getFlatFieldItems(): any[] {
     return Object.keys(this.loggingAddFormFields.getValue());
+  }
+  getDisabledFormTarget(fields: any[], data: any): any[] {
+    [...fields].map((field: any) => {
+      field.defaultValue = data[field.name];
+      field.disabled = true;
+      return field
+    })
+    return fields
   }
 }
