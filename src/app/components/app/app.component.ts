@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, HostListener, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, inject, OnInit, Renderer2, signal, WritableSignal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { NavbarComponent } from '../../framework/navbar/navbar.component';
@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   _appService: AppService = inject(AppService);
   private _message: MessagesService = inject(MessagesService);
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private renderer: Renderer2 = inject(Renderer2);
 
   isModalOpen: WritableSignal<boolean> = signal(false);
   modalInfo: WritableSignal<string[]> = signal(['', '', '']);
@@ -33,8 +34,22 @@ export class AppComponent implements OnInit {
   nls = nls;
 
   ngOnInit(): void {
+    this.applySystemTheme();
+
     this.window = this._appService.getWindow();
+    this.window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      this.applySystemTheme();
+    });
     this.window.document.addEventListener('backbutton', this.onBackButtonPressed.bind(this), false);
+  }
+  applySystemTheme() {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (prefersDark) {
+      this.renderer.addClass(document.body, 'dark-theme');
+    } else {
+      this.renderer.removeClass(document.body, 'dark-theme');
+    }
   }
   @HostListener('backbutton')
   onBackButtonPressed(event: Event): void {

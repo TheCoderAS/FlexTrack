@@ -1,6 +1,10 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
+@media (prefers-color-scheme: dark) {
+    @import '@angular/material/prebuilt-themes/deeppurple-amber-dark.css';
+}
+
 html,
 body {
     height: 100%;
