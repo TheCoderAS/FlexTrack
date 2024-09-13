@@ -6,21 +6,19 @@ import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 import { NavItem, Path, allPaths, navItemsList } from '../resources/nav-items';
 import { AuthenticationService } from '../../services/authentication.service';
-import { AppService } from '../../services/app.service';
 import { ApiService } from '../../services/api.service';
 import nls from '../resources/nls/generic';
-import { ModalWindowComponent } from "../modal-window/modal-window.component";
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, CommonModule, RouterModule, ModalWindowComponent],
+  imports: [MatIconModule, MatButtonModule, CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
   private router: Router = inject(Router);
   private _authService = inject(AuthenticationService);
-  _appService: AppService = inject(AppService);
   private _api: ApiService = inject(ApiService);
 
   private bottomBarShowCase: string[] = ['/', '/account', '/reports', '/add-tasks', '/add-schedules'];
@@ -30,34 +28,10 @@ export class NavbarComponent implements OnInit {
   navItems: NavItem[] = navItemsList;
   paths = new BehaviorSubject<Path[]>(allPaths);
   nls = nls
-  isModalOpen: WritableSignal<boolean> = signal(false);
-  modalInfo: WritableSignal<string[]> = signal(['', '', '']);
 
   ngOnInit() {
     this.buildPathsFromWidgets()
     this.subscribeRouterEvents();
-    this._appService.getWindow().document.addEventListener('backbutton', this.onBackButtonPressed.bind(this), false);
-  }
-
-  ngOnDestroy(): void {
-    // Remove event listener when component is destroyed
-    this._appService.getWindow().document.removeEventListener('backbutton', this.onBackButtonPressed.bind(this), false);
-  }
-
-  onBackButtonPressed(event: Event): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.toggleModal(true);
-  }
-
-  toggleModal(state: boolean) {
-    this.isModalOpen.set(state);
-  }
-  async submitModal(data: any) {
-    //submit logic here goes
-    console.log(this.router.getCurrentNavigation())
-    this.toggleModal(false);
-    this.modalInfo.set(['', '', '', '']);
   }
 
   subscribeRouterEvents() {

@@ -26,11 +26,13 @@ const nls = {
   navbar: {
     logging: "Logging",
     brand: "Fitness Tracker",
-    home:"Home",
-    reports:"Reports",
-    tasks:"Tasks",
-    schedule:"Schedules",
-    account:"Account",
-  }
+    home: "Home",
+    reports: "Reports",
+    tasks: "Tasks",
+    schedule: "Schedules",
+    account: "Account",
+  },
+  exitApp: "Exit Fitness Tracker",
+  exitAppMessage: "You want to exit."
 }
 export default nls;

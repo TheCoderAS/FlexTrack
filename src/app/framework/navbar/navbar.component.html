@@ -47,10 +47,3 @@
     </div>
   </div>
 </nav>
-
-<app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
-  [modal-heading]="modalInfo()[1]" [type]="modalInfo()[2]">
-  <ng-template>
-    <!-- <p *ngIf="modalInfo()[0]==='add-edit'">{{nls.CancelAddEdit}}</p> -->
-  </ng-template>
-</app-modal-window>
