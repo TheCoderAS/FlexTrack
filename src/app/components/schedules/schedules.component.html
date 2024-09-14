@@ -19,11 +19,12 @@
       <mat-icon>content_copy</mat-icon>
     </div>
   </div>
-  <div *ngIf="!schedulesList().length">
+  <div *ngIf="!schedulesList().length" class="no-data-placeholder">
+    <div class="no-data-image"></div>
     <p class="text-center text-secondary">{{nls.noSchedulesFound}}</p>
   </div>
 </div>
-<app-fab-button (on-click)="createSchedule()" />
+<app-fab-button (on-click)="createSchedule()" [disabled]="selectedWidget().widgetId===''" />
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)"
   [panel-heading]="isEdit.getValue()?nls.editSchedule:nls.addSchedule" [type]="'info'">
   <ng-template>

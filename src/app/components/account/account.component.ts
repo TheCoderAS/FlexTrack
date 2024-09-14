@@ -1,4 +1,4 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
+import { Component, inject, Renderer2, signal, WritableSignal } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { ModalWindowComponent } from '../../framework/modal-window/modal-window.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,11 +14,13 @@ import { FormFields } from '../../framework/form/form.interfaces';
 import { accountItems, backupDataFormFields, chnagePasswordFields, editProfileFields } from './account.resources';
 import { ApiService } from '../../services/api.service';
 import { MessagesService } from '../../services/messages.service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AppService } from '../../services/app.service';
 
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, ModalWindowComponent, MatIconModule, MatButtonModule, MatRippleModule, MatListModule, RightPanelComponent, FormComponent],
+  imports: [CommonModule, ModalWindowComponent, MatIconModule, MatButtonModule, MatRippleModule, MatListModule, RightPanelComponent, FormComponent, MatSlideToggleModule],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
 })
@@ -27,7 +29,10 @@ export class AccountComponent {
   private _authService: AuthenticationService = inject(AuthenticationService);
   private _api: ApiService = inject(ApiService);
   private _message: MessagesService = inject(MessagesService);
+  private _appService: AppService = inject(AppService);
+  private renderer: Renderer2 = inject(Renderer2);
 
+  window: any;
   nls = nls;
   moment = moment;
   isModalOpen: WritableSignal<boolean> = signal(false);
@@ -41,9 +46,25 @@ export class AccountComponent {
   panelHeading: WritableSignal<string> = signal('');
   changePasswordFields: WritableSignal<FormFields[]> = signal(chnagePasswordFields);
   editProfileFields: WritableSignal<FormFields[]> = signal(editProfileFields);
-  backupDataFormFields: WritableSignal<FormFields[]> = signal(backupDataFormFields)
+  backupDataFormFields: WritableSignal<FormFields[]> = signal(backupDataFormFields);
+  themeMode: WritableSignal<string> = signal('');
+
   constructor() {
+    this.window = this._appService.getWindow();
     this.getMyProfileData();
+    this.getCurrentTheme();
+  }
+  getCurrentTheme() {
+    const prefersDark = this.window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const themePreference = this.window.localStorage.getItem('theme-mode');
+
+    if (themePreference) {
+      this.themeMode.set(themePreference);
+    } else if (prefersDark) {
+      this.themeMode.set('dark');
+    } else {
+      this.themeMode.set('light');
+    }
   }
   handleFormChange(data: any) {
 
@@ -112,10 +133,24 @@ export class AccountComponent {
       case 'backup-data': {
         this.modalType.set('info');
         this.modalId.set(id);
+        this.modalHeading.set(nls.backupData);
         this.toggleModal(true);
         break;
       }
+      case 'theme': {
+        this.switchTheme();
+      }
     }
+  }
+  switchTheme() {
+    if (this.themeMode() === 'dark') {
+      this.themeMode.set('light');
+    } else {
+      this.themeMode.set('dark');
+    }
+    this.window.localStorage.setItem('theme-mode', this.themeMode());
+    this.renderer.removeClass(document.body, this.themeMode() === 'dark' ? 'light-theme' : 'dark-theme');
+    this.renderer.addClass(document.body, `${this.themeMode()}-theme`);
   }
   async backupData() {
     this.toggleModal(false);

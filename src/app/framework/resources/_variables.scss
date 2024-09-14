@@ -78,6 +78,17 @@ $text-white: white;
   --mat-datepicker-calendar-date-selected-state-background-color: #2D0D4F;
   --mat-datepicker-calendar-date-text-color: #ffffffdd;
   --mat-datepicker-toggle-icon-color: var(--text-color);
+  --mdc-switch-selected-handle-color: #2D0D4F;
+  --mdc-switch-selected-focus-handle-color: #2D0D4F;
+  --mdc-switch-unselected-focus-handle-color: #2D0D4F;
+  --mdc-switch-unselected-hover-handle-color: #2D0D4F;
+  --mdc-switch-unselected-handle-color: #2D0D4F;
+  --mdc-switch-unselected-track-color: #9575cd;
+  --mdc-switch-unselected-focus-track-color: #9575cd;
+  --mdc-switch-unselected-hover-track-color: #9575cd;
+  --mdc-switch-unselected-pressed-track-color: #9575cd;
+  --mat-fab-disabled-state-foreground-color: white;
+  --mat-fab-disabled-state-container-color: var(--button-bg-disabled);
 
   transition: all 200ms;
 }

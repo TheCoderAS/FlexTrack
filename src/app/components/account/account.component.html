@@ -8,8 +8,14 @@
       <div class="my-3">
         <mat-list role="list" class="profile-item-list-container mb-2">
           <mat-list-item role="listitem" mat-ripple *ngFor="let item of accountItems()"
-            (click)="onClickAccountItem(item.id, item.disabled)" class="profile-item-list"
-            [disabled]="item.disabled"><span class="profile-item-list-label">{{item.label}}</span></mat-list-item>
+            (click)="onClickAccountItem(item.id, item.disabled)" class="profile-item-list" [disabled]="item.disabled">
+            <div class="profile-item-list-label">
+              <span class="m-0">{{item.label}}</span>
+              <span *ngIf="item.id==='theme'"
+                class="text-capitalize m-0 d-flex align-items-center gap-2">{{themeMode()}}<mat-slide-toggle
+                  [checked]="themeMode().toLowerCase()==='dark'" color="primary" /></span>
+            </div>
+          </mat-list-item>
         </mat-list>
       </div>
     </div>
@@ -19,7 +25,7 @@
 </div>
 <app-modal-window [isOpen]="isModalOpen()" (onCancel)="toggleModal($event)" (onSubmit)="submitModal($event)"
   [modal-heading]="modalHeading()" [type]="modalType()"
-  [showHeader]="modalId()==='logout' || modalId()==='view-profile' || modalId()==='reset-account'">
+  [showHeader]="modalId()==='logout' || modalId()==='view-profile' || modalId()==='reset-account' || modalId()==='backup-data'">
   <ng-template>
     <p *ngIf="modalId()==='logout'">{{nls.logoutText}}</p>
 

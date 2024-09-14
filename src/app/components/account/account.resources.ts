@@ -48,6 +48,7 @@ export const accountItems = [
   { id: 'backup-data', label: nls.backupData },
   { id: 'help', label: nls.HelpSupport },
   { id: 'about', label: nls.About },
+  { id: 'theme', label: nls.SwitchTheme },
 ]
 export const editProfileFields: FormFields[] = [
   {

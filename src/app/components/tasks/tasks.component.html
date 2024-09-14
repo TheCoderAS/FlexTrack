@@ -19,13 +19,14 @@
       <mat-icon>content_copy</mat-icon>
     </div>
   </div>
-  <div *ngIf="!tasksList().length">
+  <div *ngIf="!tasksList().length" class="no-data-placeholder">
+    <div class="no-data-image"></div>
     <p class="text-center text-secondary">{{nls.notasksFound}}</p>
   </div>
 </div>
 
 
-<app-fab-button (on-click)="createTask()" />
+<app-fab-button (on-click)="createTask()" [disabled]="selectedWidget().widgetId===''" />
 <app-right-panel [isOpen]="rightPanelOpen()" (onCancel)="closePanel($event)"
   [panel-heading]="isEdit.getValue()?nls.editTask:nls.addTasks" [type]="'info'">
   <ng-template>

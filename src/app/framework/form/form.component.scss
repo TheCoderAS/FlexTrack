@@ -48,7 +48,7 @@
 
     .deletable-icon {
         background-color: var(--mdc-filled-text-field-container-color);
-        color: red !important;
+        color: var(--button-bg-tertiary) !important;
         width: 50px;
         height: 55px;
         text-align: center;
@@ -70,7 +70,7 @@
     .multiple-select-item {
         padding: 5px 12px;
         border-radius: 5px;
-        background-color: #ece6ee;
+        background-color: var(--bg-color);
         box-shadow: 0px 0px 4px rgba(45, 13, 79, 0.2);
         font-size: 13px;
         display: flex;
@@ -85,7 +85,7 @@
             padding: 3px;
             border-radius: 50%;
             background-color: red;
-            color: white;
+            color: var(--text-color);
             font-weight: 800;
         }
     }

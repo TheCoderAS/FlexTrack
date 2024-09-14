@@ -13,7 +13,8 @@
       <mat-divider class="w-100"></mat-divider>
     </div>
   </div>
-  <div *ngIf="scheduleList.getValue().length<=0">
+  <div *ngIf="scheduleList.getValue().length<=0" class="no-data-placeholder">
+    <div class="no-data-image"></div>
     <p class="text-center text-secondary">{{nls.pleaseAddSchedule}}</p>
   </div>
 </div>

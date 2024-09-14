@@ -34,25 +34,32 @@ export class AppComponent implements OnInit {
   nls = nls;
 
   ngOnInit(): void {
+    this.window = this._appService.getWindow();
+
     this.applySystemTheme();
 
-    this.window = this._appService.getWindow();
     this.window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
       this.applySystemTheme();
     });
     this.window.document.addEventListener('backbutton', this.onBackButtonPressed.bind(this), false);
   }
   applySystemTheme() {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersDark = this.window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const themePreference = this.window.localStorage.getItem('theme-mode');
 
-    if (prefersDark) {
-      this.renderer.removeClass(document.body, 'light-theme');
-      this.renderer.addClass(document.body, 'dark-theme');
+    const applyTheme = (theme: string) => {
+      this.renderer.removeClass(document.body, theme === 'dark' ? 'light-theme' : 'dark-theme');
+      this.renderer.addClass(document.body, `${theme}-theme`);
+    };
+
+    // Use themePreference if available, else apply system preference
+    if (themePreference) {
+      applyTheme(themePreference);
     } else {
-      this.renderer.removeClass(document.body, 'dark-theme');
-      this.renderer.addClass(document.body, 'light-theme');
+      applyTheme(prefersDark ? 'dark' : 'light');
     }
   }
+
   @HostListener('backbutton')
   onBackButtonPressed(event: Event): void {
     event.preventDefault();

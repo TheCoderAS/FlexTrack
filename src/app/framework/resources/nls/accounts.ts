@@ -39,8 +39,9 @@ const nls = {
   supportText1: "We’re here to help you make the most of your Fitness Tracker experience. Whether you have questions, need assistance, or want to provide feedback, we’ve got you covered.",
   supportEmail: "Mail us at:",
   supportEmailValue: "support@websiterahouse.com",
-  resetAccount:"Reset Account",
-  resetText:"Your all data including widgets, schedules, reports, and logs will be cleared.",
-  backupData:"Backup & Restore Data"
+  resetAccount: "Reset Account",
+  resetText: "Your all data including widgets, schedules, reports, and logs will be cleared.",
+  backupData: "Backup & Restore Data",
+  SwitchTheme: "Switch Theme"
 }
 export default nls;
