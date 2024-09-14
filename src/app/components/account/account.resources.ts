@@ -43,11 +43,12 @@ export const accountItems = [
   { id: 'view-profile', label: nls.ViewProfile },
   { id: 'edit-profile', label: nls.EditProfile },
   { id: 'change-password', label: nls.ChangePassword },
-  { id: 'my-plan', label: nls.MyPlan, disabled: true },
+  // { id: 'my-plan', label: nls.MyPlan, disabled: true },
   { id: 'reset-account', label: nls.resetAccount },
   { id: 'backup-data', label: nls.backupData },
   { id: 'help', label: nls.HelpSupport },
   { id: 'about', label: nls.About },
+  { id: 'biometric', label: nls.BiometricSettings },
   { id: 'theme', label: nls.SwitchTheme },
 ]
 export const editProfileFields: FormFields[] = [

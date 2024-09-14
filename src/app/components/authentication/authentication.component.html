@@ -1,4 +1,3 @@
-<!-- login.component.html -->
 <div class="auth-container">
     <div class="auth-form-container">
         <div class="auth-form-logo mb-2">
@@ -15,10 +14,20 @@
             <app-form (on-submit)="submit($event)" [form-fields]="authFields()"
                 [submit-button-title]="nls.Signup"></app-form>
         </ng-container>
-
+        <button *ngIf="authType()==='login' && biometricEnabled()" mat-raised-button type="button"
+            (click)="authService.launchBiometric()" color="accent"
+            class="w-100 mt-3">{{nls.loginUsingBiometric}}</button>
         <div class="pt-4">
             <p class="text-center auth-form-footer-links" (click)="changeAuthType()">{{ authType() === 'login' ?
                 nls.createAccount : nls.loginExisting }}</p>
         </div>
     </div>
 </div>
+
+<app-modal-window [isOpen]="authService.isModalOpen.getValue()" (onCancel)="authService.toggleModal($event)"
+    (onSubmit)="authService.submitModal($event)" [type]="'confirm'" [modal-heading]="nls.EnableBiometric"
+    [message-title]="nls.BiometricEnrolledOnDevice">
+    <ng-template>
+        <p>{{nls.EnableBiometricMessage}}</p>
+    </ng-template>
+</app-modal-window>

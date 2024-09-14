@@ -29,6 +29,12 @@ const nls = {
   phoneRequired: "Mobile Number is required.",
   invalidMobileFormat: "Mobile number format should be 123-456-7890 or 1234567890",
   SignupError: "User registered. Please login to continue.",
-  UserSessionExpired: "Session Expired. Please login again."
+  UserSessionExpired: "Session Expired. Please login again.",
+  EnableBiometric: "Enable Biometric",
+  EnableBiometricMessage: "Do you want to enable biometric sign-on for Fitness Tracker?",
+  BiometricEnrolledOnDevice: "Biometric enrollment found on your device.",
+  BiometricLoginError: "Biometric login failed.",
+  CannotUseBiometric: "User credentials changed. Cannot use biometric sign-on.",
+  loginUsingBiometric: "Login using Biometric"
 };
 export default nls;

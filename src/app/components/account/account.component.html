@@ -7,13 +7,17 @@
       </div>
       <div class="my-3">
         <mat-list role="list" class="profile-item-list-container mb-2">
-          <mat-list-item role="listitem" mat-ripple *ngFor="let item of accountItems()"
+          <mat-list-item role="listitem" mat-ripple *ngFor="let item of getAccountItems(accountItems())"
             (click)="onClickAccountItem(item.id, item.disabled)" class="profile-item-list" [disabled]="item.disabled">
-            <div class="profile-item-list-label">
+            <div class="profile-item-list-label" *ngIf="item.id!=='biometric'">
               <span class="m-0">{{item.label}}</span>
               <span *ngIf="item.id==='theme'"
                 class="text-capitalize m-0 d-flex align-items-center gap-2">{{themeMode()}}<mat-slide-toggle
                   [checked]="themeMode().toLowerCase()==='dark'" color="primary" /></span>
+            </div>
+            <div class="profile-item-list-label" *ngIf="item.id==='biometric' && isBiometricAvailable()">
+              <span class="m-0">{{item.label}}</span>
+              <span><mat-slide-toggle [checked]="isBiometricEnabled()" color="primary" /></span>
             </div>
           </mat-list-item>
         </mat-list>

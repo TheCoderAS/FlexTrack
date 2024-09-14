@@ -1,5 +1,6 @@
 import {
   Component,
+  OnInit,
   Signal,
   WritableSignal,
   computed,
@@ -17,6 +18,9 @@ import nls from '../../framework/resources/nls/authentication';
 import { FormFields } from '../../framework/form/form.interfaces';
 import { FormComponent } from '../../framework/form/form.component';
 import { authFormFields } from './auth.resources';
+import { ModalWindowComponent } from "../../framework/modal-window/modal-window.component";
+
+declare var window: any;
 
 @Component({
   selector: 'app-authentication',
@@ -29,12 +33,13 @@ import { authFormFields } from './auth.resources';
     FormsModule,
     CommonModule,
     FormComponent,
+    ModalWindowComponent
   ],
   templateUrl: './authentication.component.html',
   styleUrl: './authentication.component.scss',
 })
 export class AuthenticationComponent {
-  private authService: AuthenticationService = inject(AuthenticationService);
+  authService: AuthenticationService = inject(AuthenticationService);
   nls = nls;
 
   authType: WritableSignal<string> = signal('login');
@@ -47,10 +52,6 @@ export class AuthenticationComponent {
       return val === 'login' ? 'signup' : 'login';
     });
   }
-
-  // loginByGoogle() {
-  //   this.authService.loginByGoogle();
-  // }
 
   loginWithUserPass(data: any) {
     this.authService.loginWithUserPass(data);
@@ -67,5 +68,12 @@ export class AuthenticationComponent {
     } else {
       this.signupWithUserPass(data);
     }
+  }
+  biometricEnabled(): boolean {
+    let isBiometricEnabled = window.localStorage.getItem('isBiometricEnabled');
+    if (isBiometricEnabled === 'enabled') {
+      return true;
+    }
+    return false;
   }
 }

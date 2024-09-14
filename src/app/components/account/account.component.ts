@@ -48,11 +48,31 @@ export class AccountComponent {
   editProfileFields: WritableSignal<FormFields[]> = signal(editProfileFields);
   backupDataFormFields: WritableSignal<FormFields[]> = signal(backupDataFormFields);
   themeMode: WritableSignal<string> = signal('');
+  isBiometricAvailable: WritableSignal<boolean> = signal(false);
+  isBiometricEnabled: WritableSignal<boolean> = signal(false);
 
   constructor() {
     this.window = this._appService.getWindow();
     this.getMyProfileData();
     this.getCurrentTheme();
+    this.checkBiometricAvailable();
+    this.checkBiometricEnabled();
+  }
+  async checkBiometricAvailable() {
+    try {
+      await this._authService.isBiometricAvailable();
+      this.isBiometricAvailable.set(true);
+    } catch (error) {
+      this.isBiometricAvailable.set(false);
+    }
+  }
+  checkBiometricEnabled() {
+    let isBiometricEnabled = this.window.localStorage.getItem('isBiometricEnabled');
+    if (isBiometricEnabled === 'enabled') {
+      this.isBiometricEnabled.set(true);
+    } else {
+      this.isBiometricEnabled.set(false);
+    }
   }
   getCurrentTheme() {
     const prefersDark = this.window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -139,7 +159,30 @@ export class AccountComponent {
       }
       case 'theme': {
         this.switchTheme();
+        break;
       }
+      case 'biometric': {
+        this.switchBiometric();
+        break;
+      }
+    }
+  }
+  switchBiometric() {
+    if (this.isBiometricEnabled()) {
+      this.isBiometricEnabled.set(false);
+      this.window.localStorage.removeItem('isBiometricEnabled');
+    } else {
+      this.isBiometricEnabled.set(true);
+      this.window.localStorage.setItem('isBiometricEnabled', 'enabled');
+    }
+  }
+  getAccountItems(data: any[]): any[] {
+    if (!this.isBiometricAvailable()) {
+      return data.filter((item: any) => {
+        return item.id !== 'biometric'
+      })
+    } else {
+      return data;
     }
   }
   switchTheme() {
@@ -198,6 +241,16 @@ export class AccountComponent {
         let result = await this._api.hit('users/change_password', 'post', data);
         if (result.success) {
           this._message.success(result.message);
+          let userPreferences: any = window.localStorage.getItem('userPreferences');
+          userPreferences = userPreferences ? JSON.parse(userPreferences) : null;
+
+          let user = await this._api.local_get('user');
+
+          if (userPreferences && user && userPreferences.email === user.email) {
+            userPreferences.password = data.new_password;
+            window.localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+          }
+
           this.togglePanel(false)
         } else {
           if (result.name === 'IncorrectPasswordError') {

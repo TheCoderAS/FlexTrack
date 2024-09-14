@@ -17,6 +17,7 @@ import nls from '../resources/nls/generic';
 export class ModalWindowComponent {
   @Input() type: 'confirm' | 'info' | string = 'confirm';
   @Input() isOpen = false;
+  @Input('message-title') messageTitle = nls.areYouSure;
   @Input('modal-heading') heading: string = '';
   @Input() showCloseButton: boolean = true;
   @Input() showHeader: boolean = true;

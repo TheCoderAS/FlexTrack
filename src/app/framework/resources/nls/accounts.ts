@@ -42,6 +42,7 @@ const nls = {
   resetAccount: "Reset Account",
   resetText: "Your all data including widgets, schedules, reports, and logs will be cleared.",
   backupData: "Backup & Restore Data",
-  SwitchTheme: "Switch Theme"
+  SwitchTheme: "Switch Theme",
+  BiometricSettings: "Biometric Settings"
 }
 export default nls;
