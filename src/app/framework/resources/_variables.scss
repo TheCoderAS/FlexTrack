@@ -3,6 +3,7 @@ $bottom-bar-height: 65px;
 $card-border-radius: 15px;
 $status-bar-height: 45px;
 $border-radius: 5px;
+$text-white: white;
 
 .light-theme {
   --bg-color: #ece6ee;
@@ -26,7 +27,7 @@ $border-radius: 5px;
   --mdc-filled-text-field-input-text-color: #040D12;
   --mdc-fab-container-color: #F3F8FF;
   --mat-fab-foreground-color: #040D12;
-
+  transition: all 200ms;
 }
 
 .dark-theme {
@@ -37,11 +38,11 @@ $border-radius: 5px;
   --header-bg-color-secondary: #003C43;
   --scrollbar-track-color: #000000;
   --scrollbar-thumb-color: #333333;
-  --nav-item-active: #dd0000;
+  --nav-item-active: #8B3A3A;
   --button-bg-primary: #2D0D4F;
   --button-bg-secondary: #222831;
-  --button-bg-tertiary: #F57D1F;
-  --button-bg-disabled: #B8A9C9;
+  --button-bg-tertiary: #633535;
+  --button-bg-disabled: #eeeeee40;
   --mdc-filled-text-field-container-color: #151b20;
   --mdc-filled-text-field-disabled-container-color: #151b2050;
   --mdc-filled-text-field-caret-color: white;
@@ -77,4 +78,6 @@ $border-radius: 5px;
   --mat-datepicker-calendar-date-selected-state-background-color: #2D0D4F;
   --mat-datepicker-calendar-date-text-color: #ffffffdd;
   --mat-datepicker-toggle-icon-color: var(--text-color);
+
+  transition: all 200ms;
 }

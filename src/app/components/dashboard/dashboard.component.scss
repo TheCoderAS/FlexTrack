@@ -22,7 +22,7 @@
 }
 
 .my-dashboard-cards.preview {
-  color: var(--text-color) !important;
+  color: $text-white !important;
 }
 
 .drag-placeholder {
@@ -42,7 +42,7 @@
   flex-direction: column;
   cursor: pointer;
   box-shadow: 0 0 15px #450d5960;
-  color: var(--text-color) !important;
+  color: $text-white !important;
 }
 
 .reorder-card-container {
