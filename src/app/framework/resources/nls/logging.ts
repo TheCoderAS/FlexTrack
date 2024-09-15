@@ -3,12 +3,12 @@ import generic from "./generic";
 const nls = {
   ...generic,
   selectSchedule: "Select Schedule",
-  loggingDate: "Choose logging date",
-  editLog: "Edit Log",
-  addLog: "Add Log",
-  CancelAddEdit: "You want to cancel logging operation.",
-  pleaseAddSchedule: "Please create a schedule to start logging this widget.",
-  BasicDetails: "Logging Details",
+  loggingDate: "Choose noting date",
+  editLog: "Edit Note",
+  addLog: "New Note",
+  CancelAddEdit: "You want to cancel this note action.",
+  pleaseAddSchedule: "Please create a schedule to start noting this activity.",
+  BasicDetails: "Noting Details",
   achieved: "Achieved",
   target: "Target"
 }

@@ -52,3 +52,28 @@ Run on ADB devices
 ```
 cordova run android --device
 ```
+
+## Deployment
+```
+ng build --configuration production
+```
+
+```
+rm -r www/* && cp -r dist/workout-tracker/browser/* www
+```
+
+```
+cordova build android --release -- --packageType=apk
+```
+
+```
+keytool -genkey -v -keystore release-key.keystore -alias com.whpl.tracker -keyalg RSA -keysize 2048 -validity 10000
+```
+
+```
+~/Android/Sdk/build-tools/34.0.0/zipalign -f -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk platforms/android/app/build/outputs/apk/release/app-release-aligned.apk
+```
+
+```
+~/Android/Sdk/build-tools/34.0.0/apksigner sign -ks release-key.keystore --ks-key-alias com.whpl.tracker platforms/android/app/build/outputs/apk/release/app-release-aligned.apk
+```

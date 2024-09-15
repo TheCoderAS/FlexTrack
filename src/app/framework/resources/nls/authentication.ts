@@ -19,7 +19,7 @@ const nls = {
   loginExisting: 'Already have an account? Login Here!',
   Signup: "Sign Up",
   Login: "Login",
-  welcome: "Welcome to Fitness Tracker",
+  welcome: "Welcome to FlexTrack",
   SignupSubheading: "Create a new account",
   LoginSubheading: "Login to your existing account",
   logoutSuccess: "Logged out successfully!",
@@ -31,10 +31,10 @@ const nls = {
   SignupError: "User registered. Please login to continue.",
   UserSessionExpired: "Session Expired. Please login again.",
   EnableBiometric: "Enable Biometric",
-  EnableBiometricMessage: "Do you want to enable biometric sign-on for Fitness Tracker?",
+  EnableBiometricMessage: "Do you want to enable biometric sign-on for FlexTrack?",
   BiometricEnrolledOnDevice: "Biometric enrollment found on your device.",
   BiometricLoginError: "Biometric login failed.",
-  CannotUseBiometric: "User credentials changed. Cannot use biometric sign-on.",
+  CannotUseBiometric: "User credentials changed. Can't use biometric sign-on.",
   loginUsingBiometric: "Login using Biometric"
 };
 export default nls;

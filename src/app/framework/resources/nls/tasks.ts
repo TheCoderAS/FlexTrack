@@ -1,20 +1,20 @@
 import generic from './generic';
 const nls = {
   ...generic,
-  addTasks: "Add a Task",
+  addTasks: "New Task",
   editTask: "Edit Task",
-  CancelAddEdit: "You want to cancel task operation.",
+  CancelAddEdit: "You want to cancel this task action.",
   deleteTaskMessage: "You want to delete this task.",
   deleteTask: "Delete Task",
-  CancelAddHeader: "Add Task",
-  SelectedWidget: "Select Widget",
+  CancelAddHeader: "New Task",
+  SelectedWidget: "Select Activity",
   taskName: "Task Name",
   taskDescription: "Task Description",
   notasksFound: "No tasks found. Use plus button to add a task.",
   created: "Added:",
   updated: "Edited:",
-  AddTaskItem: "Add a Task Item",
-  EditTaskItem: "Edit Task Item",
-  createTask: "Create Task"
+  AddTaskItem: "New To-Do",
+  EditTaskItem: "Edit To-Do",
+  createTask: "Create To-Do"
 }
 export default nls;

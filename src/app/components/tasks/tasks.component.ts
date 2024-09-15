@@ -64,7 +64,7 @@ export class TasksComponent implements OnInit {
   selelctedTask: WritableSignal<string> = signal('');
   addTaskFormFields = new BehaviorSubject<FormFields[]>([{
     name: 'itemName',
-    label: 'Item Name',
+    label: 'To-Do Name',
     required: true,
     type: 'text'
   }]);
@@ -182,7 +182,7 @@ export class TasksComponent implements OnInit {
     } else {
       this.addTaskFormFields.next([{
         name: 'itemName',
-        label: 'Item Name',
+        label: 'To-Do Name',
         required: true,
         type: 'text'
       }])

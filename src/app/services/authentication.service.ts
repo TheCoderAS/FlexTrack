@@ -157,7 +157,7 @@ export class AuthenticationService {
       Fingerprint.show({
         title: 'Fiteness Tracker Biometric Auth',
         subtitle: "Fiteness Tracker Biometric Auth",
-        clientId: "Fitness Tracker",
+        clientId: "FlexTrack",
         clientSecret: 'password', // necessary for Android
         disableBackup: true,      // disable PIN/backup authentication
         localizedFallbackTitle: "Use Pin", // Optional, fallback title

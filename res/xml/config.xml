@@ -3,8 +3,8 @@
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
     </feature>
-    <name>Fitness Tracker</name>
-    <description>A simple Fitness tracker application</description>
+    <name>FlexTrack</name>
+    <description>A simple FlexTrack application</description>
     <author email="careers@websiterahouse.com" href="https://websiterahouse.com">
         Websitera House Team
     </author>
