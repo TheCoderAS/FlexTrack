@@ -1,0 +1,34 @@
+name: Build FlexTrack
+
+# Trigger the workflow on pushes and pull requests
+on:
+  push:
+    branches:
+      - production
+  pull_request:
+    branches:
+      - production
+
+# Define the jobs to run in the workflow
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 4: Run Angular build command
+      - name: Build FlexTrack
+        run: npm run build
