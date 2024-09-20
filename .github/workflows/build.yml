@@ -5,9 +5,9 @@ on:
   push:
     branches:
       - production
-  pull_request:
-    branches:
-      - production
+#  pull_request:
+#    branches:
+#      - production
 
 # Define the jobs to run in the workflow
 jobs:
