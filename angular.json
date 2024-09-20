@@ -38,7 +38,8 @@
             "prerender": true,
             "ssr": {
               "entry": "server.ts"
-            }
+            },
+            "baseHref": "/Fitness-Tracker/"
           },
           "configurations": {
             "production": {
