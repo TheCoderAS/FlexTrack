@@ -32,3 +32,10 @@ jobs:
       # Step 4: Run Angular build command
       - name: Build FlexTrack
         run: npm run build
+
+      # Step 5: Upload artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
