@@ -1,0 +1,10 @@
+{
+  "routes": [
+    "/",
+    "/account",
+    "/add-schedules",
+    "/add-tasks",
+    "/auth",
+    "/reports"
+  ]
+}

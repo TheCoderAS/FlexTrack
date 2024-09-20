@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production",
+    "build": "ng build --configuration production --base-href /Fitness-Tracker/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:workout-tracker": "node dist/workout-tracker/server/server.mjs"
