@@ -17,5 +17,7 @@
         <preference name="StatusBarOverlaysWebView" value="false" />
         <preference name="StatusBarBackgroundColor" value="#2D0D4F" />
         <preference name="StatusBarStyle" value="lightcontent" />
+        <preference name="Fullscreen" value="true" />
+        <preference name="DisallowOverscroll" value="true" />
     </platform>
 </widget>
