@@ -7,7 +7,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build && rm -r www/* && cp -r dist/workout-tracker/browser/* www",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:workout-tracker": "node dist/workout-tracker/server/server.mjs"
