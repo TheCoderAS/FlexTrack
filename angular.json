@@ -27,8 +27,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/404.html"
+              "src/assets"
             ],
             "styles": [
               "src/styles.scss",
@@ -39,8 +38,7 @@
             "prerender": true,
             "ssr": {
               "entry": "server.ts"
-            },
-            "baseHref": "/Fitness-Tracker/"
+            }
           },
           "configurations": {
             "production": {
