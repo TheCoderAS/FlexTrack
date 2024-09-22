@@ -1,6 +1,7 @@
 {
-  "name": "app",
-  "version": "0.0.0",
+  "name": "com.flextrack.app",
+  "version": "1.0.0",
+  "description": "FlexTrack is a powerful, privacy-first activity and task management app designed to keep you organized without compromising your personal data.",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -41,5 +42,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.5.2"
-  }
+  },
+  "author": "FlexTrack | Aalok Mamta Sah (Aalok Kumar)",
+  "license": "Apache-2.0"
 }
