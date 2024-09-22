@@ -27,21 +27,25 @@ jobs:
 
       # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd app
+          npm install
 
       # Step 4: Run Angular build command
       - name: Build FlexTrack
-        run: npm run build
+        run: |
+          cd app
+          npm run build
 
       # Step 5: Upload artifacts
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: dist
-          path: dist
+          path: app/dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: app/dist
