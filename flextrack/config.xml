@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.flextrack.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets"
+    xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>FlexTrack</name>
+    <description>FlexTrack is a powerful, privacy-first activity and task management app designed to
+        keep you organized without compromising your personal data.</description>
+    <author email="aalokmamtasah@gmail.com" href="https://fitness-tracker-uie0.onrender.com">
+        FlexTrack | Aalok Mamta Sah (Aalok Kumar)
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <platform name="android">
+        <preference name="KeepRunning" value="true" />
+        <preference name="InAppBrowserStorageEnabled" value="true" />
+        <preference name="AndroidWindowSplashScreenBackground" value="#2D0D4F" />
+        <preference name="StatusBarOverlaysWebView" value="false" />
+        <preference name="StatusBarBackgroundColor" value="#2D0D4F" />
+        <preference name="StatusBarStyle" value="lightcontent" />
+        <preference name="Fullscreen" value="true" />
+        <preference name="DisallowOverscroll" value="true" />
+    </platform>
+</widget>
