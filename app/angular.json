@@ -36,7 +36,8 @@
               "src/styles.scss",
               "src/app/framework/resources/_variables.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "sourceMap": true
           },
           "configurations": {
             "production": {

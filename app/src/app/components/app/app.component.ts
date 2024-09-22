@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.window = this._appService.getWindow();
 
+    console.log(this.window.cordova);
     this.applySystemTheme();
 
     this.window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
