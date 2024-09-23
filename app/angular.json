@@ -36,7 +36,9 @@
               "src/styles.scss",
               "src/app/framework/resources/_variables.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "generate-manifest.js"
+            ],
             "sourceMap": false
           },
           "configurations": {
