@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/framework/fab-button/fab-button.component.scss"],
-  "sourcesContent": [".add-fab-button {\n  position: fixed;\n  bottom: 100px;\n  left: 0;\n  width: 100%;\n  z-index: 1000;\n}"],
-  "mappings": "AAAA,CAAA,eACE,SAAA,MACA,OAAA,MACA,KAAA,EACA,MAAA,KACA,QAAA",
-  "names": []
-}
